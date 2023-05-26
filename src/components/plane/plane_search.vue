@@ -7,35 +7,39 @@
         航班查询
     </el-row>
     
-    <div id="hotel_search">
-        <el-form :model="hotel_search" label-width="80px" style="text-align: center;">
-            <el-form-item label="目的地">
-                <el-input v-model="hotel_search.location" />
-            </el-form-item>
-
-            <el-form-item label="酒店名称">
-                <el-input v-model="hotel_search.hotel_name" />
-            </el-form-item>
+    <div id="plane_search">
+        <el-col :model="plane_search" label-width="80px" style="text-align: center;">
             
-            <el-form-item label="入住日期">
-                <el-col>
-                    <el-date-picker v-model="hotel_search.date1" type="date" :disabled-date="disabledDate1" placeholder="Pick a date" style="width: 100%" />
-                </el-col>
-            </el-form-item>
+            <el-row>
+                <el-text style="width:50%;font-size: large;">出发点</el-text>
+                <el-text style="width:50%;font-size: large">目的地</el-text>
+            </el-row>
 
-            <el-form-item label="退房日期">
-                <el-col>
-                    <el-date-picker v-model="hotel_search.date2" type="date" :disabled-date="disabledDate2" placeholder="Pick a date" style="width: 100%" />
-                </el-col>
-            </el-form-item>
+            <el-row>
+                <el-input v-model="plane_search.end_location" style="width: 40%;" />
+                <el-text style="width:4%"></el-text>
+                <el-button type="primary" circle style="width: 12%" @click="swap_location">
+                    <el-icon><Switch /></el-icon>
+                </el-button>
+                <el-text style="width:4%"></el-text>
+                <el-input v-model="plane_search.start_location" style="width: 40%" />
+            </el-row>
+
+            <el-row style="margin-top: 20px;margin-bottom: 20px;">
+                <el-text style="font-size: large;margin-right: 20px;">航班公司</el-text>
+                <el-input v-model="plane_search.company" style="width: 60%" />
+            </el-row>
             
-            <el-form-item>
-                <RouterLink to=/component/hotel_list>
-                    <el-button type="primary" style="width: 120px;" @click="on_hotel_Submit">查询</el-button>
-                </RouterLink>
-            </el-form-item>
+            <el-row style="margin-top: 20px;margin-bottom: 20px;">
+                <el-text style="font-size: large;margin-right: 20px;">航班日期</el-text>
+                <el-date-picker v-model="plane_search.date" type="date" :disabled-date="disabledDate" placeholder="Pick a date" style="width: 60%" />
+            </el-row>
+            
+            <RouterLink to=/component/plane_list>
+                <el-button type="primary" style="width: 120px;" @click="on_plane_Submit">查询</el-button>
+            </RouterLink>
 
-        </el-form>
+        </el-col>
     </div>
 
 </template>
@@ -43,30 +47,30 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { hotel_search } from "@/components/hotel/hotel_search"
+import { plane_search } from "@/components/plane/plane_search"
 import router from '@/router'
+
+//交换出发地与目的地
+const swap_location=()=>{
+    let tmp:string=plane_search.start_location
+    plane_search.start_location=plane_search.end_location
+    plane_search.end_location=tmp
+}
+
 //与后端交互接收搜索结果
-const on_hotel_Submit = () => {
-    let nd:number =86400000;// 1000*24*60*60一天的毫秒数
-    let time:number =(hotel_search.date2.getTime()-hotel_search.date1.getTime())/1000/24/60/60;
-    hotel_search.time=Math.ceil(time);//计算入住天数
-    console.log(hotel_search.time)
+const on_plane_Submit = () => {
+    
 }
 
-//入住日期必选 默认为今天 设置无法选中过去日期
-const disabledDate1 = (time: Date) => {
+//航班日期必选 默认为今天 设置无法选中过去日期
+const disabledDate = (time: Date) => {
   return time.getTime()+ 3600 * 1000 * 24 <= Date.now()
-}
-
-//退房日期必选 默认为明天 设置无法选中小于入住日期的时间
-const disabledDate2 = (time: Date) => {
-  return time.getTime() <= hotel_search.date1.getTime()
 }
 
 </script>
 
 <style scoped>
-#hotel_search {
+#plane_search {
     width: 300px;
     margin:auto;
     margin-top: 20px;
