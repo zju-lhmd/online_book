@@ -18,3 +18,5 @@ interface plane_data{
     price:number,
     discount:number,
 }
+
+let a:number =1;
