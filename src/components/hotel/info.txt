@@ -1,0 +1,12 @@
+主要组件
+hotel_search
+datas
+hotel_detail_data
+rooms
+
+hotel_search为用户输入的酒店搜索信息
+datas为后端传递到前端的搜索结果
+
+点击查看详情后前端向后端请求酒店的具体信息
+hotel_detail_data为酒店的具体信息
+rooms为该酒店的不同房型
