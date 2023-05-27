@@ -25,11 +25,13 @@ R<template>
                 <el-menu style="text-align: left;" default-active="this.$routher.path" router="true">
                     
                     <el-menu-item class="left_item" index="/component/market">
+                        <el-icon><ShoppingTrolley /></el-icon>
                         商品
                     </el-menu-item>
                     
                     <el-sub-menu index="2">
                         <template #title>
+                            <el-icon><OfficeBuilding /></el-icon>
                             <span class="left_item">酒店</span>
                         </template>
                         <el-menu-item-group>
@@ -40,6 +42,7 @@ R<template>
 
                     <el-sub-menu index="3">
                         <template #title>
+                            <el-icon><Promotion /></el-icon>
                             <span class="left_item">航班</span>
                         </template>
                         <el-menu-item-group>
@@ -50,6 +53,7 @@ R<template>
 
                     <el-sub-menu index="4">
                         <template #title>
+                            <el-icon><Sell /></el-icon>
                             <span class="left_item">卖家管理</span>
                         </template>
                         <el-menu-item-group>
@@ -60,6 +64,7 @@ R<template>
                     
                     <el-sub-menu index="5">
                         <template #title>
+                            <el-icon><Avatar /></el-icon>
                             <span class="left_item">预订服务管理员</span>
                         </template>
 
