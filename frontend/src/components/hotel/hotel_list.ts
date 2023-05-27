@@ -29,7 +29,6 @@ interface Hotel_data{
 let data:Hotel_data[] =[];
 let special_datas:Hotel_data[]=[];
 
-
 //测试用
 for(var i:number=1;i<=100;i++){
     let da:Hotel_data={
@@ -46,6 +45,9 @@ for(var i:number=1;i<=100;i++){
     data.push(da);
 }
 
+export let datas=reactive(data);
+export let special_data=reactive(special_datas);
+
 export const data_init=()=>{
     data.sort((n1,n2)=>{
         if(n1.price_min!=n2.price_min)
@@ -61,8 +63,5 @@ export const data_init=()=>{
     })
     
     for(var i:number=0;i<4;i++)
-        special_datas.push(data[i]);
+        special_data.push(data[i]);
 }
-
-export let datas=reactive(data);
-export let special_data=reactive(special_datas);
