@@ -170,9 +170,8 @@ const on_hotel_Submit = () => {
 }
 
 const on_hotel_detail=(hotel_data)=>{//hotel_data是点击查看详情时当前的酒店信息 类型为Hotel_data 定义在hotel_list里
-    console.log(1);
+    
     comment_init();
-    // comments=hotel_detail_data.comment.split("|||")
 }
 
 //入住日期必选 默认为今天 设置无法选中过去日期
