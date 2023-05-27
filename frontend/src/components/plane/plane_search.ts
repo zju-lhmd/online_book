@@ -14,4 +14,4 @@ let plane_search_:Plane_search={
     company:"",
     date: today
 }
-export const plane_search = reactive(plane_search_)
+export let plane_search = reactive(plane_search_)

@@ -11,8 +11,12 @@ import hotel_booking_historyVue from '@/components/hotel/hotel_booking_history.v
 import plane_searchVue from '@/components/plane/plane_search.vue'
 import plane_listVue from '@/components/plane/plane_list.vue'
 import plane_booking_historyVue from '@/components/plane/plane_booking_history.vue'
+import booking_admin_search_hotelVue from '@/components/booking_admin/search_hotel.vue'
+import booking_admin_list_hotelVue from '@/components/booking_admin/list_hotel.vue'
 import booking_admin_add_hotelVue from '@/components/booking_admin/add_hotel.vue'
 import booking_admin_modify_hotelVue from '@/components/booking_admin/modify_hotel.vue'
+import booking_admin_search_planeVue from '@/components/booking_admin/search_plane.vue'
+import booking_admin_list_planeVue from '@/components/booking_admin/list_plane.vue'
 import booking_admin_add_planeVue from '@/components/booking_admin/add_plane.vue'
 import booking_admin_modify_planeVue from '@/components/booking_admin/modify_plane.vue'
 import seller_add_goodVue from '@/components/seller/add_good.vue'
@@ -53,11 +57,19 @@ const router = createRouter({
         path:'/component/seller_add_good',name:'component_seller_add_good',component:seller_add_goodVue},
       {//卖家修改商品界面
         path:'/component/seller_modify_good',name:'component_seller_modify_good',component:seller_modify_goodVue},
-      {//管理员发布酒店界面
+      {//管理员搜索酒店界面
+        path:'/component/admin_search_hotel',name:'component_admin_search_hotel',component:booking_admin_search_hotelVue},
+      {//管理员搜索酒店结果界面
+        path:'/component/admin_list_hotel',name:'component_admin_list_hotel',component:booking_admin_list_hotelVue},
+      {//管理员增加酒店界面
         path:'/component/admin_add_hotel',name:'component_admin_add_hotel',component:booking_admin_add_hotelVue},
       {//管理员修改酒店界面
         path:'/component/admin_modify_hotel',name:'component_admin_modify_hotel',component:booking_admin_modify_hotelVue},
-      {//管理员发布航班界面
+      {//管理员搜索航班界面
+        path:'/component/admin_search_plane',name:'component_admin_search_plane',component:booking_admin_search_planeVue},
+      {//管理员搜索航班结果界面
+        path:'/component/admin_list_plane',name:'component_admin_list_plane',component:booking_admin_list_planeVue},
+      {//管理员增加航班界面
         path:'/component/admin_add_plane',name:'component_admin_add_plane',component:booking_admin_add_planeVue},
       {//管理员修改航班界面
         path:'/component/admin_modify_plane',name:'component_admin_modify_plane',component:booking_admin_modify_planeVue}

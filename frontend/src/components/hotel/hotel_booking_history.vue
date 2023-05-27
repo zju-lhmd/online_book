@@ -13,7 +13,7 @@
                             <div style="text-align: center;">订单号</div>
                         </el-col>
                         <el-col :span="16" style="border:2px solid #dadfe6;font-size: 20px;">
-                            <div style="text-align: center;">{{ order.name }}</div>
+                            <div style="text-align: center;">{{ order.order_no }}</div>
                         </el-col>
                     </el-row>
                     <el-row style="height: 65%;">

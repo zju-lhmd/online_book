@@ -1,5 +1,10 @@
 <template>
-预订服务管理员修改酒店界面
+    
+    <el-breadcrumb separator=">" style="font-size: large;">
+        <el-breadcrumb-item :to="{ path: '/component/hotel_search' }">酒店修改</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/component/hotel_list' }">查询结果</el-breadcrumb-item>
+    </el-breadcrumb>
+
 </template>
   
 
@@ -8,4 +13,3 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <style scoped></style>
-  

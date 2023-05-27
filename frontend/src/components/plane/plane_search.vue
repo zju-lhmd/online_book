@@ -60,7 +60,7 @@ const swap_location=()=>{
 
 //与后端交互接收搜索结果 传输到plane_search_data中
 const on_plane_Submit = () => {
-    
+    // console.log(1)
     plane_init();//调用处理处理数据
 }
 
