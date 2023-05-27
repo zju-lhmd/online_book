@@ -70,6 +70,7 @@ import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { orders } from "@/components/hotel/hotel_booking_history"
 import { ElMessage, ElMessageBox } from 'element-plus'
+import axios from "axios";
 const page = ref(1)
 const total = ref(orders.length)
 const pageSize = ref(4)
@@ -84,24 +85,46 @@ const handleCurrentChange = (val: number) => {
 
 //评分 value为评价值
 const submit_score = () => {
-    ElMessageBox.prompt('0-5分打分','评分', {
+    ElMessageBox.prompt('0-5分打分', '评分', {
         confirmButtonText: '提交',
         cancelButtonText: '取消',
     })
-        .then(({ value }) => {
-            ElMessage({
-                type: 'success',
-                message: `提交成功`,
+            .then(({ value }) => {
+                if (isNaN(value) || value < 0 || value > 5) {
+                    throw new Error('Invalid input');
+                }
+
+                const data = {
+                    value: value,
+                };
+                console.log(value);
+
+                axios.post('/submit_score', data)
+                        .then(response => {
+                            // 处理成功响应
+                            console.log(response.data);
+                            ElMessage({
+                                type: 'success',
+                                message: '提交成功',
+                            });
+                        })
+                        .catch(error => {
+                            // 处理错误响应
+                            console.log(error);
+                            ElMessage({
+                                type: 'error',
+                                message: '提交失败',
+                            });
+                        });
             })
-            // console.log(value)
-        })
-        .catch(() => {
-            ElMessage({
-                type: 'info',
-                message: '评价失败',
-            })
-        })
-}
+            .catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '评价失败',
+                });
+            });
+};
+
 
 //评价 value为评价值
 const submit_comment = () => {
