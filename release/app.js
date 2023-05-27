@@ -14,7 +14,7 @@ const router= new Router()
 const app = new koa()
 
 // 连接数据库
-const sequelize = new Sequelize('online_book', 'root', 'qwe987', {
+const sequelize = new Sequelize('online_book', 'root', '123456', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
