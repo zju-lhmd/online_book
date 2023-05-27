@@ -73,8 +73,8 @@ R<template>
                                 <span class="left_item">酒店</span>
                             </template>
                             <el-menu-item-group index="5.1.1">
-                                <el-menu-item class="left_item" index="/component/admin_add_hotel">酒店发布</el-menu-item>
-                                <el-menu-item class="left_item" index="/component/admin_modify_hotel">酒店修改</el-menu-item>
+                                <el-menu-item class="left_item" index="/component/admin_modify_hotel" @click="on_add_hotel">酒店发布</el-menu-item>
+                                <el-menu-item class="left_item" index="/component/admin_search_hotel">酒店修改</el-menu-item>
                             </el-menu-item-group>
                         </el-sub-menu>
 
@@ -83,8 +83,8 @@ R<template>
                                 <span class="left_item">航班</span>
                             </template>
                             <el-menu-item-group index="5.2.1">
-                                <el-menu-item class="left_item" index="/component/admin_add_plane">航班发布</el-menu-item>
-                                <el-menu-item class="left_item" index="/component/admin_modify_plane">航班修改</el-menu-item>
+                                <el-menu-item class="left_item" index="/component/admin_modify_plane" @click="on_add_plane">航班发布</el-menu-item>
+                                <el-menu-item class="left_item" index="/component/admin_search_plane">航班修改</el-menu-item>
                             </el-menu-item-group>
                         </el-sub-menu>
 
@@ -109,9 +109,19 @@ R<template>
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { orders } from "@/components/hotel/hotel_booking_history"
+import { hotel_init } from "@/components/booking_admin/hotel_info"
+import { plane_init } from '@/components/booking_admin/plane_info';
 
 const hotel_booking_history=()=>{//查询酒店预订历史信息
     
+}
+
+const on_add_hotel=()=>{
+    hotel_init();
+}
+
+const on_add_plane=()=>{
+    plane_init();
 }
 
 </script>
