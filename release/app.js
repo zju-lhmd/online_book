@@ -18,7 +18,7 @@ const sequelize = new Sequelize('online_book', 'root', 'qwe987', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
-        max: 5,
+        max: 500,
         min: 0,
         idle: 30000
     }
@@ -248,17 +248,31 @@ module.exports = {
 };
 
 
-router.post('/submit_score', async (ctx) => {
-    const { value } = prompt('0-5分打分', '评分', {
-        confirmButtonText: '提交',
-        cancelButtonText: '取消',
-    });
-    if (value) {
-        // success('提交成功');
-        console.log('success');
-    } else {
-        info('评价失败');
-        ctx.body = '评价失败';
+router.post('/submit_score', async (ctx, next) => {
+    try{
+        const { value } = prompt('0-5分打分', '评分', {
+            confirmButtonText: '提交',
+            cancelButtonText: '取消',
+        });
+        const body = ctx.request.body
+        // console.log(body)
+        await Hotel.create({
+            hotel_id: 1,
+            name: 'qw',
+            location: 'qw',
+            star_rating: value,
+            score_total: 1,
+            score_count: 1,
+            discount: 1,
+            description: 'qw'
+        })
+        ctx.body = 'success'
+        // console.log(ctx.body)
+        await next()
+    }
+    catch(e){
+        ctx.body = 'error'
+        console.log('add error')
     }
 });
 
