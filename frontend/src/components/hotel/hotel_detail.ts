@@ -59,7 +59,8 @@ room.push(room3);
 export const rooms=reactive(room);
 
 let comment:string[]=[];
-export const comments=ref(comment);
+export let comments=reactive(comment);
 export const comment_init=()=>{
-    comment=hotel_detail_data.comment.split("|||");
+    comments=hotel_detail_data.comment.split("|||");
+    console.log(comment.length)
 }

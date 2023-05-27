@@ -10,7 +10,7 @@ interface Hotel_search{
 let today=new Date()
 let tomorrow=new Date()
 tomorrow.setTime(tomorrow.getTime() + 3600 * 1000 * 24)
-export const hotel_search = reactive<Hotel_search>({
+export let hotel_search = reactive<Hotel_search>({
     location: "",
     hotel_name: "",
     date1: today,

@@ -64,5 +64,5 @@ export const data_init=()=>{
         special_datas.push(data[i]);
 }
 
-export const datas=reactive(data);
-export const special_data=reactive(special_datas);
+export let datas=reactive(data);
+export let special_data=reactive(special_datas);

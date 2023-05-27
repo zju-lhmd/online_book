@@ -154,7 +154,7 @@ import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { hotel_search } from "@/components/hotel/hotel_search"
 import { hotel_sort, datas , special_data , data_init} from "@/components/hotel/hotel_list"
-import { hotel_detail_data , rooms , comment_init} from "@/components/hotel/hotel_detail"
+import { hotel_detail_data , rooms ,comments, comment_init} from "@/components/hotel/hotel_detail"
 
 const page = ref(1)
 const total = ref(datas.length)
@@ -170,8 +170,9 @@ const on_hotel_Submit = () => {
 }
 
 const on_hotel_detail=(hotel_data)=>{//hotel_data是点击查看详情时当前的酒店信息 类型为Hotel_data 定义在hotel_list里
-
+    console.log(1);
     comment_init();
+    // comments=hotel_detail_data.comment.split("|||")
 }
 
 //入住日期必选 默认为今天 设置无法选中过去日期
