@@ -46,22 +46,23 @@ for(var i:number=1;i<=100;i++){
     data.push(da);
 }
 
-data.sort((n1,n2)=>{
-    if(n1.discount===n2.discount)
-        return n1.price_min-n2.price_min;
-    else return n1.discount-n2.discount;
-})
-
-for(var i:number=0;i<4;i++)
-special_datas.push(data[i]);
-
-data.sort((n1,n2)=>{
-    if(n1.price_min!=n2.price_min)
-        return n1.price_min-n2.price_min;
-    else if(n1.star!=n2.star)
-        return n2.star-n1.star;
-    else return n2.score-n1.score;
-})
+export const data_init=()=>{
+    data.sort((n1,n2)=>{
+        if(n1.price_min!=n2.price_min)
+            return n1.price_min-n2.price_min;
+        else if(n1.star!=n2.star)
+            return n2.star-n1.star;
+        else return n2.score-n1.score;
+    })
+    data.sort((n1,n2)=>{
+        if(n1.discount===n2.discount)
+            return n1.price_min-n2.price_min;
+        else return n1.discount-n2.discount;
+    })
+    
+    for(var i:number=0;i<4;i++)
+        special_datas.push(data[i]);
+}
 
 export const datas=reactive(data);
 export const special_data=reactive(special_datas);

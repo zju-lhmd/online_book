@@ -44,6 +44,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { hotel_search } from "@/components/hotel/hotel_search"
+import { datas , data_init} from "@/components/hotel/hotel_list"
 import router from '@/router'
 //与后端交互接收搜索结果
 const on_hotel_Submit = () => {
@@ -51,6 +52,7 @@ const on_hotel_Submit = () => {
     let time:number =(hotel_search.date2.getTime()-hotel_search.date1.getTime())/1000/24/60/60;
     hotel_search.time=Math.ceil(time);//计算入住天数
     console.log(hotel_search.time)
+    data_init();
 }
 
 //入住日期必选 默认为今天 设置无法选中过去日期

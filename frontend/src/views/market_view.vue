@@ -34,7 +34,7 @@ R<template>
                         </template>
                         <el-menu-item-group>
                             <el-menu-item class="left_item" index="/component/hotel_search">酒店预订</el-menu-item>
-                            <el-menu-item class="left_item" index="/component/hotel_booking_history">历史查询</el-menu-item>
+                            <el-menu-item class="left_item" @click="hotel_booking_history" index="/component/hotel_booking_history">历史查询</el-menu-item>
                         </el-menu-item-group>
                     </el-sub-menu>
 
@@ -103,6 +103,12 @@ R<template>
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { orders } from "@/components/hotel/hotel_booking_history"
+
+const hotel_booking_history=()=>{//查询酒店预订历史信息
+    
+}
+
 </script>
 
 <style scoped>

@@ -4,7 +4,7 @@
         <el-breadcrumb-item :to="{ path: '/component/plane_search' }">航班查询</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/plane_list' }">查询结果</el-breadcrumb-item>
     </el-breadcrumb>
-
+    
 </template>
   
 

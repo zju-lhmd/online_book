@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { plane_search } from "@/components/plane/plane_search"
+import { plane_search_data , solve} from "@/components/plane/plane_list"
 import router from '@/router'
 
 //交换出发地与目的地
@@ -57,9 +58,10 @@ const swap_location=()=>{
     plane_search.end_location=tmp
 }
 
-//与后端交互接收搜索结果
+//与后端交互接收搜索结果 传输到plane_search_data中
 const on_plane_Submit = () => {
-    
+
+    solve();//调用处理处理数据
 }
 
 //航班日期必选 默认为今天 设置无法选中过去日期
