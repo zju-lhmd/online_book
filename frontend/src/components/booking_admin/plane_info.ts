@@ -26,11 +26,35 @@ let plane:Plane_data={
     stock:0,
 }
 let planes:Plane_data[]=[]
-//hotel_data为修改或增加的酒店信息 hotel_datas为查询返回的酒店信息
-//酒店发布 -> hotel_data 为空 修改后发布
-//酒店修改 -> hotel_datas -> 选中后显示hotel_data 在基础上修改
+//plane_data为修改或增加的酒店信息 plane_datas为查询返回的酒店信息
+//航班发布 -> plane_data 为空 修改后发布
+//航班修改 -> plane_datas -> 选中后显示plane_data 在基础上修改
 export let plane_data=reactive(plane)
-export let hotel_datas=reactive(plane)
+export let plane_datas=reactive(planes)
+
+// 测试
+plane_datas.push({
+    plane_id:1,
+    start_location:"asdasd",
+    end_location:"gfdg",
+    company:"adfgdsf",
+    start_time:today,
+    end_time:today,
+    price:0,
+    discount:1,
+    stock:0,
+})
+plane_datas.push({
+    plane_id:1,
+    start_location:"asdasd",
+    end_location:"gfdg",
+    company:"adfgdsf",
+    start_time:today,
+    end_time:today,
+    price:0,
+    discount:1,
+    stock:0,
+})
 
 export const plane_init=()=>{
     plane_data={
@@ -44,4 +68,8 @@ export const plane_init=()=>{
         discount:1,
         stock:0,
     }
+}
+
+export const modify_plane=(index:number)=>{
+    plane_data=plane_datas[index]
 }

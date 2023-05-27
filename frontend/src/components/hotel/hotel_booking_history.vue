@@ -85,26 +85,6 @@ const handleCurrentChange = (val: number) => {
 
 //评分 value为评价值
 const submit_score = () => {
-<<<<<<< HEAD
-    var val
-    ElMessageBox.prompt('0-5分打分','评分', {
-        confirmButtonText: '提交',
-        cancelButtonText: '取消',
-    })
-        .then(({ value }) => {
-            ElMessage({
-                type: 'success',
-                message: `Your email is:${value}`,
-            })
-        })
-        .catch(() => {
-            ElMessage({
-                type: 'info',
-                message: '评价失败',
-            })
-        })
-}
-=======
     ElMessageBox.prompt('0-5分打分', '评分', {
         confirmButtonText: '提交',
         cancelButtonText: '取消',
@@ -145,7 +125,6 @@ const submit_score = () => {
             });
 };
 
->>>>>>> 914770eb245e09eeecc97935a76f17bb96031b4e
 
 //评价 value为评价值
 const submit_comment = () => {

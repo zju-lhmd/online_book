@@ -266,13 +266,6 @@ app.use(async (ctx, next) => {
     await bodyParser()(ctx, next);
 });
 app.use(router.routes())
-router.post("/submit_score", async (ctx, next) => {
-    try {
-        const body = ctx.request.body;
-        console.log(ctx);
-        const starRating = parseInt(body.value);
-
-<<<<<<< HEAD
 
 router.post('/submit_score', async (ctx, next) => {
     try{
@@ -282,8 +275,6 @@ router.post('/submit_score', async (ctx, next) => {
         });
         const body = ctx.request.body
         console.log(23121)
-=======
->>>>>>> 914770eb245e09eeecc97935a76f17bb96031b4e
         await Hotel.create({
             hotel_id: 1,
             name: 'qw',
