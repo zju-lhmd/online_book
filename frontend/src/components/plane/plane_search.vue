@@ -16,13 +16,13 @@
             </el-row>
 
             <el-row>
-                <el-input v-model="plane_search.end_location" style="width: 40%;" />
+                <el-input v-model="plane_search.start_location" style="width: 40%;" />
                 <el-text style="width:4%"></el-text>
                 <el-button type="primary" circle style="width: 12%" @click="swap_location">
                     <el-icon><Switch /></el-icon>
                 </el-button>
                 <el-text style="width:4%"></el-text>
-                <el-input v-model="plane_search.start_location" style="width: 40%" />
+                <el-input v-model="plane_search.end_location" style="width: 40%" />
             </el-row>
 
             <el-row style="margin-top: 20px;margin-bottom: 20px;">
@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import { plane_search } from "@/components/plane/plane_search"
-import { plane_search_data , solve} from "@/components/plane/plane_list"
+import { plane_search_data , plane_init} from "@/components/plane/plane_list"
 import router from '@/router'
 
 //交换出发地与目的地
@@ -60,8 +60,8 @@ const swap_location=()=>{
 
 //与后端交互接收搜索结果 传输到plane_search_data中
 const on_plane_Submit = () => {
-
-    solve();//调用处理处理数据
+    
+    plane_init();//调用处理处理数据
 }
 
 //航班日期必选 默认为今天 设置无法选中过去日期
