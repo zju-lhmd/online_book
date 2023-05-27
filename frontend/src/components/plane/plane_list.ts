@@ -104,6 +104,7 @@ export const plane_init=()=>{
         l_s=r_s+1;
     }
 
+    
     //初始化机场数据
     plane=direct.concat(transfer)
     plane.sort((n1,n2)=>{//排序 按照价格排序
