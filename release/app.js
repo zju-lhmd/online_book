@@ -4,7 +4,7 @@
 // koa框架使用的中间件
 const koa = require('koa')
 const path = require('path');
-const staticfile = require('koa-static')
+const static_file = require('koa-static')
 const Router=require('koa-router')
 const bodyParser = require('koa-body')
 const Sequelize = require('sequelize')
@@ -14,7 +14,7 @@ const router= new Router()
 const app = new koa()
 
 // 连接数据库
-const sequelize = new Sequelize('online_book', 'root', '123456', {
+const sequelize = new Sequelize('online_book', 'root', 'qwe987', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -69,7 +69,11 @@ const User = sequelize.define('user', {
         allowNull: false,
         defaultValue: 0
     }
+},{
+    timestamps: false,
+    freezeTableName:true
 });
+User.sync({force:false})
 
 const Hotel = sequelize.define('hotel', {
     hotel_id: {
@@ -108,7 +112,11 @@ const Hotel = sequelize.define('hotel', {
         type: Sequelize.STRING(511),
         allowNull: false
     }
+},{
+    timestamps: false,
+    freezeTableName:true
 });
+Hotel.sync({force:false})
 
 const Room = sequelize.define('room', {
     hotel_id: {
@@ -134,7 +142,11 @@ const Room = sequelize.define('room', {
         allowNull: false,
         defaultValue: 0
     }
+},{
+    timestamps: false,
+    freezeTableName:true
 });
+Room.sync({force:false})
 
 const Plane = sequelize.define('plane', {
     plane_id: {
@@ -171,7 +183,11 @@ const Plane = sequelize.define('plane', {
         allowNull: false,
         defaultValue: 1.0
     }
+},{
+    timestamps: false,
+    freezeTableName:true
 });
+Plane.sync({force:false})
 
 const BookingHistory = sequelize.define('booking_history', {
     user_id: {
@@ -209,7 +225,11 @@ const BookingHistory = sequelize.define('booking_history', {
             key: 'plane_id'
         }
     }
+},{
+    timestamps: false,
+    freezeTableName:true
 });
+BookingHistory.sync({force:false})
 
 const Comments = sequelize.define('comments', {
     user_id: {
@@ -236,17 +256,23 @@ const Comments = sequelize.define('comments', {
     content: {
         type: Sequelize.TEXT
     }
+},{
+    timestamps: false,
+    freezeTableName:true
 });
+Comments.sync({force:false})
 
-module.exports = {
-    User,
-    Hotel,
-    Room,
-    Plane,
-    BookingHistory,
-    Comments
-};
+app.use(async (ctx, next) => {
+    await bodyParser()(ctx, next);
+});
+app.use(router.routes())
+router.post("/submit_score", async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(ctx);
+        const starRating = parseInt(body.value);
 
+<<<<<<< HEAD
 
 router.post('/submit_score', async (ctx, next) => {
     try{
@@ -256,29 +282,29 @@ router.post('/submit_score', async (ctx, next) => {
         });
         const body = ctx.request.body
         console.log(23121)
+=======
+>>>>>>> 914770eb245e09eeecc97935a76f17bb96031b4e
         await Hotel.create({
             hotel_id: 1,
             name: 'qw',
             location: 'qw',
-            star_rating: value,
+            star_rating: 1,
             score_total: 1,
-            score_count: 1,
-            discount: 1,
+            score_count: starRating,
+            discount: 2.11,
             description: 'qw'
-        })
-        ctx.body = 'success'
-        // console.log(ctx.body)
-        await next()
-    }
-    catch(e){
-        ctx.body = 'error'
-        console.log('add error')
+        });
+
+        // ctx.body = 'success';
+        await next();
+    } catch (e) {
+        // ctx.body = 'error';
+        console.log('add error');
     }
 });
 
+
 // 静态文件使用
-app.use(bodyParser())
-app.use(router.routes())
-app.use(staticfile(path.join(__dirname, 'static')));
+app.use(static_file(path.join(__dirname, 'static')));
 app.listen(3400)
 // console.log('success')
