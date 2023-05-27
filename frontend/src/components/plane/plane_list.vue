@@ -46,8 +46,8 @@
                             <div v-else="">直飞与转机</div>
                         </el-button>
                     </el-row>
-                    {{ plane.length }}
-                    <li v-for="plane_data in plane" class="list-item-target">
+
+                    <li v-for="plane_data in plane.slice((page - 1) * pageSize, page * pageSize)" :key="plane_data[0].price" class="list-item-target" >
                         <el-row class="card-item-wrap">
                             <el-col class="left" :span="4">
                                 <div v-for="plane_company in plane_data" style="height: 50%;">
@@ -57,7 +57,8 @@
                             </el-col>
 
                             <el-col class="middle" :span="16">
-                                <div v-for="plane_ in plane_data" style="height: 50%;">
+                                <div v-for="plane_ in plane_data" style="height: 40%;">
+                                    
                                     <!-- 插入图标 -->
                                     <el-text style="font-size: large;color: black;">{{ plane_.start_location }}</el-text>
                                     <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
@@ -66,21 +67,66 @@
                                     <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
                                     <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{plane_.end_time.toLocaleDateString()}}  {{plane_.end_time.toLocaleTimeString()}}</el-text>
                                 </div>
+                                <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">机票剩余量</el-text>
+                                <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{ plane_data[0].stock }}</el-text>
                             </el-col>
 
                             <el-col class="right" :span="4">
-                                插入图片
+                                <el-space direction="vertical">
+                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">总价</el-text>
+                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{ plane_data[0].price }}</el-text>
+                                    <el-button type="primary">订购</el-button>
+                                </el-space>
                             </el-col>
                         </el-row>
                     </li>
-
+                    <el-pagination
+                    layout=" prev, pager, next,jumper"
+                    :current-page="page"
+                    :page-size="pageSize"
+                    :total="total"
+                    :style="{'justify-content':'center'}"
+                    @current-change="handleCurrentChange"
+                    @size-change="handleSizeChange"/>
                 </el-col>
 
                 <el-col :span="7" style="padding-top: 20px;">
                     <el-test style="font-size: large;">
-                        特价航班信息
+                        特价航班
                     </el-test>
+                    <li v-for="plane_data in special_plane" class="list-item-target">
+                        <el-row class="card-item-wrap">
+                            <el-col class="left" :span="3">
+                                <div v-for="plane_company in plane_data" style="height: 50%;">
+                                    <!-- 插入图标 -->
+                                    <el-text style="color: black;">{{ plane_company.company }}</el-text>
+                                </div>
+                            </el-col>
 
+                            <el-col class="middle" :span="16">
+                                <div v-for="plane_ in plane_data" style="height: 40%;">
+                                    <!-- 插入图标 -->
+                                    <el-text style="font-size: large;color: black;">{{ plane_.start_location }}</el-text>
+                                    <el-icon style="font-size: large;color: black;margin: 0px 5px 0px 5px;"><Right /></el-icon>
+                                    <el-text style="font-size: large;color: black;">{{ plane_.end_location }}</el-text>
+                                    <br/>
+                                    <el-text style="font-size: large;color: black;margin: 0px 5px 0px 5px;">{{plane_.start_time.toLocaleTimeString()}}</el-text>
+                                    <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
+                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{plane_.end_time.toLocaleTimeString()}}</el-text>
+                                </div>
+                                <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">机票剩余量</el-text>
+                                <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{ plane_data[0].stock }}</el-text>
+                            </el-col>
+
+                            <el-col class="right" :span="5">
+                                <el-space direction="vertical">
+                                    <el-text style="font-size: large;color: black;">总价</el-text>
+                                    <el-text style="font-size: large;color: black;">{{ plane_data[0].price }}</el-text>
+                                    <el-button type="primary">订购</el-button>
+                                </el-space>
+                            </el-col>
+                        </el-row>
+                    </li>
                 </el-col>
 
             </el-row>
@@ -90,9 +136,23 @@
   
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { plane_search } from "@/components/plane/plane_search"
 import { plane, plane_sort , special_plane, plane_init , direct_change } from "@/components/plane/plane_list"
+
+const page = ref(1)
+const total = ref(plane.length)
+const pageSize = ref(4)
+
+//分页函数
+const handleSizeChange = (val:number) => {
+  pageSize.value = val;
+
+}
+const handleCurrentChange = (val:number) => {
+  page.value = val;
+}
 
 //交换出发地与目的地
 const swap_location = () => {
@@ -138,6 +198,7 @@ const on_direct_change = () => {
 }
 
 const sort=(type:number)=>{
+    console.log(plane[0][0].price)
     plane.sort((n1,n2)=>{
         if(type===1){
             if(n1[0].price!=n2[0].price){
@@ -161,8 +222,10 @@ const sort=(type:number)=>{
             }
         }
     })
-    // page.value=1;
-    // total.value=plane.length;
+    console.log(plane[0][0].price)
+    page.value=0;
+    page.value=1;
+    total.value=plane.length;
 }
 
 

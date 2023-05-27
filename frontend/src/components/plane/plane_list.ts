@@ -67,6 +67,12 @@ plane_search_data.push({
 //处理函数
 export const plane_init=()=>{
     //将航班分类 直达放入direct 出发地相同放入start 目的地相同放入destination
+    direct=[]
+    start=[]
+    destination=[]
+    transfer=[]
+    plane=[]
+    special_plane=[]
     for(let i:number=0;i<plane_search_data_.length;i++){
         let p1:boolean=(plane_search_data_[i].start_location===plane_search.start_location);
         let p2:boolean=(plane_search_data_[i].end_location===plane_search.end_location);
@@ -78,6 +84,7 @@ export const plane_init=()=>{
         }else{
             destination.push(plane_search_data_[i]);
         }
+        plane_search_data_[i].price=plane_search_data_[i].price/plane_search_data_[i].discount;
     }
     //求转机
     start.sort((n1,n2)=>{
@@ -114,7 +121,7 @@ export const plane_init=()=>{
     //初始化机场数据
     plane=direct.concat(transfer)
     plane.sort((n1,n2)=>{//排序 按照价格排序
-        return n2[0].price-n1[0].price;
+        return n1[0].price-n2[0].price;
     })
     //special_plane 最便宜的四个
     special_plane=plane.slice(0,Math.min(plane.length,4));
