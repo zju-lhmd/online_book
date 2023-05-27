@@ -14,7 +14,7 @@ const router= new Router()
 const app = new koa()
 
 // 连接数据库
-const sequelize = new Sequelize('online_book', 'root', '123456', {
+const sequelize = new Sequelize('online_book', 'root', 'qwe987', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -270,7 +270,7 @@ router.post("/submit_score", async (ctx, next) => {
     try {
         const body = ctx.request.body;
         console.log(ctx);
-        // const starRating = parseInt(body.value);
+        const starRating = parseInt(body.value);
 
         await Hotel.create({
             hotel_id: 1,
@@ -283,10 +283,10 @@ router.post("/submit_score", async (ctx, next) => {
             description: 'qw'
         });
 
-        ctx.body = 'success';
+        // ctx.body = 'success';
         await next();
     } catch (e) {
-        ctx.body = 'error';
+        // ctx.body = 'error';
         console.log('add error');
     }
 });
