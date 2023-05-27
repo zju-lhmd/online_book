@@ -73,7 +73,7 @@ R<template>
                                 <span class="left_item">酒店</span>
                             </template>
                             <el-menu-item-group index="5.1.1">
-                                <el-menu-item class="left_item" index="/component/admin_modify_hotel" @click="on_add_hotel">酒店发布</el-menu-item>
+                                <el-menu-item class="left_item" index="/component/admin_add_hotel" @click="on_add_hotel">酒店发布</el-menu-item>
                                 <el-menu-item class="left_item" index="/component/admin_search_hotel">酒店修改</el-menu-item>
                             </el-menu-item-group>
                         </el-sub-menu>
@@ -83,7 +83,7 @@ R<template>
                                 <span class="left_item">航班</span>
                             </template>
                             <el-menu-item-group index="5.2.1">
-                                <el-menu-item class="left_item" index="/component/admin_modify_plane" @click="on_add_plane">航班发布</el-menu-item>
+                                <el-menu-item class="left_item" index="/component/admin_add_plane" @click="on_add_plane">航班发布</el-menu-item>
                                 <el-menu-item class="left_item" index="/component/admin_search_plane">航班修改</el-menu-item>
                             </el-menu-item-group>
                         </el-sub-menu>
