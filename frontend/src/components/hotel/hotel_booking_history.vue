@@ -3,7 +3,7 @@
         <el-breadcrumb-item :to="{ path: '/component/hotel_booking_history' }">酒店历史查询</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 100px 100px 100px;border-right: 1px solid #dadfe6;">
+    <el-col style="margin: 50px 100px 100px 100px;">
         <li v-for="(order, key) in orders.slice((page - 1) * pageSize, page * pageSize)" :key="order.order_no"
             class="list-item-target">
             <el-row class="card-item-wrap">
@@ -32,7 +32,7 @@
                             <el-test v-else-if="order.state === 1">已入住</el-test>
                             <el-test v-else>已退订</el-test>
                         </el-col>
-
+                        
                         <el-col :span="5"
                             style="border:2px solid #dadfe6;font-size: large;display: flex;justify-content: center;align-items: center;">
                             <div>支付{{ Math.floor(order.price) }}元</div>
@@ -84,6 +84,7 @@ const handleCurrentChange = (val: number) => {
 
 //评分 value为评价值
 const submit_score = () => {
+    var val
     ElMessageBox.prompt('0-5分打分','评分', {
         confirmButtonText: '提交',
         cancelButtonText: '取消',
@@ -91,9 +92,8 @@ const submit_score = () => {
         .then(({ value }) => {
             ElMessage({
                 type: 'success',
-                message: `提交成功`,
+                message: `Your email is:${value}`,
             })
-            // console.log(value)
         })
         .catch(() => {
             ElMessage({

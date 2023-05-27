@@ -255,7 +255,7 @@ router.post('/submit_score', async (ctx, next) => {
             cancelButtonText: '取消',
         });
         const body = ctx.request.body
-        // console.log(body)
+        console.log(23121)
         await Hotel.create({
             hotel_id: 1,
             name: 'qw',
