@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 
-//state 订单状态 0已预订 1已入住 2已退单
+//state 订单状态 0已预订 1已入住 2已退单 has_score是否已经评分
 interface Hotel_booking_history{
     order_no:string,
     name:string,
@@ -55,4 +55,4 @@ order.push({
     has_score:true
 });
 
-export const orders=reactive(order);
+export let orders=reactive(order);

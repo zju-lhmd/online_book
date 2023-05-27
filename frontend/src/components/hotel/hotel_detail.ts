@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive , ref } from 'vue'
 
 
 interface Hotel_detail_data{
@@ -59,5 +59,8 @@ room.push(room3);
 export const rooms=reactive(room);
 
 let comment:string[]=[];
-comment=hotel_detail_data.comment.split("|||");
-export const comments=reactive(comment);
+export let comments=reactive(comment);
+export const comment_init=()=>{
+    comments=hotel_detail_data.comment.split("|||");
+    console.log(comment.length)
+}
