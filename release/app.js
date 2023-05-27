@@ -1,3 +1,7 @@
+// Author: Wang Weijie
+// 本文件为服务器端主文件，使用koa框架，使用sequelize框架连接数据库
+
+// koa框架使用的中间件
 const koa = require('koa')
 const path = require('path');
 const staticfile = require('koa-static')
@@ -6,18 +10,243 @@ const bodyParser = require('koa-body')
 const Sequelize = require('sequelize')
 const { prompt } = require('message-box');
 const { success, info } = require('message');
-
 const router= new Router()
 const app = new koa()
-// const sequelize = new Sequelize('library', 'root', 'qwe987', {
-//     host: 'localhost',
-//     dialect: 'mysql',
-//     pool: {
-//         max: 5,
-//         min: 0,
-//         idle: 30000
-//     }
-// });
+
+// 连接数据库
+const sequelize = new Sequelize('online_book', 'root', 'qwe987', {
+    host: 'localhost',
+    dialect: 'mysql',
+    pool: {
+        max: 5,
+        min: 0,
+        idle: 30000
+    }
+});
+
+// 定义数据库表
+const User = sequelize.define('user', {
+    user_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    username: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    password: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    email: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    phone: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    gender: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    birthday: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
+    address: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    credit: {
+        type: Sequelize.DECIMAL(8, 2),
+        allowNull: false,
+        defaultValue: 0.0
+    },
+    is_admin: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    }
+});
+
+const Hotel = sequelize.define('hotel', {
+    hotel_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    location: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    star_rating: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    score_total: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    score_count: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    discount: {
+        type: Sequelize.DECIMAL(3, 2),
+        allowNull: false,
+        defaultValue: 1.0
+    },
+    description: {
+        type: Sequelize.STRING(511),
+        allowNull: false
+    }
+});
+
+const Room = sequelize.define('room', {
+    hotel_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        references: {
+            model: 'hotel',
+            key: 'hotel_id'
+        }
+    },
+    type: {
+        type: Sequelize.STRING(63),
+        primaryKey: true,
+        allowNull: false
+    },
+    price: {
+        type: Sequelize.DECIMAL(8, 2),
+        allowNull: false
+    },
+    stock: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    }
+});
+
+const Plane = sequelize.define('plane', {
+    plane_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    company: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    start_time: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
+    end_time: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
+    start: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    end: {
+        type: Sequelize.STRING(64),
+        allowNull: false
+    },
+    price: {
+        type: Sequelize.DECIMAL(8, 2),
+        allowNull: false
+    },
+    discount: {
+        type: Sequelize.DECIMAL(3, 2),
+        allowNull: false,
+        defaultValue: 1.0
+    }
+});
+
+const BookingHistory = sequelize.define('booking_history', {
+    user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: -1,
+        references: {
+            model: 'user',
+            key: 'user_id'
+        }
+    },
+    state: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    hotel_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: -1,
+        references: {
+            model: 'hotel',
+            key: 'hotel_id'
+        }
+    },
+    type: {
+        type: Sequelize.STRING(63)
+    },
+    plane_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: -1,
+        references: {
+            model: 'plane',
+            key: 'plane_id'
+        }
+    }
+});
+
+const Comments = sequelize.define('comments', {
+    user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'user',
+            key: 'user_id'
+        }
+    },
+    comment_time: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
+    hotel_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: -1,
+        references: {
+            model: 'hotel',
+            key: 'hotel_id'
+        }
+    },
+    content: {
+        type: Sequelize.TEXT
+    }
+});
+
+module.exports = {
+    User,
+    Hotel,
+    Room,
+    Plane,
+    BookingHistory,
+    Comments
+};
+
 
 router.post('/submit_score', async (ctx) => {
     const { value } = prompt('0-5分打分', '评分', {
@@ -26,13 +255,14 @@ router.post('/submit_score', async (ctx) => {
     });
     if (value) {
         // success('提交成功');
-        console.log("try it");
+        console.log('success');
     } else {
         info('评价失败');
         ctx.body = '评价失败';
     }
 });
 
+// 静态文件使用
 app.use(bodyParser())
 app.use(router.routes())
 app.use(staticfile(path.join(__dirname, 'static')));
