@@ -46,18 +46,29 @@
                             <div v-else="">直飞与转机</div>
                         </el-button>
                     </el-row>
-
+                    {{ plane.length }}
                     <li v-for="plane_data in plane" class="list-item-target">
                         <el-row class="card-item-wrap">
                             <el-col class="left" :span="4">
-                                插入图片
+                                <div v-for="plane_company in plane_data" style="height: 50%;">
+                                    <!-- 插入图标 -->
+                                    <el-text style="font-size: large;color: black;">{{ plane_company.company }}</el-text>
+                                </div>
                             </el-col>
 
-                            <el-col class="left" :span="12">
-                                插入图片
+                            <el-col class="middle" :span="16">
+                                <div v-for="plane_ in plane_data" style="height: 50%;">
+                                    <!-- 插入图标 -->
+                                    <el-text style="font-size: large;color: black;">{{ plane_.start_location }}</el-text>
+                                    <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
+                                    <el-text style="font-size: large;color: black;">{{ plane_.end_location }}</el-text>
+                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{plane_.start_time.toLocaleDateString()}}  {{plane_.start_time.toLocaleTimeString()}}</el-text>
+                                    <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
+                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{plane_.end_time.toLocaleDateString()}}  {{plane_.end_time.toLocaleTimeString()}}</el-text>
+                                </div>
                             </el-col>
 
-                            <el-col class="left" :span="8">
+                            <el-col class="right" :span="4">
                                 插入图片
                             </el-col>
                         </el-row>
@@ -188,6 +199,21 @@ li {
     box-sizing: border-box;
     width: 100%;
     min-height: 100px;
+}
+
+.card-item-wrap .left {
+    padding-right: 16px;
+}
+
+.card-item-wrap .middle {
+    border-right: 1px solid #dadfe6;
+    padding-right: 16px;
+}
+
+.card-item-wrap .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 </style>
