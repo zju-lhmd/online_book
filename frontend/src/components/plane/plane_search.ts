@@ -8,9 +8,10 @@ interface Plane_search{
     
 }
 let today=new Date()
-export const plane_search = reactive<Plane_search>({
+let plane_search_:Plane_search={
     start_location:"",
     end_location:"",
     company:"",
     date: today
-})
+}
+export const plane_search = reactive(plane_search_)
