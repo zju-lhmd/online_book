@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/hotel_search' }">酒店查询</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/hotel_list' }">查询结果</el-breadcrumb-item>
     </el-breadcrumb>
@@ -14,13 +14,13 @@
                         <el-row style="margin: 20px 20px 0px 20px;" :gutter="10">
                             <el-col :span="12">
                                 <el-form-item label="目的地：">
-                                    <el-input v-model="hotel_search.location"></el-input>
+                                    <el-input v-model="hotel_search.location" style="caret-color: auto;"/>
                                 </el-form-item>
                             </el-col>
 
                             <el-col :span="12">
                                 <el-form-item label="酒店名称：">
-                                    <el-input v-model="hotel_search.hotel_name"></el-input>
+                                    <el-input v-model="hotel_search.hotel_name" style="caret-color: auto;"/>
                                 </el-form-item>
                             </el-col>
 
@@ -110,7 +110,8 @@
                     :total="total"
                     :style="{'justify-content':'center'}"
                     @current-change="handleCurrentChange"
-                    @size-change="handleSizeChange"/>
+                    @size-change="handleSizeChange"
+                    style="caret-color: auto;" />
                 </el-col>
 
 
@@ -288,6 +289,7 @@ const handleCurrentChange = (val:number) => {
 <style scoped>
 #Page {
     background-color: #f5f7fa;
+    caret-color: transparent;
 }
 .sort_button {
     font-size: large;

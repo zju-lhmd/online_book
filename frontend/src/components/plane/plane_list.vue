@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/plane_search' }">航班查询</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/plane_list' }">查询结果</el-breadcrumb-item>
     </el-breadcrumb>
@@ -12,14 +12,14 @@
                     <!-- 查询信息 -->
                     <el-row style="margin: 20px 20px 0px 20px;" :gutter="10">
                         <el-text style="font-size: large;margin-right: 10px;">始</el-text>
-                        <el-input v-model="plane_search.start_location" style="width: 15%;" />
+                        <el-input v-model="plane_search.start_location" style="width: 15%;caret-color: auto;" />
                         <el-button type="primary" circle style="margin: 0px 10px 0px 10px;" @click="swap_location">
                             <el-icon><Switch /></el-icon>
                         </el-button>
                         <el-text style="font-size: large;margin: 0px 10px 0px 10px;">终</el-text>
-                        <el-input v-model="plane_search.end_location" style="width: 15%;" />
+                        <el-input v-model="plane_search.end_location" style="width: 15%;caret-color: auto;" />
                         <el-text style="font-size: large;margin: 0px 10px 0px 10px;">航班公司</el-text>
-                        <el-input v-model="plane_search.company" style="width: 15%" />
+                        <el-input v-model="plane_search.company" style="width: 15%;caret-color: auto;" />
                         <el-text style="font-size: large;margin: 0px 10px 0px 10px;">航班日期</el-text>
                         <el-date-picker v-model="plane_search.date" type="date" :disabled-date="disabledDate"
                             placeholder="Pick a date" style="width: 15%" />
@@ -165,6 +165,9 @@ const swap_location = () => {
 const on_plane_Submit = () => {
 
     plane_init();//调用处理处理数据
+    page.value=1
+    total.value=plane.length
+
 }
 
 //航班日期必选 默认为今天 设置无法选中过去日期
@@ -235,6 +238,7 @@ const sort=(type:number)=>{
 <style scoped>
 #Page {
     background-color: #f5f7fa;
+    caret-color: transparent;
 }
 
 .sort_button {

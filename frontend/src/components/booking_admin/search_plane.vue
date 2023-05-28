@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/admin_search_plane' }">航班查询</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -10,15 +10,15 @@
     <div id="plane_search">
         <el-form :model="plane_search" label-width="100px" style="text-align: center;">
             <el-form-item label="出发地">
-                <el-input v-model="plane_search.start_location" />
+                <el-input v-model="plane_search.start_location" style="caret-color: auto;"/>
             </el-form-item>
 
             <el-form-item label="目的地">
-                <el-input v-model="plane_search.end_location" />
+                <el-input v-model="plane_search.end_location" style="caret-color: auto;"/>
             </el-form-item>
 
             <el-form-item label="航班公司">
-                <el-input v-model="plane_search.company" />
+                <el-input v-model="plane_search.company" style="caret-color: auto;"/>
             </el-form-item>
 
             <el-form-item label="小于时间点">
@@ -59,14 +59,14 @@ const on_search_plane_Submit=()=>{
     width: 300px;
     margin:auto;
     margin-top: 20px;
-    
+    caret-color: transparent;
 }
 #Title{
     width: 300px;
     font-size: 30px;
     margin:auto;
     margin-top: 50px;
-
+    caret-color: transparent;
 }
 </style>
       

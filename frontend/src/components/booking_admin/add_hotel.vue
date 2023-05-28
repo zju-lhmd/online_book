@@ -1,9 +1,9 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/admin_add_hotel' }">酒店发布</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 300px 100px 200px;">
+    <el-col style="margin: 50px 300px 100px 200px;caret-color: transparent;">
         <el-row class="Title" justify="center">
             酒店发布
         </el-row>
@@ -13,17 +13,17 @@
                     
                     <el-form-item>
                         <span slot="label" style="margin-right: 20px;font-size: large;">酒店名称</span>
-                        <el-input v-model="hotel_data.name"  style="width: 70%;"/>
+                        <el-input v-model="hotel_data.name"  style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
 
                     <el-form-item >
                         <span slot="label" style="margin-right: 20px;font-size: large;">酒店地址</span>
-                        <el-input v-model="hotel_data.location"  style="width: 70%;"/>
+                        <el-input v-model="hotel_data.location"  style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
 
                     <el-form-item>
                         <span slot="label" style="margin-right: 20px;font-size: large;">联系电话</span>
-                        <el-input v-model="hotel_data.location"  style="width: 70%;"/>
+                        <el-input v-model="hotel_data.phone"  style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
 
                     <el-form-item >
@@ -33,7 +33,7 @@
 
                     <el-form-item >
                         <span slot="label" style="margin-right: 20px;font-size: large;">总体折扣</span>
-                        <el-input v-model="hotel_data.discount" style="width: 70%;"/>
+                        <el-input v-model="hotel_data.discount" style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -42,7 +42,7 @@
                 <el-form :model="hotel_data" label-width="80px" style="text-align: center;">
                     <el-form-item >
                         <span slot="label" style="margin-right: 20px;font-size: large;">酒店描述</span>
-                        <el-input v-model="hotel_data.description" :rows="8" type="textarea" placeholder="输入酒店简述" />
+                        <el-input v-model="hotel_data.description" :rows="8" type="textarea" placeholder="输入酒店简述" style="caret-color: auto;" />
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -58,18 +58,18 @@
                 <el-form :model="room" label-width="80px" style="text-align: center;">
                     <el-form-item>
                         <span slot="label" style="margin-right: 20px;font-size: large;">房型</span>
-                        <el-input v-model="room.type"  style="width: 70%;"/>
+                        <el-input v-model="room.type"  style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
                     <el-form-item>
                         <span slot="label" style="margin-right: 20px;font-size: large;">价格</span>
-                        <el-input v-model="room.price"  style="width: 70%;"/>
+                        <el-input v-model="room.price"  style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
                     <el-form-item>
                         <span slot="label" style="margin-right: 20px;font-size: large;">余量</span>
-                        <el-input v-model="room.stock"  style="width: 70%;"/>
+                        <el-input v-model="room.stock"  style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" style="width: 20%;font-size: large;height: 100%;" @click="on_delete_room(index)">删除</el-button>
+                        <el-button type="primary" style="width: 20%;margin-left:30%;font-size: large;height: 100%;" @click="on_delete_room(index)">删除</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>

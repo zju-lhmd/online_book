@@ -1,11 +1,11 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/admin_search_hotel' }">酒店查询</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/admin_list_hotel' }">酒店列表</el-breadcrumb-item>
     </el-breadcrumb>
 
 
-    <el-col style="margin: 50px 300px 100px 200px;">
+    <el-col style="margin: 50px 300px 100px 200px;caret-color: transparent;">
         <el-row class="Title" justify="center">
             酒店信息查询
         </el-row>
@@ -26,7 +26,7 @@
                         <br/>
 
                         <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">酒店星级</span>
-                        <el-rate v-model="hotel.star" />
+                        <el-rate v-model="hotel.star" disabled/>
                         <br/>
                     </el-col>
                     <el-col :span="4"  style="display: flex;flex-direction: column;justify-content: center;align-items: center;">

@@ -76,7 +76,7 @@ rooms.push({
 })
 
 export const hotel_init=()=>{
-    hotel_data={
+    hotel={
         hotel_id:-1,
         name:"",
         location:"",
@@ -85,8 +85,8 @@ export const hotel_init=()=>{
         discount:1,
         description:""
     }
-    rooms=[]
+    Rooms=[]
 }
 export const modify_hotel=(index:number)=>{
-    hotel_data=hotel_datas[index]
+    hotel=hotel_datas[index]
 }

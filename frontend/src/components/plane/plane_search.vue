@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/plane_search' }">航班查询</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -16,18 +16,18 @@
             </el-row>
 
             <el-row>
-                <el-input v-model="plane_search.start_location" style="width: 40%;" />
+                <el-input v-model="plane_search.start_location" style="width: 40%;caret-color: auto;" />
                 <el-text style="width:4%"></el-text>
                 <el-button type="primary" circle style="width: 12%" @click="swap_location">
                     <el-icon><Switch /></el-icon>
                 </el-button>
                 <el-text style="width:4%"></el-text>
-                <el-input v-model="plane_search.end_location" style="width: 40%" />
+                <el-input v-model="plane_search.end_location" style="width: 40%;caret-color: auto;" />
             </el-row>
 
             <el-row style="margin-top: 20px;margin-bottom: 20px;">
                 <el-text style="font-size: large;margin-right: 20px;">航班公司</el-text>
-                <el-input v-model="plane_search.company" style="width: 60%" />
+                <el-input v-model="plane_search.company" style="width: 60%;caret-color: auto;" />
             </el-row>
             
             <el-row style="margin-top: 20px;margin-bottom: 20px;">
@@ -76,13 +76,13 @@ const disabledDate = (time: Date) => {
     width: 300px;
     margin:auto;
     margin-top: 20px;
-    
+    caret-color: transparent;
 }
 #Title{
     width: 300px;
     font-size: 30px;
     margin:auto;
     margin-top: 50px;
-
+    caret-color: transparent;
 }
 </style>

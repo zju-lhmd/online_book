@@ -1,9 +1,9 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/plane_booking_history' }">航班历史查询</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 100px 100px 100px;border-right: 1px solid #dadfe6;">
+    <el-col style="margin: 50px 100px 100px 100px;border-right: 1px solid #dadfe6;caret-color: transparent;">
         <li v-for="(order, key) in orders.slice((page - 1) * pageSize, page * pageSize)" :key="order.order_no"
             class="list-item-target">
             <el-row class="card-item-wrap">
@@ -55,7 +55,7 @@
             </el-row>
         </li>
         <el-pagination
-            style="padding: 10px 300px 10px 100px;"
+            style="padding: 10px 300px 10px 100px;caret-color: auto;"
             layout=" prev, pager, next,jumper"
             :current-page="page"
             :page-size="pageSize"

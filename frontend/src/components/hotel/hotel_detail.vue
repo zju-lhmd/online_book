@@ -1,11 +1,11 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/hotel_search' }">酒店查询</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/hotel_list' }">查询结果</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/hotel_detail' }">酒店详情</el-breadcrumb-item>
     </el-breadcrumb>
-
-    <el-col style="padding-top: 20px;padding-left: 20px;background-color: #f5f7fa;">
+    
+    <el-col style="padding-top: 20px;padding-left: 20px;background-color: #f5f7fa;caret-color: transparent;">
         <el-row>
 
             <el-col :span="8" style="border-right: 1px solid #dadfe6;">
@@ -67,7 +67,7 @@
         </el-row>
     </el-col>
     
-    <el-col style="padding-top: 20px;padding-left: 20px;background-color: #f5f7fa;">
+    <el-col style="padding-top: 20px;padding-left: 20px;background-color: #f5f7fa;caret-color: transparent;">
         <el-text style="font-size: 20px;color: black;">顾客评论</el-text>
         <!-- 评论显示 -->
         <li v-for="(comment, key) in comments.slice((page - 1) * pageSize, page * pageSize)" :key="comment"
@@ -75,7 +75,7 @@
             <el-text style="font-size: medium;color: black;">{{ comment }}</el-text>
         </li>
         <el-pagination layout=" prev, pager, next,jumper" :current-page="page" :page-size="pageSize" :total="total"
-            :style="{ 'justify-content': 'center' }" @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+            :style="{ 'justify-content': 'center' }" @current-change="handleCurrentChange" @size-change="handleSizeChange" style="caret-color: auto;" />
     </el-col>
 
 </template>

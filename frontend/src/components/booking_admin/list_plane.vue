@@ -1,10 +1,10 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/admin_search_plane' }">航班查询</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/admin_list_plane' }">航班列表</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 300px 100px 200px;">
+    <el-col style="margin: 50px 300px 100px 200px;caret-color: transparent;">
         <el-row class="Title" justify="center">
             航班信息
         </el-row>

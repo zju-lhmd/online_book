@@ -56,6 +56,7 @@ import { RouterLink, RouterView } from 'vue-router'
 	color: #2c3e50;
 	margin-top: 10px;
 	margin-bottom: 50px;
+  caret-color: transparent;
 }
 
 #Title{

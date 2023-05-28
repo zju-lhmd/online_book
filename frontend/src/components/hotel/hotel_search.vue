@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/hotel_search' }">酒店查询</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -9,21 +9,21 @@
     
     <div id="hotel_search">
         <el-form :model="hotel_search" label-width="80px" style="text-align: center;">
-            <el-form-item label="目的地">
-                <el-input v-model="hotel_search.location" />
+            <el-form-item label="目的地" style="caret-color:transparent;">
+                <el-input v-model="hotel_search.location" style="caret-color: auto;"/>
             </el-form-item>
 
-            <el-form-item label="酒店名称">
-                <el-input v-model="hotel_search.hotel_name" />
+            <el-form-item label="酒店名称" style="caret-color:transparent;">
+                <el-input v-model="hotel_search.hotel_name" style="caret-color: auto;"/>
             </el-form-item>
             
-            <el-form-item label="入住日期">
+            <el-form-item label="入住日期" style="caret-color:transparent;">
                 <el-col>
                     <el-date-picker v-model="hotel_search.date1" type="date" :disabled-date="disabledDate1" placeholder="Pick a date" style="width: 100%" />
                 </el-col>
             </el-form-item>
 
-            <el-form-item label="退房日期">
+            <el-form-item label="退房日期" style="caret-color:transparent;">
                 <el-col>
                     <el-date-picker v-model="hotel_search.date2" type="date" :disabled-date="disabledDate2" placeholder="Pick a date" style="width: 100%" />
                 </el-col>
@@ -79,6 +79,6 @@ const disabledDate2 = (time: Date) => {
     font-size: 30px;
     margin:auto;
     margin-top: 50px;
-
+    caret-color: transparent;
 }
 </style>

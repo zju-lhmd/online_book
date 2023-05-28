@@ -1,11 +1,11 @@
 <template>
-<el-breadcrumb separator=">" style="font-size: large;">
+<el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/admin_search_plane' }">航班查询</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/admin_list_plane' }">航班列表</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/component/admin_modify_plane' }">信息修改</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 300px 100px 200px;">
+    <el-col style="margin: 50px 300px 100px 200px;caret-color: transparent;">
         <el-row class="Title" justify="center">
             航班信息修改
         </el-row>
@@ -14,17 +14,17 @@
                 
                 <el-form-item>
                     <span slot="label" style="margin-right: 40px;font-size: 20px;">出发地</span>
-                    <el-input v-model="plane_data.start_location"  style="width: 50%;"/>
+                    <el-input v-model="plane_data.start_location"  style="width: 50%;caret-color: auto;"/>
                 </el-form-item>
 
                 <el-form-item>
                     <span slot="label" style="margin-right: 40px;font-size: 20px;">目的地</span>
-                    <el-input v-model="plane_data.end_location"  style="width: 50%;"/>
+                    <el-input v-model="plane_data.end_location"  style="width: 50%;caret-color: auto;"/>
                 </el-form-item>
 
                 <el-form-item>
                     <span slot="label" style="margin-right: 20px;font-size: 20px;">航班公司</span>
-                    <el-input v-model="plane_data.start_location"  style="width: 50%;"/>
+                    <el-input v-model="plane_data.company"  style="width: 50%;caret-color: auto;"/>
                 </el-form-item>
 
                 <el-form-item >
@@ -39,17 +39,17 @@
 
                 <el-form-item >
                     <span slot="label" style="margin-right: 60px;font-size: 20px;">价格</span>
-                    <el-input v-model="plane_data.price"  style="width: 50%;"/>
+                    <el-input v-model="plane_data.price"  style="width: 50%;caret-color: auto;"/>
                 </el-form-item>
 
                 <el-form-item >
                     <span slot="label" style="margin-right: 60px;font-size: 20px;">折扣</span>
-                    <el-input v-model="plane_data.discount"  style="width: 50%;"/>
+                    <el-input v-model="plane_data.discount"  style="width: 50%;caret-color: auto;"/>
                 </el-form-item>
 
                 <el-form-item >
                     <span slot="label" style="margin-right: 60px;font-size: 20px;">余量</span>
-                    <el-input v-model="plane_data.stock"  style="width: 50%;"/>
+                    <el-input v-model="plane_data.stock"  style="width: 50%;caret-color: auto;"/>
                 </el-form-item>
 
             </el-form>

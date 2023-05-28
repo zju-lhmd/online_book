@@ -29,7 +29,7 @@ let planes:Plane_data[]=[]
 //plane_data为修改或增加的酒店信息 plane_datas为查询返回的酒店信息
 //航班发布 -> plane_data 为空 修改后发布
 //航班修改 -> plane_datas -> 选中后显示plane_data 在基础上修改
-export let plane_data=reactive(plane)
+export const plane_data=reactive(plane)
 export let plane_datas=reactive(planes)
 
 // 测试
@@ -57,7 +57,7 @@ plane_datas.push({
 })
 
 export const plane_init=()=>{
-    plane_data={
+    plane={
         plane_id:-1,
         start_location:"",
         end_location:"",
@@ -71,5 +71,5 @@ export const plane_init=()=>{
 }
 
 export const modify_plane=(index:number)=>{
-    plane_data=plane_datas[index]
+    plane=plane_datas[index]
 }

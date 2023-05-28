@@ -1,9 +1,9 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/hotel_booking_history' }">酒店历史查询</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 100px 100px 100px;">
+    <el-col style="margin: 50px 100px 100px 100px;caret-color: transparent;">
         <li v-for="(order, key) in orders.slice((page - 1) * pageSize, page * pageSize)" :key="order.order_no"
             class="list-item-target">
             <el-row class="card-item-wrap">

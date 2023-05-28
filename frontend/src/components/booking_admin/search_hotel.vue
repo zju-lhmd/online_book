@@ -1,5 +1,5 @@
 <template>
-    <el-breadcrumb separator=">" style="font-size: large;">
+    <el-breadcrumb separator=">" style="font-size: large;caret-color: transparent;">
         <el-breadcrumb-item :to="{ path: '/component/admin_search_hotel' }">酒店查询</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -10,11 +10,11 @@
     <div id="hotel_search">
         <el-form :model="hotel_search" label-width="80px" style="text-align: center;">
             <el-form-item label="地点">
-                <el-input v-model="hotel_search.location" />
+                <el-input v-model="hotel_search.location" style="caret-color: auto;"/>
             </el-form-item>
 
             <el-form-item label="酒店名称">
-                <el-input v-model="hotel_search.name" />
+                <el-input v-model="hotel_search.name" style="caret-color: auto;"/>
             </el-form-item>
             
             <el-form-item>
@@ -52,13 +52,13 @@ const on_search_hotel_Submit = () => {
     width: 300px;
     margin:auto;
     margin-top: 20px;
-    
+    caret-color: transparent;
 }
 #Title{
     width: 300px;
     font-size: 30px;
     margin:auto;
     margin-top: 50px;
-
+    caret-color: transparent;
 }
 </style>

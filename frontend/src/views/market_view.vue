@@ -130,6 +130,7 @@ const on_add_plane=()=>{
 .left_item{
     font-size: large;
     padding-right : 0px;
+    caret-color: transparent;
 }
 
 
