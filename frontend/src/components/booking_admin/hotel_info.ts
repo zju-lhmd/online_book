@@ -8,7 +8,11 @@ interface Hotel_data{
     phone:string,
     star:number,
     discount:number,
-    description:string
+    rator_number:number,
+    overall_ratings:number,
+    score:number,
+    description:string,
+    comment:string,
 }
 
 //房型信息
@@ -26,7 +30,11 @@ let hotel:Hotel_data={
     phone:"",
     star:0,
     discount:1,
-    description:""
+    description:"",
+    comment:"",
+    score:1,
+    rator_number:1,
+    overall_ratings:1,
 }
 let hotels:Hotel_data[]=[]
 //hotel_data为修改或增加的酒店信息 hotel_datas为查询返回的酒店信息
@@ -43,7 +51,11 @@ hotels.push({
     phone:"1231231",
     star:3,
     discount:1,
-    description:"12412431"
+    description:"12412431",
+    comment:"",
+    score:1,
+    rator_number:1,
+    overall_ratings:1,
 })
 hotels.push({
     hotel_id:-1,
@@ -52,7 +64,11 @@ hotels.push({
     phone:"123123134",
     star:5,
     discount:1,
-    description:"1244141241412342342312431"
+    description:"1244141241412342342312431",
+    comment:"",
+    score:1,
+    rator_number:1,
+    overall_ratings:1,
 })
 hotels.push({
     hotel_id:-1,
@@ -61,7 +77,11 @@ hotels.push({
     phone:"1231231",
     star:4,
     discount:1,
-    description:"1241243asdkdasfisdljf1"
+    description:"1241243asdkdasfisdljf1",
+    comment:"",
+    score:1,
+    rator_number:1,
+    overall_ratings:1,
 })
 
 //房型信息
@@ -75,6 +95,9 @@ rooms.push({
     stock:20,
 })
 
+export const hotel_list_init=(data:Hotel_data[])=>{
+    hotels=data
+}
 export const hotel_init=()=>{
     hotel={
         hotel_id:-1,
@@ -83,10 +106,17 @@ export const hotel_init=()=>{
         phone:"",
         star:0,
         discount:1,
-        description:""
+        description:"",
+        comment:"",
+        score:1,
+        rator_number:1,
+        overall_ratings:1,
     }
     Rooms=[]
 }
 export const modify_hotel=(index:number)=>{
     hotel=hotel_datas[index]
+}
+export const hotel_room_init=(data:Room[])=>{
+    Rooms=data
 }

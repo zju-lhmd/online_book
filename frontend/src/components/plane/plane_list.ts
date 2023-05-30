@@ -11,6 +11,7 @@ export const plane_sort = reactive({
 // 从后端获取数据 
 // 需要根据出发地获取一次航班 从目的地获取一次航班
 interface plane_data{
+    plane_id:number,
     start_location:string,
     end_location:string,
     company:string,
@@ -46,26 +47,27 @@ let date3:Date=new Date;
 date3.setTime(today.getTime()+1000*3600*3);
 let date4:Date=new Date;
 date4.setTime(today.getTime()+1000*3600*4);
-plane_search_data.push({
+plane_search_data.push({plane_id:1,
     start_location:"上海",end_location:"杭州",company:"南方航空",
     start_time:today,end_time:date1,price:100,discount:1,stock:30,
 })
-plane_search_data.push({
+plane_search_data.push({plane_id:1,
     start_location:"上海",end_location:"温州",company:"南方航空",
     start_time:today,end_time:date4,price:400,discount:0.5,stock:10,
 })
-plane_search_data.push({
+plane_search_data.push({plane_id:1,
     start_location:"上海",end_location:"杭州",company:"东方航空",
     start_time:today,end_time:date2,price:150,discount:1,stock:50,
 })
-plane_search_data.push({
+plane_search_data.push({plane_id:1,
     start_location:"杭州",end_location:"温州",company:"东方航空",
     start_time:date3,end_time:date4,price:150,discount:1,stock:50,
 })
 
 
 //处理函数
-export const plane_init=()=>{
+export const plane_init=(data:plane_data[])=>{
+    plane_search_data_=data
     //将航班分类 直达放入direct 出发地相同放入start 目的地相同放入destination
     direct=[]
     start=[]

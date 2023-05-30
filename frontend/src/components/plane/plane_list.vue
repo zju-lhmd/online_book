@@ -23,14 +23,15 @@
                         <el-text style="font-size: large;margin: 0px 10px 0px 10px;">航班日期</el-text>
                         <el-date-picker v-model="plane_search.date" type="date" :disabled-date="disabledDate"
                             placeholder="Pick a date" style="width: 15%" />
-                        <RouterLink to=/component/plane_list>
-                            <el-button type="primary" style="margin-left: 20px;width: 60px;"
-                                @click="on_plane_Submit">查询</el-button>
-                        </RouterLink>
                     </el-row>
 
                     <!-- 航班排序按钮 -->
                     <el-row type="flex" justify="center" style="margin: 20px 0px 20px 0px;">
+                        <RouterLink to=/component/plane_list>
+                            <el-button type="primary" style="margin-left: 20px;width: 60px;"
+                                @click="on_plane_Submit">查询</el-button>
+                        </RouterLink>
+
                         <el-button type="primary" plain class="sort_button" @click="on_price_change" >
                             <div v-if="plane_sort.price_sort">价格(由高到低)</div>
                             <div v-else="">价格(由低到高)</div>
@@ -61,13 +62,13 @@
                                     
                                     <!-- 插入图标 -->
                                     <el-text style="font-size: large;color: black;">{{ plane_.start_location }}</el-text>
-                                    <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
+                                    <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 0px;"><Right /></el-icon>
                                     <el-text style="font-size: large;color: black;">{{ plane_.end_location }}</el-text>
-                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{plane_.start_time.toLocaleDateString()}}  {{plane_.start_time.toLocaleTimeString()}}</el-text>
-                                    <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
-                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{plane_.end_time.toLocaleDateString()}}  {{plane_.end_time.toLocaleTimeString()}}</el-text>
+                                    <el-text style="font-size: large;color: black;margin: 0px 5px 0px 0px;">{{plane_.start_time.toLocaleDateString()}}  {{plane_.start_time.toLocaleTimeString()}}</el-text>
+                                    <el-icon style="font-size: large;color: black;margin: 0px 5px 0px 0px;"><Right /></el-icon>
+                                    <el-text style="font-size: large;color: black;margin: 0px 5px 0px 0px;">{{plane_.end_time.toLocaleDateString()}}  {{plane_.end_time.toLocaleTimeString()}}</el-text>
                                 </div>
-                                <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">机票剩余量</el-text>
+                                <el-text style="font-size: large;color: black;">机票剩余量</el-text>
                                 <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{ plane_data[0].stock }}</el-text>
                             </el-col>
 
@@ -96,29 +97,27 @@
                     </el-test>
                     <li v-for="plane_data in special_plane" class="list-item-target">
                         <el-row class="card-item-wrap">
-                            <el-col class="left" :span="3">
-                                <div v-for="plane_company in plane_data" style="height: 50%;">
-                                    <!-- 插入图标 -->
-                                    <el-text style="color: black;">{{ plane_company.company }}</el-text>
-                                </div>
-                            </el-col>
-
-                            <el-col class="middle" :span="16">
+                            <el-col class="middle" :span="18">
                                 <div v-for="plane_ in plane_data" style="height: 40%;">
                                     <!-- 插入图标 -->
-                                    <el-text style="font-size: large;color: black;">{{ plane_.start_location }}</el-text>
+                                    <el-text style="font-size: large;color: black;">{{ plane_.company }}</el-text>
+                                    <el-text style="font-size: large;color: black;margin: 0px 5px 0px 5px;">{{ plane_.start_location }}</el-text>
                                     <el-icon style="font-size: large;color: black;margin: 0px 5px 0px 5px;"><Right /></el-icon>
                                     <el-text style="font-size: large;color: black;">{{ plane_.end_location }}</el-text>
                                     <br/>
-                                    <el-text style="font-size: large;color: black;margin: 0px 5px 0px 5px;">{{plane_.start_time.toLocaleTimeString()}}</el-text>
-                                    <el-icon style="font-size: large;color: black;margin: 0px 10px 0px 10px;"><Right /></el-icon>
-                                    <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{plane_.end_time.toLocaleTimeString()}}</el-text>
+                                    <el-text style="font-size: large;color: black;">{{plane_.start_time.toLocaleTimeString()}}</el-text>
+                                    <el-icon style="font-size: large;color: black;margin: 0px 5px 0px 0px;"><Right /></el-icon>
+                                    <el-text style="font-size: large;color: black;margin: 0px 5px 0px 0px;">{{plane_.end_time.toLocaleTimeString()}}</el-text>
+                                    <br/>
                                 </div>
-                                <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">机票剩余量</el-text>
-                                <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{ plane_data[0].stock }}</el-text>
+                                <br/>
+                                <div style="height: 20%;">
+                                    <el-text style="font-size: large;color: black;">机票剩余量</el-text>
+                                    <el-text style="font-size: large;color: black;margin: 0px 0px 0px 10px;">{{ plane_data[0].stock }}</el-text>
+                                </div>
                             </el-col>
 
-                            <el-col class="right" :span="5">
+                            <el-col class="right" :span="6">
                                 <el-space direction="vertical">
                                     <el-text style="font-size: large;color: black;">总价</el-text>
                                     <el-text style="font-size: large;color: black;">{{ plane_data[0].price }}</el-text>
@@ -140,6 +139,7 @@ import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { plane_search } from "@/components/plane/plane_search"
 import { plane, plane_sort , special_plane, plane_init , direct_change } from "@/components/plane/plane_list"
+import axios from 'axios'
 
 const page = ref(1)
 const total = ref(plane.length)
@@ -163,11 +163,11 @@ const swap_location = () => {
 
 //与后端交互接收搜索结果 传输到plane_search_data中
 const on_plane_Submit = () => {
-
-    plane_init();//调用处理处理数据
+    axios.post('http://localhost:3400/plane_search',plane_search).then(function(response){
+        plane_init(response.data);
+    })
     page.value=1
     total.value=plane.length
-
 }
 
 //航班日期必选 默认为今天 设置无法选中过去日期

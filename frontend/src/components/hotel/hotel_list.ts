@@ -13,7 +13,8 @@ export const hotel_sort = reactive({
     score_sort:true
 })
 
-interface Hotel_data{
+export interface Hotel_data{
+    hotel_id:number,
     name:string,
     location:string,
     phone:string,
@@ -32,6 +33,7 @@ let special_datas:Hotel_data[]=[];
 //测试用
 for(var i:number=1;i<=100;i++){
     let da:Hotel_data={
+        hotel_id:1,
         name:i.toString(),
         location:"杭州市三墩镇xxx路",
         phone:"12345678901",
@@ -48,7 +50,8 @@ for(var i:number=1;i<=100;i++){
 export let datas=reactive(data);
 export let special_data=reactive(special_datas);
 
-export const data_init=()=>{
+export const data_init=(hotel:Hotel_data[])=>{
+    data=hotel
     data.sort((n1,n2)=>{
         if(n1.price_min!=n2.price_min)
             return n1.price_min-n2.price_min;
@@ -61,7 +64,7 @@ export const data_init=()=>{
             return n1.price_min-n2.price_min;
         else return n1.discount-n2.discount;
     })
-    
+    special_data=[]
     for(var i:number=0;i<4;i++)
         special_data.push(data[i]);
 }

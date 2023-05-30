@@ -96,7 +96,7 @@
                                     </div>
                                     <el-text>预估价格：{{ Math.floor(hotel_data.price_min * hotel_search.time * hotel_data.discount) }}元</el-text>
                                     <RouterLink to=/component/hotel_detail>
-                                        <el-button type="primary" style="width: 120px;" @click="on_hotel_detail">查看详情</el-button>
+                                        <el-button type="primary" style="width: 120px;" @click="on_hotel_detail(hotel_data)">查看详情</el-button>
                                     </RouterLink>
                                 </el-space>
                             </el-col>
@@ -135,9 +135,9 @@
                                 <el-text>联系电话{{ hotel_data.phone }}</el-text>
                                 <br/><br/>
                                 <el-text>特价：{{ Math.floor(hotel_data.price_min * hotel_search.time * hotel_data.discount) }}元</el-text>
-                                    <RouterLink to=/component/hotel_detail>
-                                        <el-button type="primary" style="width: 120px;" @click="on_hotel_detail">查看详情</el-button>
-                                    </RouterLink>
+                                <RouterLink to=/component/hotel_detail>
+                                    <el-button type="primary" style="width: 80px;" @click="on_hotel_detail(hotel_data)">查看详情</el-button>
+                                </RouterLink>
                             </el-col>
                         </el-row>
                     </li>
@@ -154,25 +154,31 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { hotel_search } from "@/components/hotel/hotel_search"
-import { hotel_sort, datas , special_data , data_init} from "@/components/hotel/hotel_list"
-import { hotel_detail_data , rooms ,comments, comment_init} from "@/components/hotel/hotel_detail"
+import { hotel_sort, datas , special_data , data_init , type Hotel_data} from "@/components/hotel/hotel_list"
+import { hotel_detail_init , type Hotel_detail_data} from "@/components/hotel/hotel_detail"
+import axios from 'axios'
 
 const page = ref(1)
 const total = ref(datas.length)
 const pageSize = ref(4)
 
-//还待补充
+
 const on_hotel_Submit = () => {
     let nd:number =86400000;// 1000*24*60*60一天的毫秒数
     let time:number =(hotel_search.date2.getTime()-hotel_search.date1.getTime())/1000/24/60/60;
     hotel_search.time=Math.ceil(time);//计算入住天数
-    console.log(hotel_search.time)
-    data_init();
+    axios.post('http://localhost:3400/hotel_search',hotel_search).then(function(response){
+        data_init(response.data);
+    })
 }
 
-const on_hotel_detail=(hotel_data)=>{//hotel_data是点击查看详情时当前的酒店信息 类型为Hotel_data 定义在hotel_list里
-    
-    comment_init();
+const on_hotel_detail=(hotel_data:Hotel_data)=>{//hotel_data是点击查看详情时当前的酒店信息 类型为Hotel_data 定义在hotel_list里
+    var hotel_id={
+        hotel:hotel_data.hotel_id
+    }
+    axios.post('http://localhost:3400/get_hotel_detail',hotel_id).then(function(response){
+        hotel_detail_init(response.data.hotel_detail,response.data.rooms)
+    })
 }
 
 //入住日期必选 默认为今天 设置无法选中过去日期

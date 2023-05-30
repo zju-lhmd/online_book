@@ -1,75 +1,88 @@
-<template >
-  <header id="Header">
-    <el-row type="flex" justify="center">
-			<el-col :xl="21" :lg="23" :md="25" :sm="27" :xs="27">
-				
-        <div style="padding-top: 15px">
-          <el-row style="margin-right:10px">
-						
-            <el-col :span="6">
-							<!-- <img :src=" " style="height: 55px" /> 插入图标-->
-						</el-col>
-						
-            <el-col id="Title" :span="18" style="padding-top: 20px; text-align: left">
-              在线支付系统
-            </el-col>
-
-						<el-col :span="18" style="padding-top: 20px; text-align: right;">
-
-              <!-- 商品返回界面，点击进入模块三 商品购买搜索界面，酒店、航班订购需先点击这个 -->
-              <RouterLink to="/market_view">
-                <el-icon :size="30">
-                  <ShoppingCart style="width: 1em; height: 1em; margin-right: 8px"/>
-                </el-icon>
-              </RouterLink>
-
-              <!-- 用户登录界面进入按钮，点击进入模块一个人用户界面 -->
-              <RouterLink to="/user_index">
-                <el-icon :size="30">
-                  <User style="width: 1em; height: 1em; margin-right: 8px"/>
-                </el-icon>
-              </RouterLink>
-						</el-col>
-
-					</el-row>
+<template>
+  <!-- app.vue作为根路由出口，宽高为整个屏幕 -->
+  <div id="app">
+    <el-affix :offset="0">
+      <el-menu :default-active="activeIndex" class="el-menu-demo upper-menu" mode="horizontal" @select="handleSelect"
+        :router=true>
+        <el-menu-item>
+          <div class="title-icon">
+            <el-image style="width: 65px; height: 65px" :src="paymentIcon" />
+            <span class="title-text">在线支付系统</span>
+          </div>
+        </el-menu-item>
+        <el-menu-item index="/Market">Marketing Center</el-menu-item>
+        <el-menu-item index="/Orders">Order Management</el-menu-item>
+        <el-menu-item index="4">More</el-menu-item>
+        <div class="user-info">
+          <el-menu-item index="5">
+            <el-icon style="width: 20px;">
+              <Bell />
+            </el-icon>
+          </el-menu-item>
+          <el-menu-item index="6" v-if="ifLogin">
+            <div class="user-info-bar">
+              <div>{{ "您好，" + userName }}</div>
+              <el-avatar style="margin-left: 20px;"> user </el-avatar>
+            </div>
+          </el-menu-item>
+          <el-menu-item v-else index="7">
+            <el-button type="primary" plain>Log in</el-button>
+          </el-menu-item>
         </div>
-
-        <el-divider id="header_divider"></el-divider>
-
-      </el-col>
-    </el-row>
-  </header>
-  <RouterView />
+      </el-menu>
+    </el-affix>
+    <RouterView />
+  </div>
 </template>
 
 <script setup lang="ts">
+import { ref, type Ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import paymentIcon from './assets/payment-icon.svg'
+import {
+  Bell
+} from '@element-plus/icons-vue'
+const activeIndex: Ref<string> = ref('/Market');
+const userName: Ref<string> = ref('test');
+const ifLogin: Ref<boolean> = ref(true);
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(keyPath);
+}
 </script>
 
 <style scoped>
-
-#Header {
-	font-family: "Avenir", Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 10px;
-	margin-bottom: 50px;
-  caret-color: transparent;
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-#Title{
-  position: absolute;
-  font-size: 18px;
+.upper-menu {
+  height: 90px;
 }
 
-#header_divider{
-  display: block;
-  height: 1px;
-  width: 100%;
-  margin: 24px 0;
-  background-color: #dcdfe6;
-  position: relative;
+.title-icon {
+  margin-left: 10px;
+  margin-right: 55px;
+  display: flex;
+}
+
+.title-text {
+  line-height: 65px;
+  margin-left: 13px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.user-info {
+  margin-left: auto;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.user-info-bar {
+  display: flex;
+  align-items: center;
 }
 </style>

@@ -56,6 +56,9 @@ plane_datas.push({
     stock:0,
 })
 
+export const plane_list_init=(data:Plane_data[])=>{
+    planes=data
+}
 export const plane_init=()=>{
     plane={
         plane_id:-1,

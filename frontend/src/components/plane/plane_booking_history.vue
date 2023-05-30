@@ -3,7 +3,7 @@
         <el-breadcrumb-item :to="{ path: '/component/plane_booking_history' }">航班历史查询</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 100px 100px 100px;border-right: 1px solid #dadfe6;caret-color: transparent;">
+    <el-col style="margin: 50px 0px 0px 0px;caret-color: transparent;">
         <li v-for="(order, key) in orders.slice((page - 1) * pageSize, page * pageSize)" :key="order.order_no"
             class="list-item-target">
             <el-row class="card-item-wrap">
@@ -17,7 +17,7 @@
                         </el-col>
                     </el-row>
                     <el-row style="height: 65%;">
-                        <el-col :span="14" style="border:2px solid #dadfe6;font-size: large;">
+                        <el-col :span="16" style="border:2px solid #dadfe6;font-size: large;">
                             <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.company1 }}</el-text>
                             <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.start_location1 }}</el-text>
                             <el-icon style="color: black;margin: 0px 5px 0px 5px;"><Right /></el-icon>
@@ -38,14 +38,14 @@
                             
                         </el-col>
 
-                        <el-col :span="5"
+                        <el-col :span="4"
                             style="border:2px solid #dadfe6;font-size: large;display: flex;justify-content: center;align-items: center;">
                             <div v-if="order.state === 0">已预订</div>
                             <el-test v-else-if="order.state === 1">已消费</el-test>
                             <el-test v-else>已退订</el-test>
                         </el-col>
 
-                        <el-col :span="5"
+                        <el-col :span="4"
                             style="border:2px solid #dadfe6;font-size: large;display: flex;justify-content: center;align-items: center;">
                             <div>支付{{ Math.floor(order.price) }}元</div>
                         </el-col>
@@ -93,7 +93,7 @@ li {
 }
 
 .card-item-wrap {
-    padding: 10px 300px 10px 100px;
+    padding: 10px 100px 10px 100px;
     background: #fff;
     display: flex;
     box-sizing: border-box;

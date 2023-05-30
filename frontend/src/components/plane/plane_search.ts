@@ -5,7 +5,6 @@ interface Plane_search{
     end_location: string,
     company:string,
     date: Date,
-    
 }
 let today=new Date()
 let plane_search_:Plane_search={

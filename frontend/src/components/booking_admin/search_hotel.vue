@@ -32,17 +32,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { hotel_datas } from "@/components/booking_admin/hotel_info"
+import { hotel_list_init } from "@/components/booking_admin/hotel_info"
 import router from '@/router'
+import axios from 'axios'
 
 let hotel_search=ref({
     location:"",
-    name:""
+    name:"",
+    date1:new Date,
+    date2:new Date
 })
 
 //与后端交互接收搜索结果
 const on_search_hotel_Submit = () => {
-    
+    axios.post('http://localhost:3400/hotel_search',hotel_search).then(function(response){
+        hotel_list_init(response.data)
+    })
 }
 
 </script>

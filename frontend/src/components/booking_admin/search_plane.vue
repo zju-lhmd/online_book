@@ -40,6 +40,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { plane_list_init } from '@/components/booking_admin/plane_info'
+import axios from 'axios';
+
 let plane_search=ref({
     start_location:"",
     end_location:"",
@@ -48,7 +51,9 @@ let plane_search=ref({
 })
 
 const on_search_plane_Submit=()=>{
-
+    axios.post('http://localhost:3400/plane_search',plane_search).then(function(response){
+        plane_list_init(response.data);
+    })
 }
 
 </script>

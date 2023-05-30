@@ -1,7 +1,8 @@
 import { reactive , ref } from 'vue'
 
 
-interface Hotel_detail_data{
+export interface Hotel_detail_data{
+    hotel_id:number,
     name:string,
     location:string,
     phone:string,
@@ -15,7 +16,8 @@ interface Hotel_detail_data{
 }
 //查看详情获得当前酒店的所有信息
 //测试用
-export const hotel_detail_data = reactive<Hotel_detail_data>({
+let hotel_detail:Hotel_detail_data={
+    hotel_id:1,
     name:"asdasda",
     location:"asdads",
     phone:"asdsad",
@@ -26,8 +28,8 @@ export const hotel_detail_data = reactive<Hotel_detail_data>({
     score:4.5,
     description:"dagadfgafga",
     comment:"adfgafgadfga|||asfe|||asfsdf|||wefwef3w|||qwoejqwopwrjq|||zxkmckzlxmxc|||asdojaspo",
-})
-
+};
+export const hotel_detail_data = ref(hotel_detail)
 interface Room{
     type:string,
     price:number,
@@ -60,7 +62,9 @@ export const rooms=reactive(room);
 
 let comment:string[]=[];
 export let comments=reactive(comment);
-export const comment_init=()=>{
-    comments=hotel_detail_data.comment.split("|||");
+export const hotel_detail_init=(detail:Hotel_detail_data,Rooms:Room[])=>{
+    hotel_detail=detail
+    room=Rooms
+    comment=hotel_detail.comment.split("|||");
     console.log(comment.length)
 }

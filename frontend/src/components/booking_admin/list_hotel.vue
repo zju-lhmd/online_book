@@ -5,7 +5,7 @@
     </el-breadcrumb>
 
 
-    <el-col style="margin: 50px 300px 100px 200px;caret-color: transparent;">
+    <el-col style="margin: 50px 150px 100px 150px;caret-color: transparent;">
         <el-row class="Title" justify="center">
             酒店信息查询
         </el-row>
@@ -44,15 +44,28 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { hotel_datas , modify_hotel , rooms } from "@/components/booking_admin/hotel_info"
+import { hotel_datas , modify_hotel , hotel_room_init } from "@/components/booking_admin/hotel_info"
+import axios from 'axios';
 
 const on_modify_hotel=(index:number)=>{
     modify_hotel(index)
+    var hotel_id={
+        hotel:hotel_datas[index].hotel_id
+    }
+    axios.post('http://localhost:3400/get_hotel_detail',hotel_id).then(function(response){
+        hotel_room_init(response.data.rooms)
+    })
     //从后端获取改酒店信息和房型 放入rooms
 }
 
 const on_delete_hotel_Submit=(index:number)=>{
     var hotel=hotel_datas[index]//传回后端删除
+    var hotel_id={
+        hotel_id:hotel.hotel_id
+    }
+    axios.post('http://localhost:3400/delete_hotel',hotel_id).then(function(response){
+        
+    })
     hotel_datas.splice(index,1)
 }
 

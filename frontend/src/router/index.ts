@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AppVue from '@/App.vue'
 import user_indexVue from '@/components/user_index/user_index.vue'
-import market_viewVue from '@/views/market_view.vue'
+import Market from '@/views/Market/market_view.vue'
 import marketVue from '@/components/market/market.vue'
 import market_detailVue from '@/components/market/market_detail.vue'
 import hotel_searchVue from '@/components/hotel/hotel_search.vue'
@@ -21,6 +21,8 @@ import booking_admin_add_planeVue from '@/components/booking_admin/add_plane.vue
 import booking_admin_modify_planeVue from '@/components/booking_admin/modify_plane.vue'
 import seller_add_goodVue from '@/components/seller/add_good.vue'
 import seller_modify_goodVue from '@/components/seller/modify_good.vue'
+
+import Orders from '@/views/Orders/index.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [//在这里配置路由
@@ -31,9 +33,9 @@ const router = createRouter({
   },
   
   {// 模块三商品、酒店、航班界面
-    path: '/market_view',
-    name: 'market_view',
-    component: market_viewVue,
+    path: '/Market',
+    name: 'Market-index',
+    component: Market,
     children:[
       {//商品搜索显示界面
       path:'/component/market',name:'component_market',component:marketVue},
@@ -75,7 +77,11 @@ const router = createRouter({
         path:'/component/admin_modify_plane',name:'component_admin_modify_plane',component:booking_admin_modify_planeVue}
     ]
   },
-  ]
+  {
+    path: '/Orders',
+    name: 'Orders-index',
+    component: Orders,
+  }]
 })
 
 export default router

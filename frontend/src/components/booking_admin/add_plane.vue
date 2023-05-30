@@ -3,7 +3,7 @@
         <el-breadcrumb-item :to="{ path: '/component/admin_add_plane' }">航班发布</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 300px 100px 200px;caret-color: transparent;">
+    <el-col style="margin: 50px 200px 100px 200px;caret-color: transparent;">
         <el-row class="Title" justify="center">
             航班发布
         </el-row>
@@ -62,10 +62,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { plane_data } from "@/components/booking_admin/plane_info"
+import { plane_data , plane_init } from "@/components/booking_admin/plane_info"
+import axios from 'axios';
 
 const on_add_plane_Submit=()=>{
-
+    axios.post('http://localhost:3400/add_plane',plane_data).then(function(response){
+        plane_init()
+    })
 }
 
 </script>
@@ -83,7 +86,7 @@ const on_add_plane_Submit=()=>{
 
 .card-item-wrap {
     border: 2px solid #dadfe6;
-    padding: 30px 50px 20px 250px;
+    padding: 30px 0px 20px 150px;
     background: #f5f7fa;
     display: flex;
     box-sizing: border-box;

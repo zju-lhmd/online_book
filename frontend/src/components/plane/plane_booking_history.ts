@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 
 //state 订单状态 0已预订 1已入住 2已退单 has_score是否已经评分
-interface Plane_booking_data{
+export interface Plane_booking_data{
     order_no:string,
     start_location1:string,
     start_location2:string,
@@ -54,3 +54,6 @@ order.push({
 });
 
 export let orders=reactive(order);
+export const plane_order_Init=(data:Plane_booking_data[])=>{
+    order=data
+}

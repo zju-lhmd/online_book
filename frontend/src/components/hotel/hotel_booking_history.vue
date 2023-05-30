@@ -3,12 +3,12 @@
         <el-breadcrumb-item :to="{ path: '/component/hotel_booking_history' }">酒店历史查询</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 100px 100px 100px;caret-color: transparent;">
+    <el-col style="margin: 50px 0px 100px 0px;caret-color: transparent;">
         <li v-for="(order, key) in orders.slice((page - 1) * pageSize, page * pageSize)" :key="order.order_no"
             class="list-item-target">
             <el-row class="card-item-wrap">
-                <el-col class="left" :span="20">
-                    <el-row style="height: 35%;">
+                <el-col class="left" :span="24">
+                    <el-row style="height: 15%;">
                         <el-col :span="8" style="border:2px solid #dadfe6;font-size: 20px;">
                             <div style="text-align: center;">订单号</div>
                         </el-col>
@@ -16,7 +16,7 @@
                             <div style="text-align: center;">{{ order.order_no }}</div>
                         </el-col>
                     </el-row>
-                    <el-row style="height: 65%;">
+                    <el-row style="height: 35%;">
                         <el-col :span="14" style="border:2px solid #dadfe6;font-size: large;">
                             <el-text>{{ order.name }}</el-text>
                             <el-text style="margin-left: 20px;">{{ order.type }}</el-text>
@@ -38,17 +38,18 @@
                             <div>支付{{ Math.floor(order.price) }}元</div>
                         </el-col>
                     </el-row>
-                </el-col>
-
-                <!-- 评分评价按钮 -->
-                <el-col class="right" :span="4" style="display: flex;justify-content: center;align-items: center;">
-                    <div v-if=order.has_score>
-                        <el-button text @click="submit_score" disabled>评分</el-button>
-                    </div>
-                    <div v-else="">
-                        <el-button text @click="submit_score">评分</el-button>
-                    </div>
-                    <el-button text @click="submit_comment">评价</el-button>
+                    <el-row style="height: 50%;">
+                        <el-col :span="19" style="border:2px solid #dadfe6;font-size: large;display: flex;flex-direction:column ;justify-content: center;align-items: center;">
+                            <el-input v-model="order.comment" :rows="2" type="textarea" placeholder="请输入评价" style="width: 80%;"/>
+                            <el-button type="primary" style="width: 30%;" @click="comment_submit(order)">评价</el-button>
+                        </el-col>
+                        
+                        <el-col :span="5" style="border:2px solid #dadfe6;font-size: large;display: flex;flex-direction:column ;justify-content: center;align-items: center;">
+                            <el-input v-model="order.score" style="width: 60%;margin-bottom: 10%;"></el-input>
+                            <el-button v-if="order.has_score" type="primary" disabled style="width: 60%;" @click="score_submit">已评分</el-button>
+                            <el-button v-else="" type="primary" style="width: 60%;" @click="score_submit(order)">评分</el-button>
+                        </el-col>
+                    </el-row>
                 </el-col>
             </el-row>
         </li>
@@ -68,12 +69,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { orders } from "@/components/hotel/hotel_booking_history"
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { orders , type Hotel_booking_history } from "@/components/hotel/hotel_booking_history"
 import axios from "axios";
 const page = ref(1)
 const total = ref(orders.length)
 const pageSize = ref(4)
+
 //分页函数
 const handleSizeChange = (val: number) => {
     pageSize.value = val;
@@ -83,69 +84,27 @@ const handleCurrentChange = (val: number) => {
     page.value = val;
 }
 
-//评分 value为评价值
-const submit_score = () => {
-    ElMessageBox.prompt('0-5分打分', '评分', {
-        confirmButtonText: '提交',
-        cancelButtonText: '取消',
+const comment_submit=(order:Hotel_booking_history)=>{
+    var data={
+        user:order.user,
+        comment:order.comment
+    }
+    axios.post('http://localhost:3400/comment_score',data).then(function(response){
+        
     })
-            .then(({ value }) => {
-                if (isNaN(value) || value < 0 || value > 5) {
-                    throw new Error('Invalid input');
-                }
-
-                const data = {
-                    value: value,
-                };
-                console.log(value);
-
-                axios.post('/submit_score', data)
-                        .then(response => {
-                            // 处理成功响应
-                            console.log(response.data);
-                            ElMessage({
-                                type: 'success',
-                                message: '提交成功',
-                            });
-                        })
-                        .catch(error => {
-                            // 处理错误响应
-                            console.log(error);
-                            ElMessage({
-                                type: 'error',
-                                message: '提交失败',
-                            });
-                        });
-            })
-            .catch(() => {
-                ElMessage({
-                    type: 'info',
-                    message: '评价失败',
-                });
-            });
-};
-
-
-//评价 value为评价值
-const submit_comment = () => {
-    ElMessageBox.prompt('评价', {
-        confirmButtonText: '提交',
-        cancelButtonText: '取消',
-    })
-        .then(({ value }) => {
-            ElMessage({
-                type: 'success',
-                message: `提交成功`,
-            })
-            // console.log(value)
-        })
-        .catch(() => {
-            ElMessage({
-                type: 'info',
-                message: '评价失败',
-            })
-        })
 }
+
+const score_submit=(order:Hotel_booking_history)=>{
+    var data={
+        user:order.user,
+        score:order.score
+    }
+    axios.post('http://localhost:3400/submit_score',data).then(function(response){
+        order.has_score=true;
+    })
+}
+
+
 
 </script>
 
@@ -157,12 +116,12 @@ li {
 }
 
 .card-item-wrap {
-    padding: 10px 300px 10px 100px;
+    padding: 10px 150px 10px 150px;
     background: #fff;
     display: flex;
     box-sizing: border-box;
     width: 100%;
-    min-height: 120px;
+    min-height: 240px;
 }
 
 .card-item-wrap .left {

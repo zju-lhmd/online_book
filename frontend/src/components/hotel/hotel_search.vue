@@ -46,13 +46,15 @@ import { RouterLink, RouterView } from 'vue-router'
 import { hotel_search } from "@/components/hotel/hotel_search"
 import { datas , data_init} from "@/components/hotel/hotel_list"
 import router from '@/router'
+import axios from 'axios'
 //与后端交互接收搜索结果
 const on_hotel_Submit = () => {
     let nd:number =86400000;// 1000*24*60*60一天的毫秒数
     let time:number =(hotel_search.date2.getTime()-hotel_search.date1.getTime())/1000/24/60/60;
     hotel_search.time=Math.ceil(time);//计算入住天数
-    console.log(hotel_search.time)
-    data_init();
+    axios.post('http://localhost:3400/hotel_search',hotel_search).then(function(response){
+        data_init(response.data);
+    })
 }
 
 //入住日期必选 默认为今天 设置无法选中过去日期

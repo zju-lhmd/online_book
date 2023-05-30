@@ -5,7 +5,7 @@
         <el-breadcrumb-item :to="{ path: '/component/admin_modify_hotel' }">信息修改</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-col style="margin: 50px 300px 100px 200px;caret-color: transparent;">
+    <el-col style="margin: 50px 200px 100px 200px;caret-color: transparent;">
         <el-row class="Title" justify="center">
             酒店信息修改
         </el-row>
@@ -71,7 +71,7 @@
                         <el-input v-model="room.stock"  style="width: 70%;caret-color: auto;"/>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" style="width: 20%;margin-left: 30%;font-size: large;height: 100%;" @click="on_delete_room(index)">删除</el-button>
+                        <el-button type="primary" style="width: 40%;margin-left: 15%;font-size: large;height: 100%;" @click="on_delete_room(index)">删除</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -87,6 +87,7 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { hotel_data, rooms } from "@/components/booking_admin/hotel_info"
+import axios from 'axios';
 
 interface Room {
     type: string,
@@ -109,7 +110,13 @@ const on_delete_room=(index:number)=>{
 }
 
 const on_add_hotel_Submit=()=>{
-
+    var data={
+        hotel:hotel_data,
+        rooms:rooms
+    }
+    axios.post('http://localhost:3400/add_hotel',data).then(function(response){
+        
+    })
 }
 
 </script>
@@ -127,7 +134,7 @@ const on_add_hotel_Submit=()=>{
 
 .card-item-wrap {
     border: 2px solid #dadfe6;
-    padding: 30px 50px 20px 50px;
+    padding: 30px 0px 20px 0px;
     background: #f5f7fa;
     display: flex;
     box-sizing: border-box;
