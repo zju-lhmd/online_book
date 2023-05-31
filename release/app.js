@@ -60,11 +60,6 @@ const User = sequelize.define('user', {
         type: Sequelize.STRING(63),
         allowNull: false
     },
-    credit: {
-        type: Sequelize.DECIMAL(8, 2),
-        allowNull: false,
-        defaultValue: 0.0
-    },
     is_admin: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -105,9 +100,9 @@ const Hotel = sequelize.define('hotel', {
         defaultValue: 0
     },
     discount: {
-        type: Sequelize.DECIMAL(3, 2),
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 1.0
+        defaultValue: 100
     },
     description: {
         type: Sequelize.STRING(511),
@@ -135,7 +130,7 @@ const Room = sequelize.define('room', {
         allowNull: false
     },
     price: {
-        type: Sequelize.DECIMAL(8, 2),
+        type: Sequelize.INTEGER,
         allowNull: false
     },
     stock: {
@@ -176,13 +171,18 @@ const Plane = sequelize.define('plane', {
         allowNull: false
     },
     price: {
-        type: Sequelize.DECIMAL(8, 2),
+        type: Sequelize.INTEGER,
         allowNull: false
     },
-    discount: {
-        type: Sequelize.DECIMAL(3, 2),
+    stock: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 1.0
+        defaultValue: 0
+    },
+    discount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 100
     }
 },{
     timestamps: false,
@@ -274,20 +274,23 @@ app.use(async (ctx, next) => {
 app.use(router.routes())
 
 router.post('/hotel_search', async (ctx, next) => {
-    try{
-        const body = ctx.request.body
-        // console.log(body)
-        // console.log(hotel)
-        ctx.body = await Hotel.findAll({
-            where: {
-                name: {
-                    [Op.like]: '%' + body.hotel_name + '%'
-                },
-                location: {
-                    [Op.like]: '%' + body.location + '%'
-                }
-            }
-        })
+    try {
+        const body = ctx.request.body;
+        const whereClause = {};
+        if (body.hotel_name) {
+            whereClause.name = {
+                [Op.like]: '%' + body.hotel_name + '%'
+            };
+        }
+        if (body.location) {
+            whereClause.location = {
+                [Op.like]: '%' + body.location + '%'
+            };
+        }
+        const hotels = await Hotel.findAll({
+            where: whereClause
+        });
+        ctx.body = hotels;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -330,25 +333,34 @@ router.post('/get_hotel_detail', async (ctx, next) => {
 });
 
 router.post('/plane_search', async (ctx, next) => {
-    try{
-        const body = ctx.request.body
-        // console.log(body)
-        ctx.body = await Plane.findAll({
-            where: {
-                start: {
-                    [Op.like]: '%' + body.start_location + '%'
-                },
-                end: {
-                    [Op.like]: '%' + body.end_location + '%'
-                },
-                company: {
-                    [Op.like]: '%' + body.company + '%'
-                },
-                start_time: {
-                    [Op.gte]: body.date
-                }
-            }
-        })
+    try {
+        const body = ctx.request.body;
+        const whereClause = {};
+        if (body.start_location) {
+            whereClause.start = {
+                [Op.like]: '%' + body.start_location + '%'
+            };
+        }
+        if (body.end_location) {
+            whereClause.end = {
+                [Op.like]: '%' + body.end_location + '%'
+            };
+        }
+        if (body.company) {
+            whereClause.company = {
+                [Op.like]: '%' + body.company + '%'
+            };
+        }
+        if (body.date) {
+            whereClause.start_time = {
+                [Op.gte]: body.date
+            };
+        }
+        const planes = await Plane.findAll({
+            where: whereClause
+        });
+        console.log(planes);
+        ctx.body = planes;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -538,37 +550,46 @@ router.post('/add_hotel', async (ctx, next) => {
         console.log(body);
         let hotel;
 
+
         if(body.hotel.hotel_id === -1) {
+            const count = await Hotel.count();
+            // console.log(count);
             hotel = await Hotel.create({
-                hotel_id: body.hotel.hotel_id,
+                hotel_id: count + 1,
                 name: body.hotel.name,
                 location: body.hotel.location,
-                star_rating: body.hotel.star,
+                star_rating: parseInt(body.hotel.star),
                 score_total: 0,
                 score_count: 0,
-                discount: body.hotel.discount,
+                stock: body.hotel.stock,
+                discount: parseInt(body.hotel.discount),
                 description: body.hotel.description
             });
         } else {
             hotel = await Hotel.update({
-                hotel_id: body.hotel.hotel_id,
+                hotel_id: parseInt(body.hotel.hotel_id),
                 name: body.hotel.name,
                 location: body.hotel.location,
-                star_rating: body.hotel.star,
+                star_rating: parseInt(body.hotel.star),
                 score_total: 0,
                 score_count: 0,
-                discount: body.hotel.discount,
+                stock: body.hotel.stock,
+                discount: parseInt(body.hotel.discount),
                 description: body.hotel.description
+            }, {
+                where: {
+                    hotel_id: body.hotel.hotel_id
+                }
             });
         }
 
         const rooms = body.hotel.rooms;
         for (const room of rooms) {
             await Room.create({
-                hotel_id: hotel.hotel_id,
+                hotel_id: parseInt(hotel.hotel_id),
                 type: room.type,
-                price: room.price,
-                stock: room.stock
+                price: parseInt(room.price),
+                stock: parseInt(room.stock)
             });
             console.log(room);
         }
@@ -589,26 +610,34 @@ try {
         let plane;
 
         if(body.plane_id === -1) {
+            const count = await Plane.count();
+            console.log(count);
             plane = await Plane.create({
-                plane_id: body.plane_id,
+                plane_id: count + 1,
                 company: body.company,
+                start: body.start_location,
+                end: body.end_location,
                 start_time: body.start_time,
                 end_time: body.end_time,
-                start: body.start,
-                end: body.end,
-                price: body.price,
-                discount: body.discount
+                price: parseInt(body.price),
+                stock: parseInt(body.stock),
+                discount: parseInt(body.discount)
             });
         } else {
             plane = await Plane.update({
-                plane_id: body.plane_id,
+                plane_id: parseInt(body.plane_id),
                 company: body.company,
+                start: body.start_location,
+                end: body.end_location,
                 start_time: body.start_time,
                 end_time: body.end_time,
-                start: body.start,
-                end: body.end,
-                price: body.price,
-                discount: body.discount
+                price: parseInt(body.price),
+                stock: parseInt(body.stock),
+                discount: parseInt(body.discount)
+            }, {
+                where: {
+                    plane_id: body.plane_id
+                }
             });
         }
 

@@ -17,7 +17,6 @@ CREATE TABLE `user` (
                         `gender` VARCHAR(63) NOT NULL,
                         `birthday` DATE NOT NULL,
                         `address` VARCHAR(63) NOT NULL,
-                        `credit` DECIMAL(8,2) NOT NULL DEFAULT 0.0,
                         `is_admin` INT NOT NULL DEFAULT 0,
                         PRIMARY KEY (`user_id`)
 );
@@ -29,7 +28,7 @@ CREATE TABLE `hotel` (
                          `star_rating` INT NOT NULL,
                          `score_total` INT NOT NULL DEFAULT 0,
                          `score_count` INT NOT NULL DEFAULT 0,
-                         `discount` DECIMAL(3,2) NOT NULL DEFAULT 1.0,
+                         `discount` INT NOT NULL DEFAULT 100,
                          `description` VARCHAR(511) NOT NULL,
                          PRIMARY KEY (`hotel_id`),
                          UNIQUE (`name`, `location`, `star_rating`)
@@ -38,7 +37,7 @@ CREATE TABLE `hotel` (
 CREATE TABLE `room` (
                         `hotel_id` INT NOT NULL,
                         `type` VARCHAR(63) NOT NULL,
-                        `price` DECIMAL(8,2) NOT NULL,
+                        `price` INT NOT NULL,
                         `stock` INT NOT NULL DEFAULT 0,
                         PRIMARY KEY (`hotel_id`, `type`),
                         FOREIGN KEY (`hotel_id`) REFERENCES `hotel` (`hotel_id`)
@@ -51,8 +50,9 @@ CREATE TABLE `plane` (
                          `end_time` DATETIME NOT NULL,
                          `start` VARCHAR(63) NOT NULL,
                          `end` VARCHAR(64) NOT NULL,
-                         `price` DECIMAL(8,2) NOT NULL,
-                         `discount` DECIMAL(3,2) NOT NULL DEFAULT 1.0,
+                         `price` INT NOT NULL,
+                         `stock` INT NOT NULL DEFAULT 0,
+                         `discount` INT NOT NULL DEFAULT 100,
                          PRIMARY KEY (`plane_id`),
                          UNIQUE KEY `unique_flight` (`company`, `start_time`, `end_time`, `start`, `end`)
 );
