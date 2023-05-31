@@ -348,7 +348,7 @@ router.post('/plane_search', async (ctx, next) => {
     }
 });
 
-
+// 还有问题，需要修改
 router.post('/get_plane_booking_history', async (ctx, next) => {
     try {
         const body = ctx.request.body;
@@ -405,6 +405,86 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
     }
 });
 
+// 还有问题，需要修改, 与上面的函数类似
+router.post('/get_hotel_booking_history', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        const nowTime = new Date();
+
+        const booking_history = await BookingHistory.findAll({
+            where: {
+                user_id: body.user,
+                type: 'hotel'
+            },
+            include: [{
+                model: Hotel,
+                as: 'Hotel', // 设置别名为 'Hotel'
+                required: true
+            }]
+        });
+
+        for (const booking of booking_history) {
+            if (nowTime > booking.Hotel.end_time && booking.state === 0) {
+                booking.state = 1;
+                await booking.save();
+            }
+        }
+
+        const result = booking_history.map(booking => {
+            const { user_id, state, has_score, hotel_id, type, plane_id, Hotel } = booking;
+            const { name, location, start_time, end_time, price, discount } = Hotel;
+
+            return {
+                user_id,
+                state,
+                has_score,
+                hotel_id,
+                type,
+                plane_id,
+                name,
+                location,
+                start_time,
+                end_time,
+                price,
+                discount
+            };
+        });
+
+        console.log(result);
+        ctx.body = result;
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('get_hotel_booking_history error');
+    }
+});
+
+router.post('/comment_submit', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        const comment = await Comments.create({
+            user_id: body.user,
+            hotel_id: body.hotel_id,
+            content: body.comment,
+            comment_time: new Date()
+        });
+
+        console.log(comment);
+        ctx.body = 'success';
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('comment_submit error');
+    }
+});
+
+router.post('/score_submit', async (ctx, next) => {
+
+});
 
 // 静态文件使用
 app.use(static_file(path.join(__dirname, 'static')));
