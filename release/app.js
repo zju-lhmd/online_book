@@ -10,6 +10,7 @@ const bodyParser = require('koa-body')
 const Sequelize = require('sequelize')
 const { prompt } = require('message-box');
 const { success, info } = require('message');
+const {Op} = require("sequelize");
 const router= new Router()
 const app = new koa()
 
@@ -267,30 +268,135 @@ app.use(async (ctx, next) => {
 });
 app.use(router.routes())
 
-router.post('/submit_score', async (ctx, next) => {
+router.post('/hotel_search', async (ctx, next) => {
     try{
-        const { value } = prompt('0-5分打分', '评分', {
-            confirmButtonText: '提交',
-            cancelButtonText: '取消',
-        });
         const body = ctx.request.body
-        console.log(23121)
-        await Hotel.create({
-            hotel_id: 1,
-            name: 'qw',
-            location: 'qw',
-            star_rating: 1,
-            score_total: 1,
-            score_count: starRating,
-            discount: 2.11,
-            description: 'qw'
-        });
-
-        // ctx.body = 'success';
+        // console.log(body)
+        // console.log(hotel)
+        ctx.body = await Hotel.findAll({
+            where: {
+                name: {
+                    [Op.like]: '%' + body.hotel_name + '%'
+                },
+                location: {
+                    [Op.like]: '%' + body.location + '%'
+                }
+            }
+        })
         await next();
     } catch (e) {
-        // ctx.body = 'error';
-        console.log('add error');
+        ctx.body = 'error';
+        console.log('hotel_search error');
+    }
+});
+
+router.post('/get_hotel_detail', async (ctx, next) => {
+    try{
+        const body = ctx.request.body
+        // console.log(body)
+        const hotel = await Hotel.findOne({
+            where: {
+                hotel_id: body.hotel_id
+            }
+        })
+        const room = await Room.findAll({
+            where: {
+                hotel_id: body.hotel_id
+            }
+        });
+        // console.log(hotel)
+        ctx.body = {
+            hotel: hotel,
+            room: room
+        }
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('get_hotel_detail error');
+    }
+});
+
+router.post('/plane_search', async (ctx, next) => {
+    try{
+        const body = ctx.request.body
+        // console.log(body)
+        ctx.body = await Plane.findAll({
+            where: {
+                start: {
+                    [Op.like]: '%' + body.start_location + '%'
+                },
+                end: {
+                    [Op.like]: '%' + body.end_location + '%'
+                },
+                company: {
+                    [Op.like]: '%' + body.company + '%'
+                },
+                start_time: {
+                    [Op.gte]: body.date
+                }
+            }
+        })
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('plane_search error');
+    }
+});
+
+
+router.post('/get_plane_booking_history', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        const nowTime = new Date();
+
+        const booking_history = await BookingHistory.findAll({
+            where: {
+                user_id: body.user,
+                type: 'plane'
+            },
+            include: [{
+                model: Plane,
+                as: 'Plane', // 设置别名为 'Plane'
+                required: true
+            }]
+        });
+
+        // for (const booking of booking_history) {
+        //     if (nowTime > booking.Plane.end_time && booking.state === 0) {
+        //         booking.state = 1;
+        //         await booking.save();
+        //     }
+        // }
+
+        // const result = booking_history.map(booking => {
+        //     const { user_id, state, has_score, hotel_id, type, plane_id, Plane } = booking;
+        //     const { company, start_time, end_time, start, end, price, discount } = Plane;
+        //
+        //     return {
+        //         user_id,
+        //         state,
+        //         has_score,
+        //         hotel_id,
+        //         type,
+        //         plane_id,
+        //         company,
+        //         start_time,
+        //         end_time,
+        //         start,
+        //         end,
+        //         price,
+        //         discount
+        //     };
+        // });
+
+        // console.log(result);
+        // ctx.body = result;
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('get_plane_booking_history error');
     }
 });
 

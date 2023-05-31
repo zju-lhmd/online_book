@@ -60,6 +60,12 @@ CREATE TABLE `plane` (
 create table booking_history (
                                  user_id int not null,
                                  state int not null default 0,
+#                                  0: 已预订
+#                                  1: 已入住
+#                                  2: 已退房
+                                 has_score int not null default 0,
+#                                  0: 未评价
+#                                  1: 已评价
                                  hotel_id int not null default -1,
                                  type varchar(63),
                                  plane_id int not null default -1,
