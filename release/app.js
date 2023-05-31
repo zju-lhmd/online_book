@@ -205,6 +205,11 @@ const BookingHistory = sequelize.define('booking_history', {
         allowNull: false,
         defaultValue: 0
     },
+    has_score: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
     hotel_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -363,36 +368,36 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
             }]
         });
 
-        // for (const booking of booking_history) {
-        //     if (nowTime > booking.Plane.end_time && booking.state === 0) {
-        //         booking.state = 1;
-        //         await booking.save();
-        //     }
-        // }
+        for (const booking of booking_history) {
+            if (nowTime > booking.Plane.end_time && booking.state === 0) {
+                booking.state = 1;
+                await booking.save();
+            }
+        }
 
-        // const result = booking_history.map(booking => {
-        //     const { user_id, state, has_score, hotel_id, type, plane_id, Plane } = booking;
-        //     const { company, start_time, end_time, start, end, price, discount } = Plane;
-        //
-        //     return {
-        //         user_id,
-        //         state,
-        //         has_score,
-        //         hotel_id,
-        //         type,
-        //         plane_id,
-        //         company,
-        //         start_time,
-        //         end_time,
-        //         start,
-        //         end,
-        //         price,
-        //         discount
-        //     };
-        // });
+        const result = booking_history.map(booking => {
+            const { user_id, state, has_score, hotel_id, type, plane_id, Plane } = booking;
+            const { company, start_time, end_time, start, end, price, discount } = Plane;
 
-        // console.log(result);
-        // ctx.body = result;
+            return {
+                user_id,
+                state,
+                has_score,
+                hotel_id,
+                type,
+                plane_id,
+                company,
+                start_time,
+                end_time,
+                start,
+                end,
+                price,
+                discount
+            };
+        });
+
+        console.log(result);
+        ctx.body = result;
         await next();
     } catch (e) {
         ctx.body = 'error';
