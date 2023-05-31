@@ -309,10 +309,18 @@ router.post('/get_hotel_detail', async (ctx, next) => {
                 hotel_id: body.hotel_id
             }
         });
+        const score = hotel.score_count === 0 ? 0 : hotel.score_total / hotel.score_count
+        const comments = await Comments.findAll({
+            where: {
+                hotel_id: body.hotel_id
+            }
+        });
         // console.log(hotel)
         ctx.body = {
             hotel: hotel,
-            room: room
+            room: room,
+            score: score,
+            comments: comments
         }
         await next();
     } catch (e) {
@@ -483,7 +491,190 @@ router.post('/comment_submit', async (ctx, next) => {
 });
 
 router.post('/score_submit', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
 
+        const booking_history = await BookingHistory.findOne({
+            where: {
+                user_id: body.user,
+                hotel_id: body.hotel_id,
+                state: 0
+            }
+        });
+
+        if (booking_history) {
+            booking_history.has_score = 1;
+            await booking_history.save();
+        }
+
+        const hotel = await Hotel.findOne({
+            where: {
+                id: body.hotel_id
+            }
+        });
+
+        if (hotel) {
+            const score_total = hotel.score_total + body.score;
+            const score_count = hotel.score_count + 1;
+            await hotel.update({
+                score_total,
+                score_count
+            });
+        }
+
+        console.log(score);
+        ctx.body = 'success';
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('score_submit error');
+    }
+});
+
+router.post('/add_hotel', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+        let hotel;
+
+        if(body.hotel.hotel_id === -1) {
+            hotel = await Hotel.create({
+                hotel_id: body.hotel.hotel_id,
+                name: body.hotel.name,
+                location: body.hotel.location,
+                star_rating: body.hotel.star,
+                score_total: 0,
+                score_count: 0,
+                discount: body.hotel.discount,
+                description: body.hotel.description
+            });
+        } else {
+            hotel = await Hotel.update({
+                hotel_id: body.hotel.hotel_id,
+                name: body.hotel.name,
+                location: body.hotel.location,
+                star_rating: body.hotel.star,
+                score_total: 0,
+                score_count: 0,
+                discount: body.hotel.discount,
+                description: body.hotel.description
+            });
+        }
+
+        const rooms = body.hotel.rooms;
+        for (const room of rooms) {
+            await Room.create({
+                hotel_id: hotel.hotel_id,
+                type: room.type,
+                price: room.price,
+                stock: room.stock
+            });
+            console.log(room);
+        }
+
+        console.log(hotel);
+        ctx.body = 'success';
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('add_hotel error');
+    }
+});
+
+router.post('/add_plane', async (ctx, next) => {
+try {
+        const body = ctx.request.body;
+        console.log(body);
+        let plane;
+
+        if(body.plane_id === -1) {
+            plane = await Plane.create({
+                plane_id: body.plane_id,
+                company: body.company,
+                start_time: body.start_time,
+                end_time: body.end_time,
+                start: body.start,
+                end: body.end,
+                price: body.price,
+                discount: body.discount
+            });
+        } else {
+            plane = await Plane.update({
+                plane_id: body.plane_id,
+                company: body.company,
+                start_time: body.start_time,
+                end_time: body.end_time,
+                start: body.start,
+                end: body.end,
+                price: body.price,
+                discount: body.discount
+            });
+        }
+
+        console.log(plane);
+        ctx.body = 'success';
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('add_plane error');
+    }
+});
+
+router.post('/delete_hotel', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        const hotel = await Hotel.findOne({
+            where: {
+                id: body.hotel_id
+            }
+        });
+
+        if (hotel) {
+            await Rooms.destroy({
+                where: {
+                    hotel_id: hotel.id
+                }
+            });
+
+            await hotel.destroy();
+            ctx.body = 'success';
+        } else {
+            ctx.body = 'no such hotel';
+        }
+
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('delete_hotel error');
+    }
+});
+
+router.post('/delete_plane', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        const plane = await Plane.findOne({
+            where: {
+                id: body.plane_id
+            }
+        });
+
+        if (plane) {
+            await plane.destroy();
+            ctx.body = 'success';
+        } else {
+            ctx.body = 'no such plane';
+        }
+
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('delete_plane error');
+    }
 });
 
 // 静态文件使用
