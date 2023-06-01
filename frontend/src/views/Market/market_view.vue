@@ -134,6 +134,7 @@ const handleClose = (key: string, keyPath: string[]) => {
     /* 相对自己的main-content-box进行分配 */
     min-height: calc(100vh - 90px);
     height: 100%;
+    caret-color: transparent;
   }
   
   .navi {

@@ -52,9 +52,9 @@
 
 
                 <el-text style="font-size: 15px; color: black;padding-right: 10px;">入住日期</el-text>
-                <el-date-picker v-model="hotel_search.date1" type="date" :disabled-date="disabledDate" style="width: 15%" />
+                <el-date-picker v-model="hotel_search.date1" type="date" :disabled-date="disabledDate" style="width: 25%" />
                 <el-text style="font-size: 15px; color: black;padding-left: 10px;padding-right: 10px;">退房日期</el-text>
-                <el-date-picker v-model="hotel_search.date2" type="date" :disabled-date="disabledDate" style="width: 15%" />
+                <el-date-picker v-model="hotel_search.date2" type="date" :disabled-date="disabledDate" style="width: 25%" />
                 <br /><br />
 
                 <el-text style="font-size: 20px; color: black;">总价 {{ Math.floor(hotel_detail_data.discount * value.price *

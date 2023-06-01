@@ -8,52 +8,75 @@
             航班发布
         </el-row>
         <el-row class="card-item-wrap">
-            <el-form :model="plane_data" style="text-align: center;margin: 10px 50px 10px 50px;width: 100%;">
-                
-                <el-form-item>
-                    <span slot="label" style="margin-right: 40px;font-size: 20px;">出发地</span>
-                    <el-input v-model="plane_data.start_location"  style="width: 50%;caret-color: auto;"/>
-                </el-form-item>
+            <el-col :span="16" :offset="4">
+                <el-form :model="plane_data" style="text-align: center;margin: 10px 50px 10px 50px;">
 
-                <el-form-item>
-                    <span slot="label" style="margin-right: 40px;font-size: 20px;">目的地</span>
-                    <el-input v-model="plane_data.end_location"  style="width: 50%;caret-color: auto;"/>
-                </el-form-item>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 25px;font-size: 15px;">出发地</span>
+                            <el-input v-model="plane_data.start_location"
+                                style="width: calc(100% - 70px);caret-color: auto;" />
+                        </el-col>
+                    </el-form-item>
 
-                <el-form-item>
-                    <span slot="label" style="margin-right: 20px;font-size: 20px;">航班公司</span>
-                    <el-input v-model="plane_data.company"  style="width: 50%;caret-color: auto;"/>
-                </el-form-item>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 25px;font-size: 15px;">目的地</span>
+                            <el-input v-model="plane_data.end_location"
+                                style="width: calc(100% - 70px);caret-color: auto;" />
+                        </el-col>
+                    </el-form-item>
 
-                <el-form-item >
-                    <span slot="label" style="margin-right: 20px;font-size: 20px;">起飞时间</span>
-                    <el-date-picker v-model="plane_data.start_time" type="datetime" placeholder="Select date and time" style="width: 50%;"/>
-                </el-form-item>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">航班公司</span>
+                            <el-input v-model="plane_data.company" style="width: calc(100% - 70px);caret-color: auto;" />
+                        </el-col>
+                    </el-form-item>
 
-                <el-form-item >
-                    <span slot="label" style="margin-right: 20px;font-size: 20px;">到达时间</span>
-                    <el-date-picker v-model="plane_data.end_time" type="datetime" placeholder="Select date and time" style="width: 50%;"/>
-                </el-form-item>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">起飞时间</span>
+                            <el-date-picker v-model="plane_data.start_time" type="datetime"
+                                placeholder="Select date and time" style="width: calc(100% - 70px);" />
+                        </el-col>
+                    </el-form-item>
 
-                <el-form-item >
-                    <span slot="label" style="margin-right: 60px;font-size: 20px;">价格</span>
-                    <el-input v-model="plane_data.price"  style="width: 50%;caret-color: auto;"/>
-                </el-form-item>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">到达时间</span>
+                            <el-date-picker v-model="plane_data.end_time" type="datetime" placeholder="Select date and time"
+                                style="width: calc(100% - 70px);" />
+                        </el-col>
+                    </el-form-item>
 
-                <el-form-item >
-                    <span slot="label" style="margin-right: 60px;font-size: 20px;">折扣</span>
-                    <el-input v-model="plane_data.discount"  style="width: 50%;caret-color: auto;"/>
-                </el-form-item>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 40px;font-size: 15px;">价格</span>
+                            <el-input v-model="plane_data.price" style="width: calc(100% - 70px);caret-color: auto;" />
+                        </el-col>
+                    </el-form-item>
 
-                <el-form-item >
-                    <span slot="label" style="margin-right: 60px;font-size: 20px;">余量</span>
-                    <el-input v-model="plane_data.stock"  style="width: 50%;"/>
-                </el-form-item>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 40px;font-size: 15px;">折扣</span>
+                            <el-input v-model="plane_data.discount" style="width: calc(100% - 70px);caret-color: auto;" />
+                        </el-col>
+                    </el-form-item>
 
-            </el-form>
+                    <el-form-item>
+                        <el-col>
+                            <span slot="label" style="margin-right: 40px;font-size: 15px;">余量</span>
+                            <el-input v-model="plane_data.stock" style="width: calc(100% - 70px);" />
+                        </el-col>
+                    </el-form-item>
+
+                </el-form>
+            </el-col>
         </el-row>
         <el-row class="button" justify="center">
-            <el-button type="primary" style="width: 20%;font-size: large;height: 100%;" @click="on_add_plane_Submit">提交</el-button>
+            <el-button type="primary" style="width: 20%;font-size: large;height: 100%;"
+                @click="on_add_plane_Submit">提交</el-button>
         </el-row>
     </el-col>
 </template>
@@ -62,11 +85,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { plane_data , plane_init } from "@/components/booking_admin/plane_info"
+import { plane_data, plane_init } from "@/components/booking_admin/plane_info"
 import axios from 'axios';
 
-const on_add_plane_Submit=()=>{
-    axios.post('http://localhost:3400/add_plane',plane_data).then(function(response){
+const on_add_plane_Submit = () => {
+    axios.post('http://localhost:3400/add_plane', plane_data).then(function (response) {
         plane_init()
     })
 }
@@ -86,15 +109,13 @@ const on_add_plane_Submit=()=>{
 
 .card-item-wrap {
     border: 2px solid #dadfe6;
-    padding: 30px 0px 20px 150px;
     background: #f5f7fa;
     display: flex;
     box-sizing: border-box;
-    width: 100%;
     min-height: 300px;
 }
 
-.button{
+.button {
     border: 2px solid #dadfe6;
     padding: 10px 50px 10px 50px;
     background: #f5f7fa;
@@ -102,5 +123,4 @@ const on_add_plane_Submit=()=>{
     width: 100%;
     font-size: 30px;
 }
-
 </style>

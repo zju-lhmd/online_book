@@ -48,21 +48,21 @@
                     </el-form>
 
                     <!-- 四个按钮 查询为重新获得信息 后三个为对酒店信息的排序 -->
-                    <el-row type="flex" justify="center">
+                    <el-row type="flex" justify="center" :gutter="10">
 
-                        <el-button type="primary" plain class="sort_button" @click="on_hotel_Submit">查询</el-button>
+                        <el-button type="primary" plain class="sort_button" @click="on_hotel_Submit" :span="6">查询</el-button>
 
-                        <el-button type="primary" plain class="sort_button" @click="on_price_change">
+                        <el-button type="primary" plain class="sort_button" @click="on_price_change" :span="6">
                             <div v-if="hotel_sort.price_sort">价格(由高到低)</div>
                             <div v-else="">价格(由低到高)</div>
                         </el-button>
 
-                        <el-button type="primary" plain class="sort_button" @click="on_star_change">
+                        <el-button type="primary" plain class="sort_button" @click="on_star_change" :span="6">
                             <div v-if="hotel_sort.star_sort">星级(由高到低)</div>
                             <div v-else="">星级(由低到高)</div>
                         </el-button>
 
-                        <el-button type="primary" plain class="sort_button" @click="on_score_change">
+                        <el-button type="primary" plain class="sort_button" @click="on_score_change" :span="6">
                             <div v-if="hotel_sort.score_sort">评分(由高到低)</div>
                             <div v-else="">评分(由低到高)</div>
                         </el-button>
@@ -300,7 +300,6 @@ const handleCurrentChange = (val:number) => {
 .sort_button {
     font-size: large;
     height: 30px;
-    width: 180px;
 }
 
 li {

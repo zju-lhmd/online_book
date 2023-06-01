@@ -11,39 +11,47 @@
         </el-row>
         <el-row class="card-item-wrap">
             <el-col :span="12">
-                <el-form :model="hotel_data" label-width="80px" style="text-align: center;">
+                <el-form :model="hotel_data" label-width="15%" style="text-align: center;">
                     
                     <el-form-item>
-                        <span slot="label" style="margin-right: 20px;font-size: large;">酒店名称</span>
-                        <el-input v-model="hotel_data.name"  style="width: 70%;caret-color: auto;"/>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">酒店名称</span>
+                            <el-input v-model="hotel_data.name"  style="width: calc(100% - 70px);caret-color: auto;"/>
+                        </el-col>
                     </el-form-item>
 
                     <el-form-item >
-                        <span slot="label" style="margin-right: 20px;font-size: large;">酒店地址</span>
-                        <el-input v-model="hotel_data.location"  style="width: 70%;caret-color: auto;"/>
+                        <span slot="label" style="margin-right: 10px;font-size: 15px;">酒店地址</span>
+                        <el-input v-model="hotel_data.location"  style="width: calc(100% - 70px);caret-color: auto;"/>
                     </el-form-item>
 
                     <el-form-item>
-                        <span slot="label" style="margin-right: 20px;font-size: large;">联系电话</span>
-                        <el-input v-model="hotel_data.phone"  style="width: 70%;caret-color: auto;"/>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">联系电话</span>
+                            <el-input v-model="hotel_data.phone"  style="width: calc(100% - 70px);caret-color: auto;"/>
+                        </el-col>
                     </el-form-item>
 
                     <el-form-item >
-                        <span slot="label" style="margin-right: 20px;font-size: large;">酒店星级</span>
-                        <el-rate v-model="hotel_data.star" />
+                        <el-col style="text-align: left;">
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">酒店星级</span>
+                            <el-rate v-model="hotel_data.star" />
+                        </el-col>
                     </el-form-item>
 
                     <el-form-item >
-                        <span slot="label" style="margin-right: 20px;font-size: large;">总体折扣</span>
-                        <el-input v-model="hotel_data.discount" style="width: 70%;caret-color: auto;"/>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">总体折扣</span>
+                            <el-input v-model="hotel_data.discount" style="width: calc(100% - 70px);caret-color: auto;"/>
+                        </el-col>
                     </el-form-item>
                 </el-form>
             </el-col>
 
             <el-col :span="10">
-                <el-form :model="hotel_data" label-width="80px" style="text-align: center;">
+                <el-form :model="hotel_data" label-width="20%" style="text-align: center;">
                     <el-form-item >
-                        <span slot="label" style="margin-right: 20px;font-size: large;">酒店描述</span>
+                        <span slot="label" style="margin-right: 20px;font-size: 15px;">酒店描述</span>
                         <el-input v-model="hotel_data.description" :rows="8" type="textarea" placeholder="输入酒店简述" style="caret-color: auto;" />
                     </el-form-item>
                 </el-form>
@@ -57,23 +65,31 @@
         </el-row>
         <el-row class="Rooms" justify="center">
             <el-col v-for="(room,index) in rooms" :span="12" style="border: 2px solid #dadfe6;" >
-                <el-form :model="room" label-width="80px" style="text-align: center;">
+                <el-form :model="room" style="text-align: center;margin-top: 10px;">
                     <el-form-item>
-                        <span slot="label" style="margin-right: 20px;font-size: large;">房型</span>
-                        <el-input v-model="room.type"  style="width: 70%;caret-color: auto;"/>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">房型</span>
+                            <el-input v-model="room.type"  style="width: calc(100% - 70px);caret-color: auto;"/>
+                        </el-col>
                     </el-form-item>
                     <el-form-item>
-                        <span slot="label" style="margin-right: 20px;font-size: large;">价格</span>
-                        <el-input v-model="room.price"  style="width: 70%;caret-color: auto;"/>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">价格</span>
+                            <el-input v-model="room.price"  style="width: calc(100% - 70px);caret-color: auto;"/>
+                        </el-col>
                     </el-form-item>
                     <el-form-item>
-                        <span slot="label" style="margin-right: 20px;font-size: large;">余量</span>
-                        <el-input v-model="room.stock"  style="width: 70%;caret-color: auto;"/>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" style="width: 40%;margin-left: 15%;font-size: large;height: 100%;" @click="on_delete_room(index)">删除</el-button>
+                        <el-col>
+                            <span slot="label" style="margin-right: 10px;font-size: 15px;">余量</span>
+                            <el-input v-model="room.stock"  style="width: calc(100% - 70px);caret-color: auto;"/>
+                        </el-col>
                     </el-form-item>
                 </el-form>
+                <el-row>
+                    <el-col style="margin:auto;" span="12" :offset="6">
+                        <el-button type="primary" style="font-size: large;margin-bottom: 10px;" @click="on_delete_room(index)">删除</el-button>
+                    </el-col>
+                </el-row>
             </el-col>
         </el-row>
         <el-row class="button" justify="center">

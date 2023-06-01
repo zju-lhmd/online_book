@@ -16,19 +16,21 @@
                         <el-text style="font-size: 20px;color: black;">{{ plane.company }}</el-text>
                         <br/>
                         
-                        <span slot="label" style="margin:10px 5px 10px 0px;font-size: 20px;">出发地</span>
+                        <span slot="label" style="margin:10px 25px 10px 0px;font-size: 20px;">出发地</span>
                         <el-text style="font-size: 20px;color: black;">{{ plane.start_location }}</el-text>
                         <br/>
 
-                        <span slot="label" style="margin:10px 5px 10px 0px;font-size: 20px;">目的地</span>
+                        <span slot="label" style="margin:10px 25px 10px 0px;font-size: 20px;">目的地</span>
                         <el-text style="font-size: 20px;color: black;">{{ plane.end_location }}</el-text>
                         <br/>
 
                         <span slot="label" style="margin:10px 5px 10px 0px;font-size: 20px;">起飞时间</span>
+                        <br/>
                         <el-text style="font-size: 20px;color: black;">{{ plane.start_time.toLocaleDateString() }} {{ plane.start_time.toLocaleTimeString() }}</el-text>
                         <br/>
 
                         <span slot="label" style="margin:10px 5px 10px 0px;font-size: 20px;">到达时间</span>
+                        <br/>
                         <el-text style="font-size: 20px;color: black;">{{ plane.end_time.toLocaleDateString() }} {{ plane.end_time.toLocaleTimeString() }}</el-text>
                         <br/>
 
