@@ -21,6 +21,7 @@ import booking_admin_add_planeVue from '@/components/booking_admin/add_plane.vue
 import booking_admin_modify_planeVue from '@/components/booking_admin/modify_plane.vue'
 import seller_add_goodVue from '@/components/seller/add_good.vue'
 import seller_modify_goodVue from '@/components/seller/modify_good.vue'
+import seller_list_goodVue from '@/components/seller/list_good.vue'
 
 import Orders from '@/views/Orders/index.vue'
 const router = createRouter({
@@ -57,6 +58,8 @@ const router = createRouter({
         path:'/component/plane_booking_history',name:'component_plane_booking_history',component:plane_booking_historyVue},
       {//卖家发布商品界面
         path:'/component/seller_add_good',name:'component_seller_add_good',component:seller_add_goodVue},
+      {//卖家已发布商品列表界面
+        path:'/component/seller_list_good',name:'component_seller_list_good',component:seller_list_goodVue},
       {//卖家修改商品界面
         path:'/component/seller_modify_good',name:'component_seller_modify_good',component:seller_modify_goodVue},
       {//管理员搜索酒店界面

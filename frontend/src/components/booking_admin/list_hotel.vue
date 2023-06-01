@@ -10,7 +10,7 @@
             酒店信息查询
         </el-row>
         <el-row class="Rooms" justify="center">
-            <el-col v-for="(hotel, index) in hotel_datas" :span="12" style="border: 2px solid #dadfe6;">
+            <el-col v-for="(hotel, index,key) in hotel_datas.slice((page - 1) * pageSize, page * pageSize)" :key="hotel.hotel_id" :span="12" style="border: 2px solid #dadfe6;">
                 <el-row>
                     <el-col :span="18" style="margin: 10px;border-right: 2px solid #dadfe6;">
                         <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">酒店名称</span>
@@ -38,11 +38,21 @@
                 </el-row>
             </el-col>
         </el-row>
+        <el-pagination
+            layout=" prev, pager, next,jumper"
+            :current-page="page"
+            :page-size="pageSize"
+            :total="total"
+            :style="{'justify-content':'center'}"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            style="caret-color: auto;" />
     </el-col>
 </template>
   
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { hotel_datas , modify_hotel , hotel_room_init } from "@/components/booking_admin/hotel_info"
 import axios from 'axios';
@@ -67,6 +77,19 @@ const on_delete_hotel_Submit=(index:number)=>{
         
     })
     hotel_datas.splice(index,1)
+    total.value=hotel_datas.length
+}
+
+const page = ref(1)
+const total = ref(hotel_datas.length)
+const pageSize = ref(8)
+//分页函数
+const handleSizeChange = (val:number) => {
+  pageSize.value = val;
+
+}
+const handleCurrentChange = (val:number) => {
+  page.value = val;
 }
 
 </script>

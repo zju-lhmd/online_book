@@ -1,7 +1,7 @@
 <template>
     <div class="main-content">
       <el-menu class="el-menu-vertical-demo navi" text-color="#d0d0d0" background-color="#444c54"
-        active-text-color="rgb(130, 194, 247)" :router=true @open="handleOpen" @close="handleClose">
+        active-text-color="rgb(130, 194, 247)" :router=true @open="handleOpen" @close="handleClose" unique-opened>
         <el-affix :offset="100">
 
           <el-menu-item index="/component/market">
@@ -38,7 +38,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="/component/seller_add_good">商品发布</el-menu-item>
-              <el-menu-item index="/component/seller_modify_good">商品修改</el-menu-item>
+              <el-menu-item index="/component/seller_list_good" @click="seller_goods">商品修改</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
 
@@ -91,6 +91,7 @@ import { hotel_order_Init , type Hotel_booking_history} from "@/components/hotel
 import { plane_order_Init , type Plane_booking_data} from "@/components/plane/plane_booking_history"
 import { hotel_init } from "@/components/booking_admin/hotel_info"
 import { plane_init } from '@/components/booking_admin/plane_info';
+import { Get_seller_good_data } from '@/components/seller/seller'
 import axios from "axios";
 
 const hotel_booking_history=()=>{//查询酒店预订历史信息
@@ -117,6 +118,15 @@ const on_add_hotel=()=>{
 
 const on_add_plane=()=>{
     plane_init();
+}
+
+const seller_goods=()=>{
+  var data={
+    user_id:1
+  }
+  axios.post('http://localhost:3400/get_seller_goods',data).then(function(response){
+    Get_seller_good_data(response.data)
+  })
 }
 
 const handleOpen = (key: string, keyPath: string[]) => {
