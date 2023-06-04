@@ -585,7 +585,6 @@ router.post('/score_submit', async (ctx, next) => {
             });
         }
 
-        console.log(score);
         ctx.body = 'success';
         await next();
     } catch (e) {
@@ -602,10 +601,10 @@ router.post('/add_hotel', async (ctx, next) => {
 
 
         if(body.hotel.hotel_id === -1) {
-            const count = await Hotel.count();
+            // const count = await Hotel.count();
             // console.log(count);
             hotel = await Hotel.create({
-                hotel_id: count + 1,
+                // hotel_id: count + 1,
                 name: body.hotel.name,
                 location: body.hotel.location,
                 star_rating: parseInt(body.hotel.star),
@@ -660,10 +659,10 @@ try {
         let plane;
 
         if(body.plane_id === -1) {
-            const count = await Plane.count();
-            console.log(count);
+            // const count = await Plane.count();
+            // console.log(count);
             plane = await Plane.create({
-                plane_id: count + 1,
+                // plane_id: count + 1,
                 company: body.company,
                 start: body.start_location,
                 end: body.end_location,
@@ -785,11 +784,11 @@ router.post('/add_good', async (ctx, next) => {
 
         let good;
         if(body.good_id === -1) {
-            const count = await Goods.count();
-            console.log(count);
+            // const count = await Goods.count();
+            // console.log(count);
             good = await Goods.create({
                 user_id: parseInt(ctx.request.body.user_id),
-                good_id: count + 1,
+                // good_id: count + 1,
                 name: body.name,
                 category: body.category,
                 location: body.location,
