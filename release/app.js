@@ -268,6 +268,53 @@ const Comments = sequelize.define('comments', {
 });
 Comments.sync({force:false})
 
+const Goods = sequelize.define('goods', {
+    goods_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    location: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    category: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    price: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    discount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 100
+    },
+    stock: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    sale: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    description: {
+        type: Sequelize.STRING(511),
+        allowNull: false
+    }
+}, {
+    timestamps: false,
+    freezeTableName:true
+});
+Comments.sync({force:false})
+
 app.use(async (ctx, next) => {
     await bodyParser()(ctx, next);
 });
@@ -703,6 +750,43 @@ router.post('/delete_plane', async (ctx, next) => {
     } catch (e) {
         ctx.body = 'error';
         console.log('delete_plane error');
+    }
+});
+
+router.post('/search_good', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        const hotels = await Hotel.findAll({
+            where: {
+                name: {
+                    [Op.like]: '%' + body.name + '%'
+                },
+                category: {
+                    [Op.like]: '%' + body.category + '%'
+                }
+            }
+        });
+
+        const planes = await Plane.findAll({
+            where: {
+                company: {
+                    [Op.like]: '%' + body.keyword + '%'
+                }
+            }
+        });
+
+        const result = {
+            hotels,
+            planes
+        };
+
+        ctx.body = result;
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('search_good error');
     }
 });
 
