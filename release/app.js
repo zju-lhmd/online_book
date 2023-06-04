@@ -52,10 +52,6 @@ const User = sequelize.define('user', {
         type: Sequelize.STRING(63),
         allowNull: false
     },
-    birthday: {
-        type: Sequelize.DATE,
-        allowNull: false
-    },
     address: {
         type: Sequelize.STRING(63),
         allowNull: false
@@ -277,7 +273,7 @@ const Goods = sequelize.define('goods', {
             key: 'user_id'
         }
     },
-    goods_id: {
+    good_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -792,7 +788,7 @@ router.post('/add_good', async (ctx, next) => {
             const count = await Goods.count();
             console.log(count);
             good = await Goods.create({
-                user_id: ctx.request.body.user_id,
+                user_id: parseInt(ctx.request.body.user_id),
                 good_id: count + 1,
                 name: body.name,
                 category: body.category,
@@ -805,7 +801,7 @@ router.post('/add_good', async (ctx, next) => {
             });
         } else {
             good = await Goods.update({
-                user_id: ctx.request.body.user_id,
+                user_id: parseInt(ctx.request.body.user_id),
                 good_id: parseInt(body.good_id),
                 name: body.name,
                 category: body.category,

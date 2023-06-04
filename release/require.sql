@@ -16,7 +16,6 @@ CREATE TABLE `user` (
     `email` VARCHAR(63) NOT NULL,
     `phone` VARCHAR(63) NOT NULL,
     `gender` VARCHAR(63) NOT NULL,
-    `birthday` DATE NOT NULL,
     `address` VARCHAR(63) NOT NULL,
     `is_admin` INT NOT NULL DEFAULT 0,
     PRIMARY KEY (`user_id`)
