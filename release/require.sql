@@ -1,7 +1,7 @@
 create database if not exists `online_book`;
 use online_book;
 
-drop table if exists `good`;
+drop table if exists `goods`;
 drop table if exists `booking_history`;
 drop table if exists `plane`;
 drop table if exists `room`;
@@ -86,6 +86,7 @@ CREATE TABLE `comments` (
 );
 
 CREATE TABLE `goods` (
+    `user_id` INT NOT NULL,
     `good_id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(63) NOT NULL,
     location VARCHAR(63) NOT NULL,
@@ -95,5 +96,6 @@ CREATE TABLE `goods` (
     `stock` INT NOT NULL DEFAULT 0,
     `sale` INT NOT NULL DEFAULT 0,
     `description` VARCHAR(511) NOT NULL,
-    PRIMARY KEY (`good_id`)
+    PRIMARY KEY (`good_id`),
+    FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );

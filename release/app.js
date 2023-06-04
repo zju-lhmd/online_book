@@ -8,8 +8,8 @@ const static_file = require('koa-static')
 const Router=require('koa-router')
 const bodyParser = require('koa-body')
 const Sequelize = require('sequelize')
-const { prompt } = require('message-box');
-const { success, info } = require('message');
+// const { prompt } = require('message-box');
+// const { success, info } = require('message');
 const {Op} = require("sequelize");
 const router= new Router()
 const app = new koa()
@@ -269,6 +269,14 @@ const Comments = sequelize.define('comments', {
 Comments.sync({force:false})
 
 const Goods = sequelize.define('goods', {
+    user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'user',
+            key: 'user_id'
+        }
+    },
     goods_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -311,7 +319,7 @@ const Goods = sequelize.define('goods', {
     }
 }, {
     timestamps: false,
-    freezeTableName:true
+    freezeTableName: true
 });
 Comments.sync({force:false})
 
@@ -334,10 +342,9 @@ router.post('/hotel_search', async (ctx, next) => {
                 [Op.like]: '%' + body.location + '%'
             };
         }
-        const hotels = await Hotel.findAll({
+        ctx.body = await Hotel.findAll({
             where: whereClause
         });
-        ctx.body = hotels;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -758,7 +765,7 @@ router.post('/search_good', async (ctx, next) => {
         const body = ctx.request.body;
         console.log(body);
 
-        const hotels = await Hotel.findAll({
+        ctx.body = await Goods.findAll({
             where: {
                 name: {
                     [Op.like]: '%' + body.name + '%'
@@ -768,25 +775,101 @@ router.post('/search_good', async (ctx, next) => {
                 }
             }
         });
-
-        const planes = await Plane.findAll({
-            where: {
-                company: {
-                    [Op.like]: '%' + body.keyword + '%'
-                }
-            }
-        });
-
-        const result = {
-            hotels,
-            planes
-        };
-
-        ctx.body = result;
         await next();
     } catch (e) {
         ctx.body = 'error';
         console.log('search_good error');
+    }
+});
+
+router.post('/add_good', async (ctx, next) => {
+    try {
+        const body = ctx.request.body.data;
+        console.log(body);
+
+        let good;
+        if(body.good_id === -1) {
+            const count = await Goods.count();
+            console.log(count);
+            good = await Goods.create({
+                user_id: ctx.request.body.user_id,
+                good_id: count + 1,
+                name: body.name,
+                category: body.category,
+                location: body.location,
+                sale: 0,
+                price: parseInt(body.price),
+                stock: parseInt(body.stock),
+                discount: parseInt(body.discount),
+                description: body.description
+            });
+        } else {
+            good = await Goods.update({
+                user_id: ctx.request.body.user_id,
+                good_id: parseInt(body.good_id),
+                name: body.name,
+                category: body.category,
+                location: body.location,
+                sale: 0,
+                price: parseInt(body.price),
+                stock: parseInt(body.stock),
+                discount: parseInt(body.discount),
+                description: body.description
+            }, {
+                where: {
+                    good_id: body.good_id
+                }
+            });
+        }
+        console.log(good);
+        ctx.body = 'success';
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('add_good error');
+    }
+});
+
+router.post('/delete_good', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        const good = await Goods.findOne({
+            where: {
+                good_id: body.good_id,
+                user_id: body.user_id
+            }
+        });
+
+        if (good) {
+            await good.destroy();
+            ctx.body = 'success';
+        } else {
+            ctx.body = 'no such good';
+        }
+
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('delete_good error');
+    }
+});
+
+router.post('/get_seller_goods', async (ctx, next) => {
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+
+        ctx.body = await Goods.findAll({
+            where: {
+                user_id: body.user_id
+            }
+        });
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('get_seller_goods error');
     }
 });
 
