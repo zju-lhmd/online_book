@@ -31,21 +31,21 @@ let data:Hotel_data[] =[];
 let special_datas:Hotel_data[]=[];
 
 //测试用
-for(var i:number=1;i<=100;i++){
-    let da:Hotel_data={
-        hotel_id:1,
-        name:i.toString(),
-        location:"杭州市三墩镇xxx路",
-        phone:"12345678901",
-        star:Math.random()*5,
-        discount:0.7,
-        rator_number:5,
-        overall_ratings:23,
-        price_min:Math.random()*200+100,
-        score:Math.random()*5,
-    }
-    data.push(da);
-}
+// for(var i:number=1;i<=100;i++){
+//     let da:Hotel_data={
+//         hotel_id:1,
+//         name:i.toString(),
+//         location:"杭州市三墩镇xxx路",
+//         phone:"12345678901",
+//         star:Math.random()*5,
+//         discount:0.7,
+//         rator_number:5,
+//         overall_ratings:23,
+//         price_min:Math.random()*200+100,
+//         score:Math.random()*5,
+//     }
+//     data.push(da);
+// }
 
 export let datas=reactive(data);
 export let special_data=reactive(special_datas);
