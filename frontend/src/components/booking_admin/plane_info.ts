@@ -33,28 +33,28 @@ export const plane_data=reactive(plane)
 export let plane_datas=reactive(planes)
 
 // 测试
-plane_datas.push({
-    plane_id:1,
-    start_location:"asdasd",
-    end_location:"gfdg",
-    company:"adfgdsf",
-    start_time:today,
-    end_time:today,
-    price:0,
-    discount:1,
-    stock:0,
-})
-plane_datas.push({
-    plane_id:1,
-    start_location:"asdasd",
-    end_location:"gfdg",
-    company:"adfgdsf",
-    start_time:today,
-    end_time:today,
-    price:0,
-    discount:1,
-    stock:0,
-})
+// plane_datas.push({
+//     plane_id:1,
+//     start_location:"asdasd",
+//     end_location:"gfdg",
+//     company:"adfgdsf",
+//     start_time:today,
+//     end_time:today,
+//     price:0,
+//     discount:1,
+//     stock:0,
+// })
+// plane_datas.push({
+//     plane_id:1,
+//     start_location:"asdasd",
+//     end_location:"gfdg",
+//     company:"adfgdsf",
+//     start_time:today,
+//     end_time:today,
+//     price:0,
+//     discount:1,
+//     stock:0,
+// })
 
 export const plane_list_init=(data:Plane_data[])=>{
     planes=data

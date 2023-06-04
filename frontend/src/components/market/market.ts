@@ -24,14 +24,14 @@ export interface Good_info{
 let goods:Good_info[]=[]
 let good:Good_info={
     good_id:-1,
-    name:"asda",
-    category:"123",
-    location:"asdas",
+    name:"",
+    category:"",
+    location:"",
     sales:0,
     price:0,
     discount:1,
     stock:0,
-    description:"asdasdas"
+    description:""
 }
 export const goods_info=reactive(goods)
 export const good_detail=reactive(good)
@@ -43,36 +43,36 @@ export const Get_detail=(data:Good_info)=>{
 }
 
 //测试
-goods.push({
-    good_id:1,
-    name:"asdas",
-    category:"123",
-    location:"asda",
-    sales:0,
-    price:0,
-    discount:1,
-    stock:0,
-    description:""
-})
-goods.push({
-    good_id:2,
-    name:"asdas",
-    category:"123",
-    location:"asda",
-    sales:0,
-    price:0,
-    discount:1,
-    stock:0,
-    description:""
-})
-goods.push({
-    good_id:3,
-    name:"asdas",
-    category:"123",
-    location:"asda",
-    sales:0,
-    price:0,
-    discount:1,
-    stock:0,
-    description:""
-})
+// goods.push({
+//     good_id:1,
+//     name:"asdas",
+//     category:"123",
+//     location:"asda",
+//     sales:0,
+//     price:0,
+//     discount:1,
+//     stock:0,
+//     description:""
+// })
+// goods.push({
+//     good_id:2,
+//     name:"asdas",
+//     category:"123",
+//     location:"asda",
+//     sales:0,
+//     price:0,
+//     discount:1,
+//     stock:0,
+//     description:""
+// })
+// goods.push({
+//     good_id:3,
+//     name:"asdas",
+//     category:"123",
+//     location:"asda",
+//     sales:0,
+//     price:0,
+//     discount:1,
+//     stock:0,
+//     description:""
+// })

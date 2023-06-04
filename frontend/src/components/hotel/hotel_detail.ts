@@ -17,17 +17,17 @@ export interface Hotel_detail_data{
 //查看详情获得当前酒店的所有信息
 //测试用
 let hotel_detail:Hotel_detail_data={
-    hotel_id:1,
-    name:"asdasda",
-    location:"asdads",
-    phone:"asdsad",
-    star:4,
-    discount:0.7,
+    hotel_id:-1,
+    name:"",
+    location:"",
+    phone:"",
+    star:0,
+    discount:1,
     rator_number:0,
     overall_ratings:0,
     score:4.5,
-    description:"dagadfgafga",
-    comment:"adfgafgadfga|||asfe|||asfsdf|||wefwef3w|||qwoejqwopwrjq|||zxkmckzlxmxc|||asdojaspo",
+    description:"",
+    comment:"",
 };
 export const hotel_detail_data = ref(hotel_detail)
 interface Room{
@@ -38,24 +38,24 @@ interface Room{
 let room:Room[]=[];
 
 //测试用
-let room1:Room=({
-    type:"大床房",
-    price:100,
-    stock:30,
-})
-let room2:Room=({
-    type:"标准房",
-    price:120,
-    stock:3021,
-})
-let room3:Room=({
-    type:"套房",
-    price:200,
-    stock:0,
-})
-room.push(room1);
-room.push(room2);
-room.push(room3);
+// let room1:Room=({
+//     type:"大床房",
+//     price:100,
+//     stock:30,
+// })
+// let room2:Room=({
+//     type:"标准房",
+//     price:120,
+//     stock:3021,
+// })
+// let room3:Room=({
+//     type:"套房",
+//     price:200,
+//     stock:0,
+// })
+// room.push(room1);
+// room.push(room2);
+// room.push(room3);
 
 //房型
 export const rooms=reactive(room);

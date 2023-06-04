@@ -38,31 +38,31 @@ export let plane=reactive(plane_);
 export let special_plane=reactive(special_plane_);
 
 //测试
-let today:Date=new Date;
-let date1:Date=new Date;
-date1.setTime(today.getTime()+1000*3600*1);
-let date2:Date=new Date;
-date2.setTime(today.getTime()+1000*3600*2);
-let date3:Date=new Date;
-date3.setTime(today.getTime()+1000*3600*3);
-let date4:Date=new Date;
-date4.setTime(today.getTime()+1000*3600*4);
-plane_search_data.push({plane_id:1,
-    start_location:"上海",end_location:"杭州",company:"南方航空",
-    start_time:today,end_time:date1,price:100,discount:1,stock:30,
-})
-plane_search_data.push({plane_id:1,
-    start_location:"上海",end_location:"温州",company:"南方航空",
-    start_time:today,end_time:date4,price:400,discount:0.5,stock:10,
-})
-plane_search_data.push({plane_id:1,
-    start_location:"上海",end_location:"杭州",company:"东方航空",
-    start_time:today,end_time:date2,price:150,discount:1,stock:50,
-})
-plane_search_data.push({plane_id:1,
-    start_location:"杭州",end_location:"温州",company:"东方航空",
-    start_time:date3,end_time:date4,price:150,discount:1,stock:50,
-})
+// let today:Date=new Date;
+// let date1:Date=new Date;
+// date1.setTime(today.getTime()+1000*3600*1);
+// let date2:Date=new Date;
+// date2.setTime(today.getTime()+1000*3600*2);
+// let date3:Date=new Date;
+// date3.setTime(today.getTime()+1000*3600*3);
+// let date4:Date=new Date;
+// date4.setTime(today.getTime()+1000*3600*4);
+// plane_search_data.push({plane_id:1,
+//     start_location:"上海",end_location:"杭州",company:"南方航空",
+//     start_time:today,end_time:date1,price:100,discount:1,stock:30,
+// })
+// plane_search_data.push({plane_id:1,
+//     start_location:"上海",end_location:"温州",company:"南方航空",
+//     start_time:today,end_time:date4,price:400,discount:0.5,stock:10,
+// })
+// plane_search_data.push({plane_id:1,
+//     start_location:"上海",end_location:"杭州",company:"东方航空",
+//     start_time:today,end_time:date2,price:150,discount:1,stock:50,
+// })
+// plane_search_data.push({plane_id:1,
+//     start_location:"杭州",end_location:"温州",company:"东方航空",
+//     start_time:date3,end_time:date4,price:150,discount:1,stock:50,
+// })
 
 
 //处理函数
