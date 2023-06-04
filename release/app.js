@@ -81,6 +81,10 @@ const Hotel = sequelize.define('hotel', {
         type: Sequelize.STRING(63),
         allowNull: false
     },
+    phone: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
     star_rating: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -607,10 +611,10 @@ router.post('/add_hotel', async (ctx, next) => {
                 // hotel_id: count + 1,
                 name: body.hotel.name,
                 location: body.hotel.location,
+                phone: body.hotel.phone,
                 star_rating: parseInt(body.hotel.star),
                 score_total: 0,
                 score_count: 0,
-                stock: body.hotel.stock,
                 discount: parseInt(body.hotel.discount),
                 description: body.hotel.description
             });
@@ -619,10 +623,10 @@ router.post('/add_hotel', async (ctx, next) => {
                 hotel_id: parseInt(body.hotel.hotel_id),
                 name: body.hotel.name,
                 location: body.hotel.location,
+                phone: body.hotel.phone,
                 star_rating: parseInt(body.hotel.star),
                 score_total: 0,
                 score_count: 0,
-                stock: body.hotel.stock,
                 discount: parseInt(body.hotel.discount),
                 description: body.hotel.description
             }, {
@@ -632,7 +636,7 @@ router.post('/add_hotel', async (ctx, next) => {
             });
         }
 
-        const rooms = body.hotel.rooms;
+        const rooms = body.rooms;
         for (const room of rooms) {
             await Room.create({
                 hotel_id: parseInt(hotel.hotel_id),

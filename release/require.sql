@@ -25,6 +25,7 @@ CREATE TABLE `hotel` (
     `hotel_id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(63) NOT NULL,
     `location` VARCHAR(63) NOT NULL,
+    `phone` VARCHAR(63) NOT NULL,
     `star_rating` INT NOT NULL,
     `score_total` INT NOT NULL DEFAULT 0,
     `score_count` INT NOT NULL DEFAULT 0,
