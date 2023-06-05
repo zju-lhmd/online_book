@@ -342,9 +342,11 @@ router.post('/hotel_search', async (ctx, next) => {
                 [Op.like]: '%' + body.location + '%'
             };
         }
-        ctx.body = await Hotel.findAll({
+        let hotel = await Hotel.findAll({
             where: whereClause
         });
+        ctx.body = hotel;
+        console.log(hotel);
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -764,7 +766,8 @@ router.post('/search_good', async (ctx, next) => {
         const body = ctx.request.body;
         console.log(body);
 
-        ctx.body = await Goods.findAll({
+        let good;
+        good = await Goods.findAll({
             where: {
                 name: {
                     [Op.like]: '%' + body.name + '%'
@@ -774,6 +777,9 @@ router.post('/search_good', async (ctx, next) => {
                 }
             }
         });
+        console.log(good);
+        ctx.body = good;
+
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -860,11 +866,14 @@ router.post('/get_seller_goods', async (ctx, next) => {
         const body = ctx.request.body;
         console.log(body);
 
-        ctx.body = await Goods.findAll({
+        let good;
+        good = await Goods.findAll({
             where: {
                 user_id: body.user_id
             }
         });
+        console.log(good);
+        ctx.body = good;
         await next();
     } catch (e) {
         ctx.body = 'error';
