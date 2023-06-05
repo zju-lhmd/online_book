@@ -669,8 +669,8 @@ router.post('/add_hotel', async (ctx, next) => {
                 location: body.hotel.location,
                 phone: body.hotel.phone,
                 star_rating: parseInt(body.hotel.star),
-                score_total: parseInt(body.hotel.overall_ratings),
-                score_count: parseInt(body.hotel.rator_number),
+                score_total: 0,
+                score_count: 0,
                 discount: parseInt(body.hotel.discount),
                 description: body.hotel.description
             }, {
@@ -685,8 +685,8 @@ router.post('/add_hotel', async (ctx, next) => {
                 }
             });
         }
+
         const rooms = body.rooms;
-        console.log(hotel.hotel_id)
         for (const room of rooms) {
             await Room.create({
                 hotel_id: parseInt(hotel.hotel_id),
@@ -846,7 +846,6 @@ router.post('/add_good', async (ctx, next) => {
         if(body.good_id === -1) {
             // const count = await Goods.count();
             // console.log(count);
-            console.log(body.name)
             good = await Goods.create({
                 user_id: parseInt(ctx.request.body.user_id),
                 // good_id: count + 1,
