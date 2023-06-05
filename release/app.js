@@ -1,5 +1,5 @@
 // Author: Wang Weijie
-// 本文件为服务器端主文件，使用koa框架，使用sequelize框架连接数据库
+// 本文件为服务器端主文件，使用koa框架，使用sequelize连接数据库
 
 // koa框架使用的中间件
 const koa = require('koa')
@@ -8,8 +8,6 @@ const static_file = require('koa-static')
 const Router=require('koa-router')
 const bodyParser = require('koa-body')
 const Sequelize = require('sequelize')
-// const { prompt } = require('message-box');
-// const { success, info } = require('message');
 const {Op} = require("sequelize");
 const router= new Router()
 const app = new koa()
@@ -19,7 +17,7 @@ const sequelize = new Sequelize('online_book', 'root', 'qwe987', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
-        max: 500,
+        max: 1000,
         min: 0,
         idle: 30000
     }
@@ -345,8 +343,26 @@ router.post('/hotel_search', async (ctx, next) => {
         let hotel = await Hotel.findAll({
             where: whereClause
         });
-        ctx.body = hotel;
-        console.log(hotel);
+        let room_min_price = [];
+        for (let i = 0; i < hotel.length; i++) {
+            let room = await Room.findAll({
+                where: {
+                    hotel_id: hotel[i].hotel_id
+                }
+            });
+            let min_price = 1000000;
+            for (let j = 0; j < room.length; j++) {
+                if (room[j].price < min_price) {
+                    min_price = room[j].price;
+                }
+            }
+            room_min_price.push(min_price);
+        }
+        ctx.body = {
+            hotel: hotel,
+            room_min_price: room_min_price
+        };
+        console.log(ctx.body.hotel);
         await next();
     } catch (e) {
         ctx.body = 'error';
