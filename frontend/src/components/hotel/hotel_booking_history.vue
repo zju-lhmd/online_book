@@ -89,7 +89,7 @@ const comment_submit=(order:Hotel_booking_history)=>{
         user:order.user,
         comment:order.comment
     }
-    axios.post('http://localhost:3400/comment_submit',data).then(function(response){
+    axios.post('/comment_submit',data).then(function(response){
         
     })
 }
@@ -99,7 +99,7 @@ const score_submit=(order:Hotel_booking_history)=>{
         user:order.user,
         score:order.score
     }
-    axios.post('http://localhost:3400/score_submit',data).then(function(response){
+    axios.post('/score_submit',data).then(function(response){
         order.has_score=true;
     })
 }

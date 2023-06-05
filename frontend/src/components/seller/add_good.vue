@@ -125,7 +125,7 @@ const on_add_good_Submit=()=>{
         user_id:1,
         data:good_detail
     }
-    axios.post('http://localhost:3400/add_good',data).then(function(response){
+    axios.post('/add_good',data).then(function(response){
         Good_Init()
     })
 }

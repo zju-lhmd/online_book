@@ -98,7 +98,7 @@ const hotel_booking_history=()=>{//查询酒店预订历史信息
   var data={
     user:1
   }
-  axios.post('http://localhost:3400/get_hotel_booking_history',data).then(function(response){
+  axios.post('/get_hotel_booking_history',data).then(function(response){
     hotel_order_Init(response.data);
   })
 }
@@ -107,7 +107,7 @@ const plane_booking_history=()=>{//查询航班预订历史信息
   var data={
     user:1
   }
-  axios.post('http://localhost:3400/get_plane_booking_history',data).then(function(response){
+  axios.post('/get_plane_booking_history',data).then(function(response){
     plane_order_Init(response.data);
   })
 }
@@ -124,7 +124,7 @@ const seller_goods=()=>{
   var data={
     user_id:1
   }
-  axios.post('http://localhost:3400/get_seller_goods',data).then(function(response){
+  axios.post('/get_seller_goods',data).then(function(response){
     Get_seller_good_data(response.data)
   })
 }

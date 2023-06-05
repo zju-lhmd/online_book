@@ -34,9 +34,9 @@
         </el-form>
         <el-row>
             <el-col style="margin:auto;" span="12" :offset="6">
-                <RouterLink to=/component/hotel_list>
+                <!-- <RouterLink to=/component/hotel_list> -->
                     <el-button type="primary" style="" @click="on_hotel_Submit" size="large" :icon="Search">查询</el-button>
-                </RouterLink>
+                <!-- </RouterLink> -->
             </el-col>
         </el-row>
     </div>
@@ -44,20 +44,25 @@
   
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView , useRouter } from 'vue-router'
 import { hotel_search } from "@/components/hotel/hotel_search"
 import { datas, data_init } from "@/components/hotel/hotel_list"
 import router from '@/router'
 import axios from 'axios'
 import { Search } from '@element-plus/icons-vue'
 //与后端交互接收搜索结果
+
 const on_hotel_Submit = () => {
     let nd: number = 86400000;// 1000*24*60*60一天的毫秒数
     let time: number = (hotel_search.date2.getTime() - hotel_search.date1.getTime()) / 1000 / 24 / 60 / 60;
     hotel_search.time = Math.ceil(time);//计算入住天数
-    axios.post('http://localhost:3400/hotel_search', hotel_search).then(function (response) {
-        data_init(response.data);
+    console.log(1)
+    axios.post('/hotel_search', hotel_search).then(function (response) {
+        // console.log(response)
+        data_init(response)
+        router.push({path:'/component/hotel_list'})
     })
+        // router.push({path:'/component/hotel_list'})
 }
 
 //入住日期必选 默认为今天 设置无法选中过去日期

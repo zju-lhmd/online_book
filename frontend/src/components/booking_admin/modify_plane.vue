@@ -87,11 +87,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { plane_data } from "@/components/booking_admin/plane_info"
+import { plane } from "@/components/booking_admin/plane_info"
 import axios from 'axios';
-
+let plane_data=ref(plane)
 const on_add_plane_Submit=()=>{
-    axios.post('http://localhost:3400/add_plane',plane_data).then(function(response){
+    axios.post('/add_plane',plane_data.value).then(function(response){
         
     })
 }

@@ -30,9 +30,7 @@
                         <br/>
                     </el-col>
                     <el-col :span="4"  style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
-                        <RouterLink to="/component/admin_modify_hotel">
-                            <el-button type="primary"  @click="on_modify_hotel(index)" style="margin-bottom: 20px;">修改</el-button>
-                        </RouterLink>
+                        <el-button type="primary"  @click="on_modify_hotel(index)" style="margin-bottom: 20px;">修改</el-button>
                         <el-button type="primary"  @click="on_delete_hotel_Submit(index)">删除</el-button>
                     </el-col>
                 </el-row>
@@ -54,16 +52,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { hotel_datas , modify_hotel , hotel_room_init } from "@/components/booking_admin/hotel_info"
+import { hotel_datas , hotel_detail } from "@/components/booking_admin/hotel_info"
+import router from '@/router';
 import axios from 'axios';
 
 const on_modify_hotel=(index:number)=>{
-    modify_hotel(index)
     var hotel_id={
-        hotel:hotel_datas[index].hotel_id
+        hotel_id:hotel_datas[index].hotel_id
     }
-    axios.post('http://localhost:3400/get_hotel_detail',hotel_id).then(function(response){
-        hotel_room_init(response.data.rooms)
+    axios.post('/get_hotel_detail',hotel_id).then(function(response){
+        hotel_detail(response.data)
+        router.push({path:'/component/admin_modify_hotel'})
     })
     //从后端获取改酒店信息和房型 放入rooms
 }
@@ -73,10 +72,12 @@ const on_delete_hotel_Submit=(index:number)=>{
     var hotel_id={
         hotel_id:hotel.hotel_id
     }
-    axios.post('http://localhost:3400/delete_hotel',hotel_id).then(function(response){
+    axios.post('/delete_hotel',hotel_id).then(function(response){
         
     })
     hotel_datas.splice(index,1)
+    page.value=2;
+    page.value=1;
     total.value=hotel_datas.length
 }
 

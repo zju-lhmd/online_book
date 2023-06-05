@@ -7,7 +7,7 @@
         <el-row class="Title" justify="center">
             酒店发布
         </el-row>
-        <el-row class="card-item-wrap">
+        <el-row id="hotel_data" class="card-item-wrap">
             <el-col :span="12">
                 <el-form :model="hotel_data" label-width="15%" style="text-align: center;">
                     
@@ -61,7 +61,7 @@
                 <el-icon><Plus /></el-icon>
             </el-button>
         </el-row>
-        <el-row class="Rooms" justify="center">
+        <el-row id="rooms" class="Rooms" justify="center">
             <el-col v-for="(room,index) in rooms" :span="12" style="border: 2px solid #dadfe6;" >
                 <el-form :model="room" style="text-align: center;margin-top: 10px;">
                     <el-form-item>
@@ -98,39 +98,47 @@
   
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { VueElement, ref , getCurrentInstance } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { hotel_data, rooms , hotel_init } from "@/components/booking_admin/hotel_info"
+import { hotel , hotel_init , Rooms,  type Room } from "@/components/booking_admin/hotel_info"
 import axios from 'axios';
-
-interface Room {
-    type: string,
-    price: number,
-    stock: number,
-}
-
+let rooms=ref(Rooms)
+let hotel_data=ref(hotel)
 const on_add_room=()=>{
     let room:Room={
         type: "",
         price: 0,
         stock: 0,
     }
-    rooms.push(room)
+    rooms.value.push(room)
 }
 let index=ref(0)
 const on_delete_room=(index:number)=>{
     console.log(index)
-    rooms.splice(index,1)
+    rooms.value.splice(index,1)
 }
 
 const on_add_hotel_Submit=()=>{
     var data={
-        hotel:hotel_data,
-        rooms:rooms
+        hotel:hotel_data.value,
+        rooms:rooms.value
     }
-    axios.post('http://localhost:3400/add_hotel',data).then(function(response){
-        hotel_init()
+    axios.post('/add_hotel',data).then(function(response){
+        rooms.value=[]
+        hotel_data.value={
+            hotel_id:-1,
+            name:"",
+            location:"",
+            phone:"",
+            star:0,
+            discount:1,
+            description:"",
+            score:1,
+            rator_number:1,
+            overall_ratings:1,
+        }
     })
+    // hotel_init()
 }
 
 </script>

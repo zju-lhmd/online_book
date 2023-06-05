@@ -26,10 +26,7 @@
 
                 <el-col v-for="(good,key) in goods_info.slice((page - 1) * pageSize, page * pageSize)" :key="good.good_id" :span="12" style="border: 2px solid #dadfe6;">
                     <el-row style="margin: 10px;">
-                        <el-col :span="8" style="border-right: 2px solid #dadfe6;">
-                            插入图片
-                        </el-col>
-                        <el-col :span="10">
+                        <el-col :span="14" :offset="2">
                             <el-text style="font-size: 20px;color: black;margin-right: 20px;">名称</el-text>
                             <el-text style="font-size: 20px;color: black;">{{ good.name }}</el-text>
                             <br />
@@ -41,7 +38,7 @@
                             <br />
 
                         </el-col>
-                        <el-col :span="6"
+                        <el-col :span="8"
                             style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
                             <el-text style="font-size: 20px;color: black;">价格</el-text>
                             <br />
@@ -116,7 +113,7 @@ const category = [
 
 const on_good_Submit = () => {
     good_search.category = category_value.value
-    axios.post('http://localhost:3400/search_good', good_search).then(function (response) {
+    axios.post('/search_good', good_search).then(function (response) {
         Get_data(response.data)
     })
 }

@@ -30,41 +30,41 @@ export interface Hotel_data{
 let data:Hotel_data[] =[];
 let special_datas:Hotel_data[]=[];
 
-//测试用
-// for(var i:number=1;i<=100;i++){
-//     let da:Hotel_data={
-//         hotel_id:1,
-//         name:i.toString(),
-//         location:"杭州市三墩镇xxx路",
-//         phone:"12345678901",
-//         star:Math.random()*5,
-//         discount:0.7,
-//         rator_number:5,
-//         overall_ratings:23,
-//         price_min:Math.random()*200+100,
-//         score:Math.random()*5,
-//     }
-//     data.push(da);
-// }
-
 export let datas=reactive(data);
 export let special_data=reactive(special_datas);
 
-export const data_init=(hotel:Hotel_data[])=>{
-    data=hotel
-    data.sort((n1,n2)=>{
+export const data_init=(hotel:any)=>{
+    datas=[]
+    for(let i:number=0;i<hotel.data.hotel.length;i++){
+        datas.push({
+            hotel_id:hotel.data.hotel[i].hotel_id,
+            name:hotel.data.hotel[i].name,
+            location:hotel.data.hotel[i].location,
+            phone:hotel.data.hotel[i].phone,
+            star:hotel.data.hotel[i].star_rating,
+            discount:hotel.data.hotel[i].discount,
+            rator_number:hotel.data.hotel[i].score_count,
+            overall_ratings:hotel.data.hotel[i].score_total,
+            price_min:hotel.data.room_min_price[i],
+            score:0,
+        })
+        if(hotel.data.hotel[i].score_count!=0)
+            datas[i].score=hotel.data.hotel[i].score_total/hotel.data.hotel[i].score_count;
+    }
+    
+    datas.sort((n1,n2)=>{
+        if(n1.discount===n2.discount)
+            return n1.price_min-n2.price_min;
+        else return n1.discount-n2.discount;
+    })
+    special_data=[]
+    for(var i:number=0;i<Math.min(4,datas.length);i++)
+        special_data.push(datas[i]);
+    datas.sort((n1,n2)=>{
         if(n1.price_min!=n2.price_min)
             return n1.price_min-n2.price_min;
         else if(n1.star!=n2.star)
             return n2.star-n1.star;
         else return n2.score-n1.score;
     })
-    data.sort((n1,n2)=>{
-        if(n1.discount===n2.discount)
-            return n1.price_min-n2.price_min;
-        else return n1.discount-n2.discount;
-    })
-    special_data=[]
-    for(var i:number=0;i<4;i++)
-        special_data.push(data[i]);
 }

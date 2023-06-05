@@ -10,9 +10,6 @@
         <el-row>
 
             <el-col :span="8" style="border-right: 1px solid #dadfe6;">
-                <div style="padding-bottom: 10px;">
-                    插入图片
-                </div>
                 <el-text style="font-size: large;">
                     {{ good_detail.description }}
                 </el-text>

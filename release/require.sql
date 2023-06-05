@@ -25,6 +25,7 @@ CREATE TABLE `hotel` (
     `hotel_id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(63) NOT NULL,
     `location` VARCHAR(63) NOT NULL,
+    `phone` VARCHAR(63) NOT NULL,
     `star_rating` INT NOT NULL,
     `score_total` INT NOT NULL DEFAULT 0,
     `score_count` INT NOT NULL DEFAULT 0,
@@ -97,4 +98,12 @@ CREATE TABLE `goods` (
     `description` VARCHAR(511) NOT NULL,
     PRIMARY KEY (`good_id`),
     FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+);
+
+INSERT INTO `plane` VALUES (
+    -1, 'UNDEFINED', '2023-01-01 00:00:00', '2023-01-01 00:00:00', 'UNDEFINED', 'UNDEFINED', -1, -1, 100
+);
+
+INSERT INTO `hotel` VALUES (
+    -1, 'UNDEFINED', 'UNDEFINED', 'UNDEFINED', -1, -1, -1, -1, 'UNDEFINED'
 );

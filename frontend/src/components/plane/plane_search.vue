@@ -35,9 +35,7 @@
                 <el-date-picker v-model="plane_search.date" type="date" :disabled-date="disabledDate" placeholder="Pick a date" style="width: 60%" />
             </el-row>
             
-            <RouterLink to=/component/plane_list>
-                <el-button type="primary" style="width: 120px;" @click="on_plane_Submit">查询</el-button>
-            </RouterLink>
+            <el-button type="primary" style="width: 120px;" @click="on_plane_Submit">查询</el-button>
 
         </el-col>
     </div>
@@ -61,8 +59,9 @@ const swap_location=()=>{
 
 //与后端交互接收搜索结果 传输到plane_search_data中
 const on_plane_Submit = () => {
-    axios.post('http://localhost:3400/plane_search',plane_search).then(function(response){
+    axios.post('/plane_search',plane_search).then(function(response){
         plane_init(response.data);
+        router.push({path:'/component/plane_list'})
     })
 }
 

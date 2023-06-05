@@ -61,27 +61,26 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { plane_datas , modify_plane } from "@/components/booking_admin/plane_info"
+import { planes , modify_plane } from "@/components/booking_admin/plane_info"
 import axios from 'axios';
-
+let plane_datas=ref(planes)
 const on_modify_plane=(index:number)=>{
     modify_plane(index)
 }
 
 const on_delete_plane_Submit=(index:number)=>{
-    var plane=plane_datas[index]//传回后端删除
+    var plane=plane_datas.value[index]//传回后端删除
     var plane_id={
         plane_id:plane.plane_id
     }
-    axios.post('http://localhost:3400/delete_plane',plane_id).then(function(response){
+    axios.post('/delete_plane',plane_id).then(function(response){
         
     })
-    plane_datas.splice(index,1)
-    total.value=plane_datas.length
+    plane_datas.value.splice(index,1)
+    total.value=plane_datas.value.length
 }
-
 const page = ref(1)
-const total = ref(plane_datas.length)
+const total = ref(plane_datas.value.length)
 const pageSize = ref(8)
 //分页函数
 const handleSizeChange = (val:number) => {

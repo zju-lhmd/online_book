@@ -20,15 +20,9 @@
             <el-form-item label="航班公司">
                 <el-input v-model="plane_search.company" style="caret-color: auto;"/>
             </el-form-item>
-
-            <el-form-item label="小于时间点">
-                <el-date-picker v-model="plane_search.time" type="datetime" placeholder="Select date and time" />
-            </el-form-item>
             
             <el-form-item>
-                <RouterLink to=/component/admin_list_plane>
-                    <el-button type="primary" style="width: 120px;" @click="on_search_plane_Submit">查询</el-button>
-                </RouterLink>
+                <el-button type="primary" style="width: 120px;" @click="on_search_plane_Submit">查询</el-button>
             </el-form-item>
 
         </el-form>
@@ -41,18 +35,19 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { plane_list_init } from '@/components/booking_admin/plane_info'
+import router from '@/router';
 import axios from 'axios';
 
 let plane_search=ref({
     start_location:"",
     end_location:"",
     company:"",
-    time:Date(),
 })
 
 const on_search_plane_Submit=()=>{
-    axios.post('http://localhost:3400/plane_search',plane_search).then(function(response){
+    axios.post('/plane_search',plane_search.value).then(function(response){
         plane_list_init(response.data);
+        router.push({path:'/component/admin_list_plane'})
     })
 }
 

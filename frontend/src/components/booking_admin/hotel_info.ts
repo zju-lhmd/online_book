@@ -12,18 +12,17 @@ interface Hotel_data{
     overall_ratings:number,
     score:number,
     description:string,
-    comment:string,
 }
 
 //房型信息
-interface Room{
+export interface Room{
     type:string,
     price:number,
     stock:number,
 }
 
 
-let hotel:Hotel_data={
+export let hotel:Hotel_data={
     hotel_id:-1,
     name:"",
     location:"",
@@ -31,72 +30,40 @@ let hotel:Hotel_data={
     star:0,
     discount:1,
     description:"",
-    comment:"",
     score:1,
     rator_number:1,
     overall_ratings:1,
 }
-let hotels:Hotel_data[]=[]
+const hotels:Hotel_data[]=[]
 //hotel_data为修改或增加的酒店信息 hotel_datas为查询返回的酒店信息
 //酒店发布 -> hotel_data 为空 修改后发布
 //酒店修改 -> hotel_datas -> 选中后显示hotel_data 在基础上修改
-export let hotel_data=reactive(hotel)
 export let hotel_datas=reactive(hotels)
-
-//测试
-// hotels.push({
-//     hotel_id:-1,
-//     name:"1231",
-//     location:"123123",
-//     phone:"1231231",
-//     star:3,
-//     discount:1,
-//     description:"12412431",
-//     comment:"",
-//     score:1,
-//     rator_number:1,
-//     overall_ratings:1,
-// })
-// hotels.push({
-//     hotel_id:-1,
-//     name:"1231123123",
-//     location:"123126343",
-//     phone:"123123134",
-//     star:5,
-//     discount:1,
-//     description:"1244141241412342342312431",
-//     comment:"",
-//     score:1,
-//     rator_number:1,
-//     overall_ratings:1,
-// })
-// hotels.push({
-//     hotel_id:-1,
-//     name:"asdfas1",
-//     location:"12asdfa3123",
-//     phone:"1231231",
-//     star:4,
-//     discount:1,
-//     description:"1241243asdkdasfisdljf1",
-//     comment:"",
-//     score:1,
-//     rator_number:1,
-//     overall_ratings:1,
-// })
 
 //房型信息
 //酒店发布 增加房型往里添加
 //酒店修改 选中后显示所有房型 进行修改
-let Rooms:Room[]=[]
-export let rooms=reactive(Rooms)
-// rooms.push({
-//     type:"大床房",
-//     price:100,
-//     stock:20,
-// })
+export let Rooms:Room[]=[]
 
-export const hotel_list_init=(data:Hotel_data[])=>{
-    hotels=data
+export const hotel_list_init=(hotel:any)=>{
+    hotel_datas=[]
+    console.log(hotel)
+    for(let i:number=0;i<hotel.data.hotel.length;i++){
+        hotel_datas.push({
+            hotel_id:hotel.data.hotel[i].hotel_id,
+            name:hotel.data.hotel[i].name,
+            location:hotel.data.hotel[i].location,
+            phone:hotel.data.hotel[i].phone,
+            star:hotel.data.hotel[i].star_rating,
+            discount:hotel.data.hotel[i].discount,
+            rator_number:hotel.data.hotel[i].score_count,
+            overall_ratings:hotel.data.hotel[i].score_total,
+            score:0,
+            description:"",
+        })
+        if(hotel.data.hotel[i].score_count!=0)
+            hotel_datas[i].score=hotel.data.hotel[i].score_total/hotel.data.hotel[i].score_count;
+    }
 }
 export const hotel_init=()=>{
     hotel={
@@ -107,16 +74,31 @@ export const hotel_init=()=>{
         star:0,
         discount:1,
         description:"",
-        comment:"",
         score:1,
         rator_number:1,
         overall_ratings:1,
     }
     Rooms=[]
 }
-export const modify_hotel=(index:number)=>{
-    hotel=hotel_datas[index]
-}
-export const hotel_room_init=(data:Room[])=>{
-    Rooms=data
+export const hotel_detail=(hotel_datas:any)=>{
+    console.log(hotel_datas)
+    hotel={
+        hotel_id:hotel_datas.hotel.hotel_id,
+        name:hotel_datas.hotel.name,
+        location:hotel_datas.hotel.location,
+        phone:hotel_datas.hotel.phone,
+        star:hotel_datas.hotel.star_rating,
+        discount:hotel_datas.hotel.discount,
+        rator_number:hotel_datas.hotel.score_count,
+        overall_ratings:hotel_datas.hotel.score_total,
+        score:hotel_datas.score,
+        description:hotel_datas.hotel.description,
+    }
+    Rooms=[]
+    for(let i:number=0;i<hotel_datas.room.length;i++)
+        Rooms.push({
+            type:hotel_datas.room[i].type,
+            price:hotel_datas.room[i].price,
+            stock:hotel_datas.room[i].stock,
+        })
 }

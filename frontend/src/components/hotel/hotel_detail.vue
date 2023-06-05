@@ -9,9 +9,6 @@
         <el-row>
 
             <el-col :span="8" style="border-right: 1px solid #dadfe6;">
-                <div style="padding-bottom: 10px;">
-                    插入图片
-                </div>
                 <el-text style="font-size: large;">
                     {{ hotel_detail_data.description }}
                 </el-text>
@@ -84,14 +81,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { hotel_detail_data, rooms , comments } from "@/components/hotel/hotel_detail"
+import { hotel_detail_data, rooms , comments , type Room } from "@/components/hotel/hotel_detail"
 import { hotel_search } from "@/components/hotel/hotel_search"
 
-interface Room {
-    type: string,
-    price: number,
-    stock: number,
-}
 const value = ref<Room>(rooms[0])
 const stock = ref(0);
 const price = ref(0);

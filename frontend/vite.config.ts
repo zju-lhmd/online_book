@@ -12,5 +12,8 @@ export default defineConfig({
   },
   build: {
     outDir: path.resolve(__dirname, '../release/static')
-  }
+  },
+  server: {
+    host: '0.0.0.0'
+  },
 })

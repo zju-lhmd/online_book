@@ -102,14 +102,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { hotel_data, rooms } from "@/components/booking_admin/hotel_info"
+import { hotel, Rooms , type Room } from "@/components/booking_admin/hotel_info"
 import axios from 'axios';
 
-interface Room {
-    type: string,
-    price: number,
-    stock: number,
-}
+let hotel_data=ref(hotel)
+let rooms=ref(Rooms)
 
 const on_add_room=()=>{
     let room:Room={
@@ -117,18 +114,18 @@ const on_add_room=()=>{
         price: 0,
         stock: 0,
     }
-    rooms.push(room)
+    rooms.value.push(room)
 }
 let index=ref(0)
 const on_delete_room=(index:number)=>{
     console.log(index)
-    rooms.splice(index,1)
+    rooms.value.splice(index,1)
 }
 
 const on_add_hotel_Submit=()=>{
     var data={
-        hotel:hotel_data,
-        rooms:rooms
+        hotel:hotel_data.value,
+        rooms:rooms.value
     }
     axios.post('http://localhost:3400/add_hotel',data).then(function(response){
         

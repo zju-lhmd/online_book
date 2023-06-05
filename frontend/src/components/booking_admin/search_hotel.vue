@@ -14,13 +14,11 @@
             </el-form-item>
 
             <el-form-item label="酒店名称">
-                <el-input v-model="hotel_search.name" style="caret-color: auto;"/>
+                <el-input v-model="hotel_search.hotel_name" style="caret-color: auto;"/>
             </el-form-item>
             
             <el-form-item>
-                <RouterLink to=/component/admin_list_hotel>
-                    <el-button type="primary" style="width: 120px;" @click="on_search_hotel_Submit">查询</el-button>
-                </RouterLink>
+                <el-button type="primary" style="width: 120px;" @click="on_search_hotel_Submit">查询</el-button>
             </el-form-item>
 
         </el-form>
@@ -38,15 +36,17 @@ import axios from 'axios'
 
 let hotel_search=ref({
     location:"",
-    name:"",
+    hotel_name:"",
     date1:new Date,
     date2:new Date
 })
 
 //与后端交互接收搜索结果
 const on_search_hotel_Submit = () => {
-    axios.post('http://localhost:3400/hotel_search',hotel_search).then(function(response){
-        hotel_list_init(response.data)
+    axios.post('/hotel_search',hotel_search).then(function(response){
+        console.log(response)
+        hotel_list_init(response)
+        router.push({path:'/component/admin_list_hotel'})
     })
 }
 

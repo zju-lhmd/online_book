@@ -72,11 +72,8 @@
                     <!-- 酒店查询结果 -->
                     <li v-for="(hotel_data,key) in datas.slice((page - 1) * pageSize, page * pageSize)" :key="hotel_data.name" class="list-item-target" :offset="2">
                         <el-row class="card-item-wrap">
-                            <el-col class="left" :span="5">
-                                插入图片
-                            </el-col>
                             
-                            <el-col class="middle" :span="10" align-items="left">
+                            <el-col class="middle" :span="14" align-items="left" :offset="2">
                                 <el-text class="hotel_name">{{ hotel_data.name }}</el-text>
                                 <br/><br/>
                                 <el-text class="hotel_location">{{ hotel_data.location }}</el-text>
@@ -84,7 +81,7 @@
                                 <el-text class="hotel_phone">联系电话{{ hotel_data.phone }}</el-text>
                             </el-col>
 
-                            <el-col class="right" :span="9">
+                            <el-col class="right" :span="8">
                                 <el-space direction="vertical">
                                     <div>
                                         <el-text>星级</el-text>
@@ -95,9 +92,7 @@
                                         <el-rate v-model=hotel_data.score disabled text-color="#ff9900"/>
                                     </div>
                                     <el-text>预估价格：{{ Math.floor(hotel_data.price_min * hotel_search.time * hotel_data.discount) }}元</el-text>
-                                    <RouterLink to=/component/hotel_detail>
-                                        <el-button type="primary" style="width: 120px;" @click="on_hotel_detail(hotel_data)">查看详情</el-button>
-                                    </RouterLink>
+                                    <el-button type="primary" style="width: 120px;" @click="on_hotel_detail(hotel_data)">查看详情</el-button>
                                 </el-space>
                             </el-col>
 
@@ -122,12 +117,8 @@
                     
                     <!-- 特价酒店，根据搜索情况显示 -->
                     <li  v-for="hotel_data in special_data" class="list-item-target">
-                        <el-row class="card-item-wrap">
-                            <el-col class="left" :span="14">
-                                插入图片
-                            </el-col>
-                            
-                            <el-col class="middle" :span="10" align-items="left">
+                        <el-row class="card-item-wrap">                            
+                            <el-col class="middle" :span="20" align-items="left" :offset="4">
                                 <el-text style="font-size: large;">{{ hotel_data.name }}</el-text>
                                 <br/><br/>
                                 <el-text>{{ hotel_data.location }}</el-text>
@@ -135,9 +126,8 @@
                                 <el-text>联系电话{{ hotel_data.phone }}</el-text>
                                 <br/><br/>
                                 <el-text>特价：{{ Math.floor(hotel_data.price_min * hotel_search.time * hotel_data.discount) }}元</el-text>
-                                <RouterLink to=/component/hotel_detail>
-                                    <el-button type="primary" style="width: 80px;" @click="on_hotel_detail(hotel_data)">查看详情</el-button>
-                                </RouterLink>
+                                <br/>
+                                <el-button type="primary" style="width: 80px;" @click="on_hotel_detail(hotel_data)">查看详情</el-button>
                             </el-col>
                         </el-row>
                     </li>
@@ -156,6 +146,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { hotel_search } from "@/components/hotel/hotel_search"
 import { hotel_sort, datas , special_data , data_init , type Hotel_data} from "@/components/hotel/hotel_list"
 import { hotel_detail_init , type Hotel_detail_data} from "@/components/hotel/hotel_detail"
+import router from '@/router'
 import axios from 'axios'
 
 const page = ref(1)
@@ -167,17 +158,21 @@ const on_hotel_Submit = () => {
     let nd:number =86400000;// 1000*24*60*60一天的毫秒数
     let time:number =(hotel_search.date2.getTime()-hotel_search.date1.getTime())/1000/24/60/60;
     hotel_search.time=Math.ceil(time);//计算入住天数
-    axios.post('http://localhost:3400/hotel_search',hotel_search).then(function(response){
-        data_init(response.data);
+    axios.post('/hotel_search',hotel_search).then(function(response){
+        data_init(response);
+        page.value=2;
+        page.value=1;
+        total.value=datas.length
     })
 }
 
 const on_hotel_detail=(hotel_data:Hotel_data)=>{//hotel_data是点击查看详情时当前的酒店信息 类型为Hotel_data 定义在hotel_list里
     var hotel_id={
-        hotel:hotel_data.hotel_id
+        hotel_id:hotel_data.hotel_id
     }
-    axios.post('http://localhost:3400/get_hotel_detail',hotel_id).then(function(response){
-        hotel_detail_init(response.data.hotel_detail,response.data.rooms)
+    axios.post('/get_hotel_detail',hotel_id).then(function(response){
+        hotel_detail_init(response.data)
+        router.push({path:'/component/hotel_detail'})
     })
 }
 
@@ -277,6 +272,7 @@ const sort=(type:number)=>{
             }
         })
     }
+    page.value=2;
     page.value=1;
     total.value=datas.length;
 }
@@ -330,7 +326,6 @@ li {
 }
 
 .card-item-wrap .middle {
-    border-right: 1px solid #dadfe6;
     padding-right: 16px;
 }
 

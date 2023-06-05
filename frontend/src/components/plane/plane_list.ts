@@ -27,54 +27,38 @@ interface plane_data{
 //direct为直飞航班 transfer为转机航班组，转机限制转机一次 
 //plane存储返回显示在界面上的航班数据 special_data存储返回显示在界面上的特价航班
 let plane_search_data_:plane_data[]=[]
-export let plane_search_data=reactive(plane_search_data_);
 let start:plane_data[]=[]
 let destination:plane_data[]=[]
 let direct:plane_data[][]=[]
 let transfer:plane_data[][]=[]
-let plane_:plane_data[][]=[]
-let special_plane_:plane_data[][]=[]
-export let plane=reactive(plane_);
-export let special_plane=reactive(special_plane_);
-
-//测试
-// let today:Date=new Date;
-// let date1:Date=new Date;
-// date1.setTime(today.getTime()+1000*3600*1);
-// let date2:Date=new Date;
-// date2.setTime(today.getTime()+1000*3600*2);
-// let date3:Date=new Date;
-// date3.setTime(today.getTime()+1000*3600*3);
-// let date4:Date=new Date;
-// date4.setTime(today.getTime()+1000*3600*4);
-// plane_search_data.push({plane_id:1,
-//     start_location:"上海",end_location:"杭州",company:"南方航空",
-//     start_time:today,end_time:date1,price:100,discount:1,stock:30,
-// })
-// plane_search_data.push({plane_id:1,
-//     start_location:"上海",end_location:"温州",company:"南方航空",
-//     start_time:today,end_time:date4,price:400,discount:0.5,stock:10,
-// })
-// plane_search_data.push({plane_id:1,
-//     start_location:"上海",end_location:"杭州",company:"东方航空",
-//     start_time:today,end_time:date2,price:150,discount:1,stock:50,
-// })
-// plane_search_data.push({plane_id:1,
-//     start_location:"杭州",end_location:"温州",company:"东方航空",
-//     start_time:date3,end_time:date4,price:150,discount:1,stock:50,
-// })
-
+export let plane_:plane_data[][]=[]
+export let special_plane_:plane_data[][]=[]
 
 //处理函数
-export const plane_init=(data:plane_data[])=>{
-    plane_search_data_=data
+export const plane_init=(data:any)=>{
+    plane_search_data_=[]
+    console.log(data)
+    for(let i:number=0;i<data.length;i++)
+        plane_search_data_.push({
+            plane_id:data[i].plane_id,
+            start_location:data[i].start,
+            end_location:data[i].end,
+            company:data[i].company,
+            start_time:new Date(data[i].start_time),
+            end_time:new Date(data[i].end_time),
+            price:data[i].price,
+            discount:data[i].discount,
+            stock:data[i].stock,
+        })
+        
+    console.log(plane_search_data_)
     //将航班分类 直达放入direct 出发地相同放入start 目的地相同放入destination
     direct=[]
     start=[]
     destination=[]
     transfer=[]
-    plane=[]
-    special_plane=[]
+    plane_=[]
+    special_plane_=[]
     for(let i:number=0;i<plane_search_data_.length;i++){
         let p1:boolean=(plane_search_data_[i].start_location===plane_search.start_location);
         let p2:boolean=(plane_search_data_[i].end_location===plane_search.end_location);
@@ -121,14 +105,15 @@ export const plane_init=(data:plane_data[])=>{
     }
 
     //初始化机场数据
-    plane=direct.concat(transfer)
-    plane.sort((n1,n2)=>{//排序 按照价格排序
+    plane_=direct.concat(transfer)
+    plane_.sort((n1,n2)=>{//排序 按照价格排序
         return n1[0].price-n2[0].price;
     })
+    console.log(plane_)
     //special_plane 最便宜的四个
-    special_plane=plane.slice(0,Math.min(plane.length,4));
+    special_plane_=plane_.slice(0,Math.min(plane_.length,4));
 }
 export const direct_change=()=>{
-    if(plane_sort.direct_only===true)plane=direct;
-    else plane=direct.concat(transfer)
+    if(plane_sort.direct_only===true)plane_=direct;
+    else plane_=direct.concat(transfer)
 }

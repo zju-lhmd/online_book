@@ -1,5 +1,5 @@
 // Author: Wang Weijie
-// 本文件为服务器端主文件，使用koa框架，使用sequelize框架连接数据库
+// 本文件为服务器端主文件，使用koa框架，使用sequelize连接数据库
 
 // koa框架使用的中间件
 const koa = require('koa')
@@ -8,18 +8,16 @@ const static_file = require('koa-static')
 const Router=require('koa-router')
 const bodyParser = require('koa-body')
 const Sequelize = require('sequelize')
-// const { prompt } = require('message-box');
-// const { success, info } = require('message');
 const {Op} = require("sequelize");
 const router= new Router()
 const app = new koa()
 
 // 连接数据库
-const sequelize = new Sequelize('online_book', 'root', 'qwe987', {
+const sequelize = new Sequelize('online_book', 'root', '123456', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
-        max: 500,
+        max: 1000,
         min: 0,
         idle: 30000
     }
@@ -78,6 +76,10 @@ const Hotel = sequelize.define('hotel', {
         allowNull: false
     },
     location: {
+        type: Sequelize.STRING(63),
+        allowNull: false
+    },
+    phone: {
         type: Sequelize.STRING(63),
         allowNull: false
     },
@@ -187,6 +189,11 @@ const Plane = sequelize.define('plane', {
 Plane.sync({force:false})
 
 const BookingHistory = sequelize.define('booking_history', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -226,6 +233,15 @@ const BookingHistory = sequelize.define('booking_history', {
             model: 'plane',
             key: 'plane_id'
         }
+    },
+    start_time: {
+        type: Sequelize.DATE
+    },
+    end_time: {
+        type: Sequelize.DATE
+    },
+    order_no: {
+        type: Sequelize.STRING(63)
     }
 },{
     timestamps: false,
@@ -234,6 +250,11 @@ const BookingHistory = sequelize.define('booking_history', {
 BookingHistory.sync({force:false})
 
 const Comments = sequelize.define('comments', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -323,10 +344,24 @@ app.use(async (ctx, next) => {
     await bodyParser()(ctx, next);
 });
 app.use(router.routes())
+const cors=require("koa2-cors")
+app.use(cors());
+app.use(async (ctx, next) => {
+    ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    if (ctx.method == 'OPTIONS') {
+        ctx.body = 200;
+    } else {
+        await next();
+    }
+});
+
 
 router.post('/hotel_search', async (ctx, next) => {
     try {
         const body = ctx.request.body;
+        console.log(body)
         const whereClause = {};
         if (body.hotel_name) {
             whereClause.name = {
@@ -338,9 +373,29 @@ router.post('/hotel_search', async (ctx, next) => {
                 [Op.like]: '%' + body.location + '%'
             };
         }
-        ctx.body = await Hotel.findAll({
+        let hotel = await Hotel.findAll({
             where: whereClause
         });
+        let room_min_price = [];
+        for (let i = 0; i < hotel.length; i++) {
+            let room = await Room.findAll({
+                where: {
+                    hotel_id: hotel[i].hotel_id
+                }
+            });
+            let min_price = 1000000;
+            for (let j = 0; j < room.length; j++) {
+                if (room[j].price < min_price) {
+                    min_price = room[j].price;
+                }
+            }
+            room_min_price.push(min_price);
+        }
+        ctx.body = {
+            hotel: hotel,
+            room_min_price: room_min_price
+        };
+        console.log(ctx.body.hotel);
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -368,13 +423,13 @@ router.post('/get_hotel_detail', async (ctx, next) => {
                 hotel_id: body.hotel_id
             }
         });
-        // console.log(hotel)
         ctx.body = {
             hotel: hotel,
             room: room,
             score: score,
             comments: comments
         }
+        console.log(ctx.body)
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -385,33 +440,66 @@ router.post('/get_hotel_detail', async (ctx, next) => {
 router.post('/plane_search', async (ctx, next) => {
     try {
         const body = ctx.request.body;
-        const whereClause = {};
-        if (body.start_location) {
-            whereClause.start = {
-                [Op.like]: '%' + body.start_location + '%'
-            };
+        // const whereClause = {};
+        // if (body.start_location) {
+        //     whereClause.start = {
+        //         [Op.like]: '%' + body.start_location + '%'
+        //     };
+        // }
+        // if (body.end_location) {
+        //     whereClause.end = {
+        //         [Op.like]: '%' + body.end_location + '%'
+        //     };
+        // }
+        // if (body.company) {
+        //     whereClause.company = {
+        //         [Op.like]: '%' + body.company + '%'
+        //     };
+        // }
+        // if (body.date) {
+        //     whereClause.start_time = {
+        //         [Op.gte]: body.date
+        //     };
+        // }
+        // const planes = await Plane.findAll({
+        //     where: whereClause
+        // });
+        console.log(body)
+        if(body.date){
+            console.log(1)
+            const planes=await Plane.findAll({
+                where:{
+                    [Op.and]:[{
+                        [Op.or]:[
+                            {start: body.start_location==='' ? {[Op.eq]:''}:{[Op.eq]:body.start_location}},
+                            {end: body.end_location==='' ? {[Op.eq]:''}:{[Op.eq]:body.end_location}}
+                        ]
+                    },
+                    {company:{[Op.like]:'%'+body.company+'%'} },
+                    {start_time:{[Op.gte]:body.date}}
+                ]
+                }
+            });
+            console.log(planes);
+            ctx.body = planes;
+            await next();
+        }else{
+            const planes=await Plane.findAll({
+                where:{
+                    [Op.and]:[{
+                        [Op.or]:[
+                            {start: body.start_location==='' ? {[Op.eq]:''}:{[Op.eq]:body.start_location}},
+                            {end: body.end_location==='' ? {[Op.eq]:''}:{[Op.eq]:body.end_location}}
+                        ]
+                    },
+                    {company:{[Op.like]:'%'+body.company+'%'} }
+                ]
+                }
+            });
+            console.log(planes);
+            ctx.body = planes;
+            await next();
         }
-        if (body.end_location) {
-            whereClause.end = {
-                [Op.like]: '%' + body.end_location + '%'
-            };
-        }
-        if (body.company) {
-            whereClause.company = {
-                [Op.like]: '%' + body.company + '%'
-            };
-        }
-        if (body.date) {
-            whereClause.start_time = {
-                [Op.gte]: body.date
-            };
-        }
-        const planes = await Plane.findAll({
-            where: whereClause
-        });
-        console.log(planes);
-        ctx.body = planes;
-        await next();
     } catch (e) {
         ctx.body = 'error';
         console.log('plane_search error');
@@ -432,42 +520,22 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
                 type: 'plane'
             },
             include: [{
-                model: Plane,
+                association: BookingHistory.belongsTo(Plane, { foreignKey: 'plane_id' }),
+                // model: Plane,
                 as: 'Plane', // 设置别名为 'Plane'
                 required: true
             }]
         });
 
         for (const booking of booking_history) {
-            if (nowTime > booking.Plane.end_time && booking.state === 0) {
+            if (nowTime > booking.end_time && booking.state === 0) {
                 booking.state = 1;
                 await booking.save();
             }
         }
 
-        const result = booking_history.map(booking => {
-            const { user_id, state, has_score, hotel_id, type, plane_id, Plane } = booking;
-            const { company, start_time, end_time, start, end, price, discount } = Plane;
-
-            return {
-                user_id,
-                state,
-                has_score,
-                hotel_id,
-                type,
-                plane_id,
-                company,
-                start_time,
-                end_time,
-                start,
-                end,
-                price,
-                discount
-            };
-        });
-
-        console.log(result);
-        ctx.body = result;
+        // console.log(result);
+        ctx.body = booking_history;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -475,11 +543,10 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
     }
 });
 
-// 还有问题，需要修改, 与上面的函数类似
 router.post('/get_hotel_booking_history', async (ctx, next) => {
     try {
         const body = ctx.request.body;
-        console.log(body);
+        // console.log(body);
 
         const nowTime = new Date();
 
@@ -489,41 +556,22 @@ router.post('/get_hotel_booking_history', async (ctx, next) => {
                 type: 'hotel'
             },
             include: [{
-                model: Hotel,
+                association: BookingHistory.belongsTo(Hotel, { foreignKey: 'hotel_id' }),
                 as: 'Hotel', // 设置别名为 'Hotel'
                 required: true
             }]
         });
 
         for (const booking of booking_history) {
-            if (nowTime > booking.Hotel.end_time && booking.state === 0) {
+            if (nowTime > booking.end_time && booking.state === 0) {
                 booking.state = 1;
                 await booking.save();
+                // console.log(booking);
             }
         }
 
-        const result = booking_history.map(booking => {
-            const { user_id, state, has_score, hotel_id, type, plane_id, Hotel } = booking;
-            const { name, location, start_time, end_time, price, discount } = Hotel;
-
-            return {
-                user_id,
-                state,
-                has_score,
-                hotel_id,
-                type,
-                plane_id,
-                name,
-                location,
-                start_time,
-                end_time,
-                price,
-                discount
-            };
-        });
-
-        console.log(result);
-        ctx.body = result;
+        console.log(booking_history[0].hotel);
+        ctx.body = booking_history;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -585,7 +633,6 @@ router.post('/score_submit', async (ctx, next) => {
             });
         }
 
-        console.log(score);
         ctx.body = 'success';
         await next();
     } catch (e) {
@@ -602,16 +649,16 @@ router.post('/add_hotel', async (ctx, next) => {
 
 
         if(body.hotel.hotel_id === -1) {
-            const count = await Hotel.count();
+            // const count = await Hotel.count();
             // console.log(count);
             hotel = await Hotel.create({
-                hotel_id: count + 1,
+                // hotel_id: count + 1,
                 name: body.hotel.name,
                 location: body.hotel.location,
+                phone: body.hotel.phone,
                 star_rating: parseInt(body.hotel.star),
                 score_total: 0,
                 score_count: 0,
-                stock: body.hotel.stock,
                 discount: parseInt(body.hotel.discount),
                 description: body.hotel.description
             });
@@ -620,20 +667,26 @@ router.post('/add_hotel', async (ctx, next) => {
                 hotel_id: parseInt(body.hotel.hotel_id),
                 name: body.hotel.name,
                 location: body.hotel.location,
+                phone: body.hotel.phone,
                 star_rating: parseInt(body.hotel.star),
-                score_total: 0,
-                score_count: 0,
-                stock: body.hotel.stock,
+                score_total: parseInt(body.hotel.overall_ratings),
+                score_count: parseInt(body.hotel.rator_number),
                 discount: parseInt(body.hotel.discount),
                 description: body.hotel.description
             }, {
                 where: {
-                    hotel_id: body.hotel.hotel_id
+                    hotel_id: parseInt(body.hotel.hotel_id)
+                }
+            });
+            hotel=body.hotel;
+            await Room.destroy({
+                where: {
+                    hotel_id: parseInt(body.hotel.hotel_id)
                 }
             });
         }
-
-        const rooms = body.hotel.rooms;
+        const rooms = body.rooms;
+        console.log(hotel.hotel_id)
         for (const room of rooms) {
             await Room.create({
                 hotel_id: parseInt(hotel.hotel_id),
@@ -653,17 +706,19 @@ router.post('/add_hotel', async (ctx, next) => {
     }
 });
 
+// plane history的endtime需要同步到booking_history表里面
 router.post('/add_plane', async (ctx, next) => {
 try {
         const body = ctx.request.body;
         console.log(body);
+        console.log(body.company);
         let plane;
 
         if(body.plane_id === -1) {
-            const count = await Plane.count();
-            console.log(count);
+            // const count = await Plane.count();
+            // console.log(count);
             plane = await Plane.create({
-                plane_id: count + 1,
+                // plane_id: count + 1,
                 company: body.company,
                 start: body.start_location,
                 end: body.end_location,
@@ -707,17 +762,17 @@ router.post('/delete_hotel', async (ctx, next) => {
 
         const hotel = await Hotel.findOne({
             where: {
-                id: body.hotel_id
+                hotel_id: parseInt(body.hotel_id)
             }
         });
-
+        console.log(hotel)
         if (hotel) {
-            await Rooms.destroy({
+            await Room.destroy({
                 where: {
-                    hotel_id: hotel.id
+                    hotel_id: parseInt(body.hotel_id)
                 }
             });
-
+            console.log(1)
             await hotel.destroy();
             ctx.body = 'success';
         } else {
@@ -738,7 +793,7 @@ router.post('/delete_plane', async (ctx, next) => {
 
         const plane = await Plane.findOne({
             where: {
-                id: body.plane_id
+                plane_id: parseInt(body.plane_id)
             }
         });
 
@@ -761,7 +816,8 @@ router.post('/search_good', async (ctx, next) => {
         const body = ctx.request.body;
         console.log(body);
 
-        ctx.body = await Goods.findAll({
+        let good;
+        good = await Goods.findAll({
             where: {
                 name: {
                     [Op.like]: '%' + body.name + '%'
@@ -771,6 +827,9 @@ router.post('/search_good', async (ctx, next) => {
                 }
             }
         });
+        console.log(good);
+        ctx.body = good;
+
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -785,11 +844,12 @@ router.post('/add_good', async (ctx, next) => {
 
         let good;
         if(body.good_id === -1) {
-            const count = await Goods.count();
-            console.log(count);
+            // const count = await Goods.count();
+            // console.log(count);
+            console.log(body.name)
             good = await Goods.create({
                 user_id: parseInt(ctx.request.body.user_id),
-                good_id: count + 1,
+                // good_id: count + 1,
                 name: body.name,
                 category: body.category,
                 location: body.location,
@@ -806,14 +866,14 @@ router.post('/add_good', async (ctx, next) => {
                 name: body.name,
                 category: body.category,
                 location: body.location,
-                sale: 0,
+                sale: parseInt(body.sales),
                 price: parseInt(body.price),
                 stock: parseInt(body.stock),
                 discount: parseInt(body.discount),
                 description: body.description
             }, {
                 where: {
-                    good_id: body.good_id
+                    good_id: parseInt(body.good_id)
                 }
             });
         }
@@ -857,11 +917,14 @@ router.post('/get_seller_goods', async (ctx, next) => {
         const body = ctx.request.body;
         console.log(body);
 
-        ctx.body = await Goods.findAll({
+        let good;
+        good = await Goods.findAll({
             where: {
                 user_id: body.user_id
             }
         });
+        console.log(good);
+        ctx.body = good;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -870,6 +933,7 @@ router.post('/get_seller_goods', async (ctx, next) => {
 });
 
 // 静态文件使用
-app.use(static_file(path.join(__dirname, 'static')));
+// app.use(static_file(path.join(__dirname, 'static')));
+app.use(router.allowedMethods())
 app.listen(3400)
 // console.log('success')

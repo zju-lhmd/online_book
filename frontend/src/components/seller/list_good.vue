@@ -58,7 +58,7 @@ const on_delete_hotel_good=(index:number)=>{
         user_id:1,
         good_id:good.good_id
     }
-    axios.post('http://localhost:3400/delete_good',data).then(function(response){
+    axios.post('/delete_good',data).then(function(response){
         
     })
     goods_info.splice(index,1)

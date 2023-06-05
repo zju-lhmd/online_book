@@ -156,11 +156,14 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { plane_search } from "@/components/plane/plane_search"
-import { plane, plane_sort, special_plane, plane_init, direct_change } from "@/components/plane/plane_list"
+import { plane_, plane_sort, special_plane_, plane_init, direct_change } from "@/components/plane/plane_list"
 import axios from 'axios'
 
+let plane=ref(plane_)
+let special_plane=ref(special_plane_)
+
 const page = ref(1)
-const total = ref(plane.length)
+const total = ref(plane.value.length)
 const pageSize = ref(4)
 
 //分页函数
@@ -181,11 +184,12 @@ const swap_location = () => {
 
 //与后端交互接收搜索结果 传输到plane_search_data中
 const on_plane_Submit = () => {
-    axios.post('http://localhost:3400/plane_search', plane_search).then(function (response) {
+    axios.post('/plane_search', plane_search).then(function (response) {
         plane_init(response.data);
+        page.value= 0
+        page.value = 1
+        total.value = plane.value.length
     })
-    page.value = 1
-    total.value = plane.length
 }
 
 //航班日期必选 默认为今天 设置无法选中过去日期
@@ -219,8 +223,7 @@ const on_direct_change = () => {
 }
 
 const sort = (type: number) => {
-    console.log(plane[0][0].price)
-    plane.sort((n1, n2) => {
+    plane.value.sort((n1, n2) => {
         if (type === 1) {
             if (n1[0].price != n2[0].price) {
                 if (plane_sort.price_sort)
@@ -243,10 +246,9 @@ const sort = (type: number) => {
             }
         }
     })
-    console.log(plane[0][0].price)
     page.value = 0;
     page.value = 1;
-    total.value = plane.length;
+    total.value = plane.value.length;
 }
 
 
