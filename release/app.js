@@ -189,6 +189,11 @@ const Plane = sequelize.define('plane', {
 Plane.sync({force:false})
 
 const BookingHistory = sequelize.define('booking_history', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -228,6 +233,15 @@ const BookingHistory = sequelize.define('booking_history', {
             model: 'plane',
             key: 'plane_id'
         }
+    },
+    start_time: {
+        type: Sequelize.DATE
+    },
+    end_time: {
+        type: Sequelize.DATE
+    },
+    order_no: {
+        type: Sequelize.STRING(63)
     }
 },{
     timestamps: false,
@@ -236,6 +250,11 @@ const BookingHistory = sequelize.define('booking_history', {
 BookingHistory.sync({force:false})
 
 const Comments = sequelize.define('comments', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -454,42 +473,22 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
                 type: 'plane'
             },
             include: [{
-                model: Plane,
+                association: BookingHistory.belongsTo(Plane, { foreignKey: 'plane_id' }),
+                // model: Plane,
                 as: 'Plane', // 设置别名为 'Plane'
                 required: true
             }]
         });
 
         for (const booking of booking_history) {
-            if (nowTime > booking.Plane.end_time && booking.state === 0) {
+            if (nowTime > booking.end_time && booking.state === 0) {
                 booking.state = 1;
                 await booking.save();
             }
         }
 
-        const result = booking_history.map(booking => {
-            const { user_id, state, has_score, hotel_id, type, plane_id, Plane } = booking;
-            const { company, start_time, end_time, start, end, price, discount } = Plane;
-
-            return {
-                user_id,
-                state,
-                has_score,
-                hotel_id,
-                type,
-                plane_id,
-                company,
-                start_time,
-                end_time,
-                start,
-                end,
-                price,
-                discount
-            };
-        });
-
-        console.log(result);
-        ctx.body = result;
+        // console.log(result);
+        ctx.body = booking_history;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -497,11 +496,10 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
     }
 });
 
-// 还有问题，需要修改, 与上面的函数类似
 router.post('/get_hotel_booking_history', async (ctx, next) => {
     try {
         const body = ctx.request.body;
-        console.log(body);
+        // console.log(body);
 
         const nowTime = new Date();
 
@@ -511,41 +509,22 @@ router.post('/get_hotel_booking_history', async (ctx, next) => {
                 type: 'hotel'
             },
             include: [{
-                model: Hotel,
+                association: BookingHistory.belongsTo(Hotel, { foreignKey: 'hotel_id' }),
                 as: 'Hotel', // 设置别名为 'Hotel'
                 required: true
             }]
         });
 
         for (const booking of booking_history) {
-            if (nowTime > booking.Hotel.end_time && booking.state === 0) {
+            if (nowTime > booking.end_time && booking.state === 0) {
                 booking.state = 1;
                 await booking.save();
+                // console.log(booking);
             }
         }
 
-        const result = booking_history.map(booking => {
-            const { user_id, state, has_score, hotel_id, type, plane_id, Hotel } = booking;
-            const { name, location, start_time, end_time, price, discount } = Hotel;
-
-            return {
-                user_id,
-                state,
-                has_score,
-                hotel_id,
-                type,
-                plane_id,
-                name,
-                location,
-                start_time,
-                end_time,
-                price,
-                discount
-            };
-        });
-
-        console.log(result);
-        ctx.body = result;
+        console.log(booking_history[0].hotel);
+        ctx.body = booking_history;
         await next();
     } catch (e) {
         ctx.body = 'error';
@@ -674,6 +653,7 @@ router.post('/add_hotel', async (ctx, next) => {
     }
 });
 
+// plane history的endtime需要同步到booking_history表里面
 router.post('/add_plane', async (ctx, next) => {
 try {
         const body = ctx.request.body;

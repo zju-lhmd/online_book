@@ -59,6 +59,7 @@ CREATE TABLE `plane` (
 );
 
 create table booking_history (
+    id INT NOT NULL AUTO_INCREMENT,
     user_id int not null,
     state int not null default 0,
 #     0: 已预订
@@ -70,17 +71,22 @@ create table booking_history (
     hotel_id int not null default -1,
     type varchar(63),
     plane_id int not null default -1,
+    start_time datetime,
+    end_time datetime,
+    order_no varchar(63),
+    PRIMARY KEY (id),
     foreign key(user_id) references `user`(user_id),
     foreign key(hotel_id) references hotel(hotel_id),
     foreign key(plane_id) references plane(plane_id)
 );
 
 CREATE TABLE `comments` (
+    `id` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
     `comment_time` DATETIME NOT NULL,
     `hotel_id` INT NOT NULL DEFAULT -1,
     `content` TEXT,
-    PRIMARY KEY (`user_id`, `comment_time`),
+    PRIMARY KEY (`id`),
     FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
     FOREIGN KEY (`hotel_id`) REFERENCES `hotel` (`hotel_id`)
 );
@@ -107,3 +113,7 @@ INSERT INTO `plane` VALUES (
 INSERT INTO `hotel` VALUES (
     -1, 'UNDEFINED', 'UNDEFINED', 'UNDEFINED', -1, -1, -1, -1, 'UNDEFINED'
 );
+
+INSERT INTO `booking_history` VALUES (
+    1, 1, 0, 0, 1, 'hotel', 1, '2023-01-01 00:00:00', '2023-01-01 00:00:00', 'order_no'
+                                     );
