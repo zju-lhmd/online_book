@@ -91,7 +91,7 @@
                                     <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">总价</el-text>
                                     <el-text style="font-size: large;color: black;margin: 0px 10px 0px 10px;">{{
                                         plane_data[0].price }}</el-text>
-                                    <el-button type="primary">订购</el-button>
+                                    <el-button type="primary" @click="booking_plane(plane_data)">订购</el-button>
                                 </el-space>
                             </el-col>
                         </el-row>
@@ -139,7 +139,7 @@
                                 <el-space direction="vertical">
                                     <el-text style="font-size: large;color: black;">总价</el-text>
                                     <el-text style="font-size: large;color: black;">{{ plane_data[0].price }}</el-text>
-                                    <el-button type="primary">订购</el-button>
+                                    <el-button type="primary" @click="booking_plane(plane_data)">订购</el-button>
                                 </el-space>
                             </el-col>
                         </el-row>
@@ -156,8 +156,9 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { plane_search } from "@/components/plane/plane_search"
-import { plane_, plane_sort, special_plane_, plane_init, direct_change } from "@/components/plane/plane_list"
+import { plane_, plane_sort, special_plane_, plane_init , direct , transfer } from "@/components/plane/plane_list"
 import axios from 'axios'
+import router from '@/router'
 
 let plane=ref(plane_)
 let special_plane=ref(special_plane_)
@@ -186,10 +187,63 @@ const swap_location = () => {
 const on_plane_Submit = () => {
     axios.post('/plane_search', plane_search).then(function (response) {
         plane_init(response.data);
+        if(plane_sort.direct_only===true)plane.value=direct;
+        else plane.value=direct.concat(transfer)
+        special_plane.value=special_plane_;
+        sort(1)
         page.value= 0
         page.value = 1
         total.value = plane.value.length
+        router.push({path:'/component/plane_list'})
     })
+}
+
+const booking_plane=(plane_data:any)=>{
+    let order_id="";
+    axios.post('/get_order_id').then(function(response){
+        order_id=response.data
+        var data={
+            user_id:1,
+            order_id:order_id,
+            plane_id:plane_data[0].plane_id,
+            start_time:plane_data[0].start_time,
+            end_time:plane_data[0].end_time,
+            price:plane_data[0].price
+        }
+        if(plane_data.length==2){
+            data.price-=plane_data[1].price
+        }
+        axios.post('/add_booking_plane_history',data).then(function(response){
+            let order={
+                order_id:order_id
+            }
+            axios.post('/add_order_id',order).then(function(response){
+
+            })
+        })
+    })
+    if(plane_data.length==2){
+        let order_id1="";
+        axios.post('/get_order_id').then(function(response){
+            order_id1=response.data
+            var data1={
+                user_id:1,
+                order_id:order_id1,
+                plane_id:plane_data[1].plane_id,
+                start_time:plane_data[1].start_time,
+                end_time:plane_data[1].end_time,
+                price:plane_data[1].price
+            }
+            axios.post('/add_booking_plane_history',data1).then(function(response){
+                let order1={
+                    order_id:order_id1
+                }
+                axios.post('/add_order_id',order1).then(function(response){
+
+                })
+            })
+        })
+    }
 }
 
 //航班日期必选 默认为今天 设置无法选中过去日期
@@ -218,7 +272,9 @@ const on_direct_change = () => {
         plane_sort.direct_only = false;
     else
         plane_sort.direct_only = true;
-    direct_change();
+    // direct_change();
+    if(plane_sort.direct_only===true)plane.value=direct;
+    else plane.value=direct.concat(transfer)
     sort(1)
 }
 
@@ -249,6 +305,7 @@ const sort = (type: number) => {
     page.value = 0;
     page.value = 1;
     total.value = plane.value.length;
+    console.log(plane.value.length)
 }
 
 

@@ -4,7 +4,7 @@
     </el-breadcrumb>
 
     <el-col style="margin: 50px 0px 0px 0px;caret-color: transparent;">
-        <li v-for="(order, key) in orders.slice((page - 1) * pageSize, page * pageSize)" :key="order.order_no"
+        <li v-for="(order, key) in orders.slice((page - 1) * pageSize, page * pageSize)" :key="order.order_id"
             class="list-item-target">
             <el-row class="card-item-wrap">
                 <el-col class="left" :span="24">
@@ -13,29 +13,19 @@
                             <div style="text-align: center;">订单号</div>
                         </el-col>
                         <el-col :span="16" style="border:2px solid #dadfe6;font-size: 20px;">
-                            <div style="text-align: center;">{{ order.order_no }}</div>
+                            <div style="text-align: center;">{{ order.order_id }}</div>
                         </el-col>
                     </el-row>
                     <el-row style="height: 65%;">
                         <el-col :span="16" style="border:2px solid #dadfe6;font-size: large;">
-                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.company1 }}</el-text>
-                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.start_location1 }}</el-text>
+                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.company }}</el-text>
+                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.start_location }}</el-text>
                             <el-icon style="color: black;margin: 0px 5px 0px 5px;"><Right /></el-icon>
-                            <el-text style="color: black;">{{ order.end_location1 }}</el-text>
-                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{order.start_time1.toLocaleDateString()}}  {{order.start_time1.toLocaleTimeString()}}</el-text>
+                            <el-text style="color: black;">{{ order.end_location }}</el-text>
+                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{order.start_time.toLocaleDateString()}}  {{order.start_time.toLocaleTimeString()}}</el-text>
                             <el-icon style="color: black;margin: 0px 5px 0px 5px;"><Right /></el-icon>
-                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{order.end_time1.toLocaleDateString()}}  {{order.end_time1.toLocaleTimeString()}}</el-text>
+                            <el-text style="color: black;margin: 0px 5px 0px 5px;">{{order.end_time.toLocaleDateString()}}  {{order.end_time.toLocaleTimeString()}}</el-text>
                             <br />
-                            <div v-if="order.company2.length!=0">
-                                <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.company2 }}</el-text>
-                                <el-text style="color: black;margin: 0px 5px 0px 5px;">{{ order.start_location2 }}</el-text>
-                                <el-icon style="color: black;margin: 0px 5px 0px 5px;"><Right /></el-icon>
-                                <el-text style="color: black;">{{ order.end_location2 }}</el-text>
-                                <el-text style="color: black;margin: 0px 5px 0px 5px;">{{order.start_time2.toLocaleDateString()}}  {{order.start_time2.toLocaleTimeString()}}</el-text>
-                                <el-icon style="color: black;margin: 0px 5px 0px 5px;"><Right /></el-icon>
-                                <el-text style="color: black;margin: 0px 5px 0px 5px;">{{order.end_time2.toLocaleDateString()}}  {{order.end_time2.toLocaleTimeString()}}</el-text>
-                            </div>
-                            
                         </el-col>
 
                         <el-col :span="4"
@@ -70,10 +60,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { orders } from "@/components/plane/plane_booking_history"
+import { order } from "@/components/plane/plane_booking_history"
 const page = ref(1)
-const total = ref(orders.length)
+const total = ref(order.length)
 const pageSize = ref(4)
+let orders=ref(order)
 //分页函数
 const handleSizeChange = (val: number) => {
     pageSize.value = val;

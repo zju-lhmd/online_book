@@ -57,7 +57,7 @@
                 <el-text style="font-size: 20px; color: black;">总价 {{ Math.floor(hotel_detail_data.discount * value.price *
                     hotel_search.time) }}</el-text>
                 <!-- 订购按钮 跳转到模块二 -->
-                <el-button type="primary" style="width: 200px;margin-left: 130px;">订购</el-button>
+                <el-button type="primary" style="width: 200px;margin-left: 130px;" @click="booking_hotel">订购</el-button>
 
             </el-col>
 
@@ -83,11 +83,9 @@ import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { hotel_detail_data, rooms , comments , type Room } from "@/components/hotel/hotel_detail"
 import { hotel_search } from "@/components/hotel/hotel_search"
+import axios from 'axios'
 
 const value = ref<Room>(rooms[0])
-const stock = ref(0);
-const price = ref(0);
-
 const disabledDate = (time: Date) => {
     return true
 }
@@ -103,6 +101,30 @@ const handleSizeChange = (val:number) => {
 const handleCurrentChange = (val:number) => {
   page.value = val;
 }
+
+const booking_hotel=()=>{
+    let order_id="";
+    axios.post('/get_order_id').then(function(response){
+        order_id=response.data
+        var data={
+            user_id:1,
+            order_id:order_id,
+            hotel_id:hotel_detail_data.hotel_id,
+            start_time:hotel_search.date1,
+            end_time:hotel_search.date2,
+            price:Math.floor(hotel_detail_data.discount * value.value.price *hotel_search.time)
+        }
+        axios.post('/add_booking_hotel_history',data).then(function(response){
+            let order={
+                order_id:order_id
+            }
+            axios.post('/add_order_id',order).then(function(response){
+
+            })
+        })
+    })
+}
+
 </script>
 
 <style scoped>

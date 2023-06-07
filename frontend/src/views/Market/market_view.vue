@@ -37,7 +37,7 @@
               <span>卖家管理</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="/component/seller_add_good">商品发布</el-menu-item>
+              <el-menu-item index="/component/seller_add_good" @click="on_add_good">商品发布</el-menu-item>
               <el-menu-item index="/component/seller_list_good" @click="seller_goods">商品修改</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
@@ -89,6 +89,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { hotel_order_Init , type Hotel_booking_history} from "@/components/hotel/hotel_booking_history"
 import { plane_order_Init , type Plane_booking_data} from "@/components/plane/plane_booking_history"
+import { GoodInit } from '@/components/seller/seller';
 import { hotel_init } from "@/components/booking_admin/hotel_info"
 import { plane_init } from '@/components/booking_admin/plane_info';
 import { Get_seller_good_data } from '@/components/seller/seller'
@@ -96,7 +97,7 @@ import axios from "axios";
 
 const hotel_booking_history=()=>{//查询酒店预订历史信息
   var data={
-    user:1
+    user_id:1
   }
   axios.post('/get_hotel_booking_history',data).then(function(response){
     hotel_order_Init(response.data);
@@ -105,11 +106,15 @@ const hotel_booking_history=()=>{//查询酒店预订历史信息
 
 const plane_booking_history=()=>{//查询航班预订历史信息
   var data={
-    user:1
+    user_id:1
   }
   axios.post('/get_plane_booking_history',data).then(function(response){
     plane_order_Init(response.data);
   })
+}
+
+const on_add_good=()=>{
+  GoodInit();
 }
 
 const on_add_hotel=()=>{

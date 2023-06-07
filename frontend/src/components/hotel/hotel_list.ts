@@ -42,7 +42,7 @@ export const data_init=(hotel:any)=>{
             location:hotel.data.hotel[i].location,
             phone:hotel.data.hotel[i].phone,
             star:hotel.data.hotel[i].star_rating,
-            discount:hotel.data.hotel[i].discount,
+            discount:parseFloat(hotel.data.hotel[i].discount)/100,
             rator_number:hotel.data.hotel[i].score_count,
             overall_ratings:hotel.data.hotel[i].score_total,
             price_min:hotel.data.room_min_price[i],

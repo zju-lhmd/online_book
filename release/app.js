@@ -34,31 +34,6 @@ const User = sequelize.define('user', {
         type: Sequelize.STRING(63),
         allowNull: false
     },
-    password: {
-        type: Sequelize.STRING(63),
-        allowNull: false
-    },
-    email: {
-        type: Sequelize.STRING(63),
-        allowNull: false
-    },
-    phone: {
-        type: Sequelize.STRING(63),
-        allowNull: false
-    },
-    gender: {
-        type: Sequelize.STRING(63),
-        allowNull: false
-    },
-    address: {
-        type: Sequelize.STRING(63),
-        allowNull: false
-    },
-    is_admin: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-    }
 },{
     timestamps: false,
     freezeTableName:true
@@ -189,10 +164,10 @@ const Plane = sequelize.define('plane', {
 Plane.sync({force:false})
 
 const BookingHistory = sequelize.define('booking_history', {
-    id: {
-        type: Sequelize.INTEGER,
+    order_id: {
+        type: Sequelize.STRING(20),
         primaryKey: true,
-        autoIncrement: true
+        allowNull: false
     },
     user_id: {
         type: Sequelize.INTEGER,
@@ -212,6 +187,11 @@ const BookingHistory = sequelize.define('booking_history', {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
+    },
+    price: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue:0
     },
     hotel_id: {
         type: Sequelize.INTEGER,
@@ -235,13 +215,10 @@ const BookingHistory = sequelize.define('booking_history', {
         }
     },
     start_time: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
     },
     end_time: {
-        type: Sequelize.DATE
-    },
-    order_no: {
-        type: Sequelize.STRING(63)
+        type: Sequelize.DATE,
     }
 },{
     timestamps: false,
@@ -250,7 +227,7 @@ const BookingHistory = sequelize.define('booking_history', {
 BookingHistory.sync({force:false})
 
 const Comments = sequelize.define('comments', {
-    id: {
+    comment_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -338,7 +315,18 @@ const Goods = sequelize.define('goods', {
     timestamps: false,
     freezeTableName: true
 });
-Comments.sync({force:false})
+Goods.sync({force:false})
+
+const Order_id = sequelize.define('order_id', {
+    order_id: {
+        type: Sequelize.STRING,
+        primaryKey:true
+    }
+}, {
+    timestamps: false,
+    freezeTableName: true
+});
+Order_id.sync({force:false})
 
 app.use(async (ctx, next) => {
     await bodyParser()(ctx, next);
@@ -376,6 +364,8 @@ router.post('/hotel_search', async (ctx, next) => {
         let hotel = await Hotel.findAll({
             where: whereClause
         });
+        console.log(body.hotel_name)
+        
         let room_min_price = [];
         for (let i = 0; i < hotel.length; i++) {
             let room = await Room.findAll({
@@ -418,11 +408,13 @@ router.post('/get_hotel_detail', async (ctx, next) => {
             }
         });
         const score = hotel.score_count === 0 ? 0 : hotel.score_total / hotel.score_count
+        console.log(1)
         const comments = await Comments.findAll({
             where: {
                 hotel_id: body.hotel_id
             }
         });
+        console.log(1)
         ctx.body = {
             hotel: hotel,
             room: room,
@@ -516,7 +508,7 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
 
         const booking_history = await BookingHistory.findAll({
             where: {
-                user_id: body.user,
+                user_id: body.user_id,
                 type: 'plane'
             },
             include: [{
@@ -534,7 +526,7 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
             }
         }
 
-        // console.log(result);
+        console.log(booking_history);
         ctx.body = booking_history;
         await next();
     } catch (e) {
@@ -546,13 +538,11 @@ router.post('/get_plane_booking_history', async (ctx, next) => {
 router.post('/get_hotel_booking_history', async (ctx, next) => {
     try {
         const body = ctx.request.body;
-        // console.log(body);
-
+        console.log(body);
         const nowTime = new Date();
-
         const booking_history = await BookingHistory.findAll({
             where: {
-                user_id: body.user,
+                user_id: body.user_id,
                 type: 'hotel'
             },
             include: [{
@@ -561,7 +551,7 @@ router.post('/get_hotel_booking_history', async (ctx, next) => {
                 required: true
             }]
         });
-
+        console.log(booking_history)
         for (const booking of booking_history) {
             if (nowTime > booking.end_time && booking.state === 0) {
                 booking.state = 1;
@@ -569,15 +559,75 @@ router.post('/get_hotel_booking_history', async (ctx, next) => {
                 // console.log(booking);
             }
         }
+        const comment=await Comments.findAll({
+            where:{
+                user_id:body.user_id
+            }
+        })
 
         console.log(booking_history[0].hotel);
         ctx.body = booking_history;
+        ctx.body={
+            history:booking_history,
+            comment:comment
+        }
         await next();
     } catch (e) {
         ctx.body = 'error';
         console.log('get_hotel_booking_history error');
     }
 });
+
+router.post('/add_booking_hotel_history',async(ctx,next)=>{
+    try{
+        const body=ctx.request.body;
+        console.log(body);
+        const add_booking_hotel=await BookingHistory.create({
+            user_id:body.user_id,
+            order_id:body.order_id,
+            state:0,
+            has_score:0,
+            hotel_id:body.hotel_id,
+            type:'hotel',
+            plane_id:-1,
+            start_time:body.start_time,
+            end_time:body.end_time,
+            price:body.price
+        })
+        console.log(add_booking_hotel)
+        ctx.body = 'success';
+        await next();
+    }catch (e) {
+        ctx.body = 'error';
+        console.log('add_booking_hotel_history error');
+    }
+})
+
+
+router.post('/add_booking_plane_history',async(ctx,next)=>{
+    try{
+        const body=ctx.request.body;
+        console.log(body);
+        const add_booking_plane=await BookingHistory.create({
+            user_id:body.user_id,
+            order_id:body.order_id,
+            state:0,
+            has_score:0,
+            hotel_id:-1,
+            type:'plane',
+            plane_id:body.plane_id,
+            start_time:body.start_time,
+            end_time:body.end_time,
+            price:body.price
+        })
+        console.log(add_booking_plane)
+        ctx.body = 'success';
+        await next();
+    }catch (e) {
+        ctx.body = 'error';
+        console.log('add_booking_plane_history error');
+    }
+})
 
 router.post('/comment_submit', async (ctx, next) => {
     try {
@@ -620,7 +670,7 @@ router.post('/score_submit', async (ctx, next) => {
 
         const hotel = await Hotel.findOne({
             where: {
-                id: body.hotel_id
+                hotel_id: body.hotel_id
             }
         });
 
@@ -659,7 +709,7 @@ router.post('/add_hotel', async (ctx, next) => {
                 star_rating: parseInt(body.hotel.star),
                 score_total: 0,
                 score_count: 0,
-                discount: parseInt(body.hotel.discount),
+                discount: Math.ceil(parseFloat(body.hotel.discount)*100),
                 description: body.hotel.description
             });
         } else {
@@ -669,9 +719,9 @@ router.post('/add_hotel', async (ctx, next) => {
                 location: body.hotel.location,
                 phone: body.hotel.phone,
                 star_rating: parseInt(body.hotel.star),
-                score_total: 0,
-                score_count: 0,
-                discount: parseInt(body.hotel.discount),
+                score_total: parseInt(body.hotel.overall_ratings),
+                score_count: parseInt(body.hotel.rator_number),
+                discount: Math.ceil(parseFloat(body.hotel.discount)*100),
                 description: body.hotel.description
             }, {
                 where: {
@@ -685,8 +735,8 @@ router.post('/add_hotel', async (ctx, next) => {
                 }
             });
         }
-
         const rooms = body.rooms;
+        console.log(hotel.hotel_id)
         for (const room of rooms) {
             await Room.create({
                 hotel_id: parseInt(hotel.hotel_id),
@@ -726,7 +776,7 @@ try {
                 end_time: body.end_time,
                 price: parseInt(body.price),
                 stock: parseInt(body.stock),
-                discount: parseInt(body.discount)
+                discount: Math.ceil(parseFloat(body.discount)*100)
             });
         } else {
             plane = await Plane.update({
@@ -738,7 +788,7 @@ try {
                 end_time: body.end_time,
                 price: parseInt(body.price),
                 stock: parseInt(body.stock),
-                discount: parseInt(body.discount)
+                discount: Math.ceil(parseFloat(body.discount)*100)
             }, {
                 where: {
                     plane_id: body.plane_id
@@ -846,6 +896,7 @@ router.post('/add_good', async (ctx, next) => {
         if(body.good_id === -1) {
             // const count = await Goods.count();
             // console.log(count);
+            console.log(ctx.request.body.user_id)
             good = await Goods.create({
                 user_id: parseInt(ctx.request.body.user_id),
                 // good_id: count + 1,
@@ -855,7 +906,7 @@ router.post('/add_good', async (ctx, next) => {
                 sale: 0,
                 price: parseInt(body.price),
                 stock: parseInt(body.stock),
-                discount: parseInt(body.discount),
+                discount: Math.ceil(parseFloat(body.discount)*100),
                 description: body.description
             });
         } else {
@@ -868,7 +919,7 @@ router.post('/add_good', async (ctx, next) => {
                 sale: parseInt(body.sales),
                 price: parseInt(body.price),
                 stock: parseInt(body.stock),
-                discount: parseInt(body.discount),
+                discount: Math.ceil(parseFloat(body.discount)*100),
                 description: body.description
             }, {
                 where: {
@@ -930,6 +981,52 @@ router.post('/get_seller_goods', async (ctx, next) => {
         console.log('get_seller_goods error');
     }
 });
+
+router.post('/get_order_id',async(ctx,next)=>{
+    try {
+        let order_id="";
+        while(true){
+            order_id="";
+            for(let i=0;i<20;i++){
+                let id=Math.floor(Math.random()*62);
+                if(id<=9){//0-9
+                    order_id+=String(id);
+                }else if(id<=35){//A-Z
+                    order_id+=String.fromCharCode(id-10+65);
+                }else{//a-z
+                    order_id+=String.fromCharCode(id-36+97);
+                }
+            }
+            console.log(order_id)
+            let order=Order_id.findOne({
+                where:{
+                    order_id:order_id
+                }
+            })
+            if(order.order_id===order_id)continue;
+            break;
+        }
+        ctx.body = order_id;
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('get_order_id error');
+    }
+})
+router.post('/add_order_id',async(ctx,next)=>{
+    try {
+        const body = ctx.request.body;
+        console.log(body);
+        let order=Order_id.create({
+            order_id:body.order_id
+        })
+        ctx.body = true;
+        await next();
+    } catch (e) {
+        ctx.body = 'error';
+        console.log('add_order_id error');
+    }
+})
 
 // 静态文件使用
 // app.use(static_file(path.join(__dirname, 'static')));

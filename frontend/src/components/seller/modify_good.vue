@@ -77,10 +77,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { good_detail , Good_Init } from '@/components/seller/seller';
+import { good } from '@/components/seller/seller';
 import axios from 'axios';
 
-const category_value = ref('')
+let good_detail=ref(good)
+const category_value = ref(good_detail.value.category)
 const category=[
     {
         value: '日常用品',
@@ -121,13 +122,12 @@ const category=[
 ]
 
 const on_add_good_Submit=()=>{
-    good_detail.category=category_value.value
+    good_detail.value.category=category_value.value
     var data={
         user_id:1,
-        data:good_detail
+        data:good_detail.value
     }
     axios.post('/add_good',data).then(function(response){
-        
     })
 }
 

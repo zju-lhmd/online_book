@@ -15,64 +15,40 @@ export interface Good_info{
     name:string,
     category:string,
     location:string,
-    sales:number, 
+    sale:number, 
     price:number,
     discount:number,
     stock:number,
     description:string
 }
-let goods:Good_info[]=[]
-let good:Good_info={
+export let goods:Good_info[]=[]
+export let good:Good_info={
     good_id:-1,
     name:"",
     category:"",
     location:"",
-    sales:0,
+    sale:0,
     price:0,
     discount:1,
     stock:0,
     description:""
 }
-export const goods_info=reactive(goods)
-export const good_detail=reactive(good)
 export const Get_data=(data:Good_info[])=>{
-    goods=data
+    goods=[]
+    for(let i:number=0;i<data.length;i++)
+        goods.push({
+            good_id:data[i].good_id,
+            name:data[i].name,
+            category:data[i].category,
+            location:data[i].location,
+            sale:data[i].sale,
+            price:data[i].price,
+            discount:data[i].discount/100,
+            stock:data[i].stock,
+            description:data[i].description
+        })
+    console.log(goods)
 }
 export const Get_detail=(data:Good_info)=>{
     good=data
 }
-
-//测试
-// goods.push({
-//     good_id:1,
-//     name:"asdas",
-//     category:"123",
-//     location:"asda",
-//     sales:0,
-//     price:0,
-//     discount:1,
-//     stock:0,
-//     description:""
-// })
-// goods.push({
-//     good_id:2,
-//     name:"asdas",
-//     category:"123",
-//     location:"asda",
-//     sales:0,
-//     price:0,
-//     discount:1,
-//     stock:0,
-//     description:""
-// })
-// goods.push({
-//     good_id:3,
-//     name:"asdas",
-//     category:"123",
-//     location:"asda",
-//     sales:0,
-//     price:0,
-//     discount:1,
-//     stock:0,
-//     description:""
-// })

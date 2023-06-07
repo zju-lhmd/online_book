@@ -11,15 +11,15 @@
             <el-col v-for="(good,index,key) in goods_info.slice((page - 1) * pageSize, page * pageSize)" :key="good.good_id" :span="12" style="border: 2px solid #dadfe6;">
                 <el-row>
                     <el-col :span="18" style="margin: 10px;border-right: 2px solid #dadfe6;">
-                        <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">商品名称</span>
+                        <span slot="label" style="margin:10px 10px 10px 0px;font-size: 20px;">商品名称:</span>
                         <el-text style="font-size: 20px;color: black;">{{ good.name }}</el-text>
                         <br/>
                         
-                        <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">商品类别</span>
+                        <span slot="label" style="margin:10px 10px 10px 0px;font-size: 20px;">商品类别:</span>
                         <el-text style="font-size: 20px;color: black;">{{ good.category }}</el-text>
                         <br/>
 
-                        <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">商品产地</span>
+                        <span slot="label" style="margin:10px 10px 10px 0px;font-size: 20px;">商品产地:</span>
                         <el-text style="font-size: 20px;color: black;">{{ good.location }}</el-text>
                         <br/>
                     </el-col>
@@ -49,11 +49,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { goods_info , Get_detail } from '@/components/seller/seller'
+import { goods , Get_detail } from '@/components/seller/seller'
 import axios from 'axios';
 
+let goods_info=ref(goods)
 const on_delete_hotel_good=(index:number)=>{
-    var good=goods_info[index]//传回后端删除
+    var good=goods_info.value[index]//传回后端删除
     var data={
         user_id:1,
         good_id:good.good_id
@@ -61,12 +62,12 @@ const on_delete_hotel_good=(index:number)=>{
     axios.post('/delete_good',data).then(function(response){
         
     })
-    goods_info.splice(index,1)
-    total.value=goods_info.length
+    goods_info.value.splice(index,1)
+    total.value=goods_info.value.length
 }
 
 const page = ref(1)
-const total = ref(goods_info.length)
+const total = ref(goods_info.value.length)
 const pageSize = ref(8)
 //分页函数
 const handleSizeChange = (val:number) => {
@@ -79,5 +80,22 @@ const handleCurrentChange = (val:number) => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.Title {
+    border: 2px solid #dadfe6;
+    padding: 10px 50px 10px 50px;
+    background: #f5f7fa;
+    display: flex;
+    width: 100%;
+    min-height: 30px;
+    font-size: 20px;
+}
+
+.Rooms{
+    border: 2px solid #dadfe6;
+    background: #f5f7fa;
+    display: flex;
+}
+
+</style>
       

@@ -21,15 +21,16 @@
 
                     <el-form-item >
                         <span slot="label" style="margin-right: 10px;font-size: 15px;">商品类别</span>
-                        <el-input v-model="good_detail.location"  style="width: calc(100% - 70px);caret-color: auto;"/>
+                        <!-- <el-input v-model="good_detail.location"  style="width: calc(100% - 70px);caret-color: auto;"/> -->
+                        <el-select v-model="category_value" placeholder="Select" clearable style="width: calc(100% - 70px);">
+                            <el-option v-for="item in category" :key="item.value" :label="item.label" :value="item.value" />
+                        </el-select>
                     </el-form-item>
 
                     <el-form-item>
                         <el-col>
                             <span slot="label" style="margin-right: 10px;font-size: 15px;">商品产地</span>
-                            <el-select v-model="category_value" placeholder="Select" clearable style="width: calc(100% - 70px)">
-                                <el-option v-for="item in category" :key="item.value" :label="item.label" :value="item.value" />
-                            </el-select>
+                            <el-input v-model="good_detail.location" style="width: calc(100% - 70px);caret-color: auto;"/>
                         </el-col>
                     </el-form-item>
 
@@ -60,7 +61,7 @@
                 <el-form :model="good_detail" label-width="20%" style="text-align: center;">
                     <el-form-item >
                         <span slot="label" style="margin-right: 20px;font-size: 15px;">商品描述</span>
-                        <el-input v-model="good_detail.description" :rows="8" type="textarea" placeholder="输入酒店简述" style="caret-color: auto;" />
+                        <el-input v-model="good_detail.description" :rows="8" type="textarea" placeholder="输入商品简述" style="caret-color: auto;" />
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -76,7 +77,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { good_detail , Good_Init } from '@/components/seller/seller';
+import { good , GoodInit } from '@/components/seller/seller';
 import axios from 'axios';
 
 const category_value = ref('')
@@ -119,14 +120,28 @@ const category=[
     },
 ]
 
+let good_detail=ref(good)
+
 const on_add_good_Submit=()=>{
-    good_detail.category=category_value.value
+    good_detail.value.category=category_value.value
     var data={
         user_id:1,
-        data:good_detail
+        data:good_detail.value
     }
     axios.post('/add_good',data).then(function(response){
-        Good_Init()
+        GoodInit();
+        good_detail.value={
+            good_id:-1,
+            name:"",
+            category:"",
+            location:"",
+            sales:0,
+            price:0,
+            discount:1,
+            stock:0,
+            description:""
+        }
+        category_value.value=''
     })
 }
 

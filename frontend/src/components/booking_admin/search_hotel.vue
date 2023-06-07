@@ -43,7 +43,8 @@ let hotel_search=ref({
 
 //与后端交互接收搜索结果
 const on_search_hotel_Submit = () => {
-    axios.post('/hotel_search',hotel_search).then(function(response){
+    console.log(hotel_search.value)
+    axios.post('/hotel_search',hotel_search.value).then(function(response){
         console.log(response)
         hotel_list_init(response)
         router.push({path:'/component/admin_list_hotel'})

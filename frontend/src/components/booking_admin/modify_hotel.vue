@@ -127,7 +127,7 @@ const on_add_hotel_Submit=()=>{
         hotel:hotel_data.value,
         rooms:rooms.value
     }
-    axios.post('http://localhost:3400/add_hotel',data).then(function(response){
+    axios.post('/add_hotel',data).then(function(response){
         
     })
 }

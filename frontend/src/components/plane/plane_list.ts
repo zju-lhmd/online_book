@@ -29,8 +29,8 @@ interface plane_data{
 let plane_search_data_:plane_data[]=[]
 let start:plane_data[]=[]
 let destination:plane_data[]=[]
-let direct:plane_data[][]=[]
-let transfer:plane_data[][]=[]
+export let direct:plane_data[][]=[]
+export let transfer:plane_data[][]=[]
 export let plane_:plane_data[][]=[]
 export let special_plane_:plane_data[][]=[]
 
@@ -47,7 +47,7 @@ export const plane_init=(data:any)=>{
             start_time:new Date(data[i].start_time),
             end_time:new Date(data[i].end_time),
             price:data[i].price,
-            discount:data[i].discount,
+            discount:parseFloat(data[i].discount)/100,
             stock:data[i].stock,
         })
         
@@ -112,8 +112,4 @@ export const plane_init=(data:any)=>{
     console.log(plane_)
     //special_plane 最便宜的四个
     special_plane_=plane_.slice(0,Math.min(plane_.length,4));
-}
-export const direct_change=()=>{
-    if(plane_sort.direct_only===true)plane_=direct;
-    else plane_=direct.concat(transfer)
 }

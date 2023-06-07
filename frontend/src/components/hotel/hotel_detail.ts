@@ -47,7 +47,7 @@ export const hotel_detail_init=(hotel:any)=>{
         location:hotel.hotel.location,
         phone:hotel.hotel.phone,
         star:hotel.hotel.star_rating,
-        discount:hotel.hotel.discount,
+        discount:parseFloat(hotel.hotel.discount)/100,
         rator_number:hotel.hotel.score_count,
         overall_ratings:hotel.hotel.score_total,
         score:hotel.score,

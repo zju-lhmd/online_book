@@ -2,58 +2,30 @@ import { reactive } from 'vue'
 
 //state 订单状态 0已预订 1已入住 2已退单 has_score是否已经评分
 export interface Plane_booking_data{
-    order_no:string,
-    start_location1:string,
-    start_location2:string,
-    end_location1:string,
-    end_location2:string,
-    company1:string,
-    company2:string,
-    start_time1:Date,
-    start_time2:Date,
-    end_time1:Date,
-    end_time2:Date,
+    order_id:string,
+    plane_id:number,
+    start_location:string,
+    end_location:string,
+    company:string,
+    start_time:Date,
+    end_time:Date,
     price:number,
     state:number,
 }
-let order:Plane_booking_data[]=[];
-//测试用
-let date1=new Date()
-let date2=new Date()
-date1.setTime(date1.getTime() - 3600 * 1000 * 24*3)
-date2.setTime(date2.getTime() - 3600 * 1000 * 24*1)
-// order.push({
-//     order_no:"order1",
-//     start_location1:"上海",
-//     start_location2:"",
-//     end_location1:"温州",
-//     end_location2:"",
-//     company1:"东方航空",
-//     company2:"",
-//     start_time1:date1,
-//     start_time2:date1,
-//     end_time1:date2,
-//     end_time2:date2,
-//     price:123,
-//     state:0,
-// });
-// order.push({
-//     order_no:"order1",
-//     start_location1:"上海",
-//     start_location2:"aa",
-//     end_location1:"温州",
-//     end_location2:"aa",
-//     company1:"东方航空",
-//     company2:"aa",
-//     start_time1:date1,
-//     start_time2:date1,
-//     end_time1:date2,
-//     end_time2:date2,
-//     price:123,
-//     state:0,
-// });
-
-export let orders=reactive(order);
-export const plane_order_Init=(data:Plane_booking_data[])=>{
-    order=data
+export let order:Plane_booking_data[]=[];
+export const plane_order_Init=(data:any)=>{
+    console.log(data)
+    for(let i:number=0;i<data.length;i++){
+        order.push({
+            order_id:data[i].order_id,
+            plane_id:data[i].plane_id,
+            start_location:data[i].plane.start,
+            end_location:data[i].plane.end,
+            company:data[i].plane.company,
+            start_time:new Date(data[i].start_time),
+            end_time:new Date(data[i].end_time),
+            price:data[i].price,
+            state:data[i].state,
+        })
+    }
 }

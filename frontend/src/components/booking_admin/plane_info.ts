@@ -40,7 +40,7 @@ export const plane_list_init=(data:any)=>{
         start_time:new Date(data[i].start_time),
         end_time:new Date(data[i].end_time),
         price:data[i].price,
-        discount:data[i].discount,
+        discount:parseFloat(data[i].discount)/100,
         stock:data[i].stock,
     })
     console.log(planes)

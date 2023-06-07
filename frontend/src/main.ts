@@ -10,7 +10,7 @@ import router from './router'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios'
 
-axios.defaults.baseURL="http://10.186.135.9:3400"
+axios.defaults.baseURL="http://10.186.190.168:3400"
 
 const app = createApp(App)
 

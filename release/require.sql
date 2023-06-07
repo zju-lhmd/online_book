@@ -12,12 +12,6 @@ drop table if exists `user`;
 CREATE TABLE `user` (
     `user_id` INT NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(63) NOT NULL,
-    `password` VARCHAR(63) NOT NULL,
-    `email` VARCHAR(63) NOT NULL,
-    `phone` VARCHAR(63) NOT NULL,
-    `gender` VARCHAR(63) NOT NULL,
-    `address` VARCHAR(63) NOT NULL,
-    `is_admin` INT NOT NULL DEFAULT 0,
     PRIMARY KEY (`user_id`)
 );
 
@@ -59,34 +53,29 @@ CREATE TABLE `plane` (
 );
 
 create table booking_history (
-    id INT NOT NULL AUTO_INCREMENT,
     user_id int not null,
+    order_id varchar(20) not null,
     state int not null default 0,
-#     0: 已预订
-#     1: 已入住
-#     2: 已退房
     has_score int not null default 0,
-#     0: 未评价
-#     1: 已评价
     hotel_id int not null default -1,
     type varchar(63),
     plane_id int not null default -1,
-    start_time datetime,
-    end_time datetime,
-    order_no varchar(63),
-    PRIMARY KEY (id),
+    `start_time` DATETIME NOT NULL,
+    `end_time` DATETIME NOT NULL,
+    price int not null,
+    PRIMARY KEY (`order_id`),
     foreign key(user_id) references `user`(user_id),
     foreign key(hotel_id) references hotel(hotel_id),
     foreign key(plane_id) references plane(plane_id)
 );
 
 CREATE TABLE `comments` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `comment_id` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
     `comment_time` DATETIME NOT NULL,
     `hotel_id` INT NOT NULL DEFAULT -1,
     `content` TEXT,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`comment_id`,`user_id`, `comment_time`),
     FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
     FOREIGN KEY (`hotel_id`) REFERENCES `hotel` (`hotel_id`)
 );
@@ -95,7 +84,7 @@ CREATE TABLE `goods` (
     `user_id` INT NOT NULL,
     `good_id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(63) NOT NULL,
-    location VARCHAR(63) NOT NULL,
+    `location` VARCHAR(63) NOT NULL,
     `category` VARCHAR(63) NOT NULL,
     `price` INT NOT NULL,
     `discount` INT NOT NULL DEFAULT 100,
@@ -106,6 +95,11 @@ CREATE TABLE `goods` (
     FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
+create table `order_id`(
+    `order_id` VARCHAR(20),
+    PRIMARY KEY(`order_id`)
+);
+
 INSERT INTO `plane` VALUES (
     -1, 'UNDEFINED', '2023-01-01 00:00:00', '2023-01-01 00:00:00', 'UNDEFINED', 'UNDEFINED', -1, -1, 100
 );
@@ -113,7 +107,3 @@ INSERT INTO `plane` VALUES (
 INSERT INTO `hotel` VALUES (
     -1, 'UNDEFINED', 'UNDEFINED', 'UNDEFINED', -1, -1, -1, -1, 'UNDEFINED'
 );
-
-INSERT INTO `booking_history` VALUES (
-    1, 1, 0, 0, 1, 'hotel', 1, '2023-01-01 00:00:00', '2023-01-01 00:00:00', 'order_no'
-                                     );

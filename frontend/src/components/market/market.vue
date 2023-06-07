@@ -34,7 +34,7 @@
                             <el-text style="font-size: 20px;color: black;">{{ good.location }}</el-text>
                             <br />
                             <el-text style="font-size: 20px;color: black;margin-right: 20px;">销量</el-text>
-                            <el-text style="font-size: 20px;color: black;">{{ good.sales }}</el-text>
+                            <el-text style="font-size: 20px;color: black;">{{ good.sale }}</el-text>
                             <br />
 
                         </el-col>
@@ -68,8 +68,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { good_search, goods_info, Get_data, Get_detail } from '@/components/market/market'
+import { good_search, goods, Get_data, Get_detail } from '@/components/market/market'
 import axios from 'axios';
+import router from '@/router'
 
 const category_value = ref('')
 const category = [
@@ -111,15 +112,21 @@ const category = [
     },
 ]
 
+let goods_info=ref(goods)
+
 const on_good_Submit = () => {
     good_search.category = category_value.value
     axios.post('/search_good', good_search).then(function (response) {
         Get_data(response.data)
+        goods_info.value=goods
+        page.value=0
+        page.value=1
+        total.value=goods.length
     })
 }
 
 const page = ref(1)
-const total = ref(goods_info.length)
+const total = ref(goods_info.value.length)
 const pageSize = ref(8)
 //分页函数
 const handleSizeChange = (val:number) => {

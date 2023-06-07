@@ -13,19 +13,19 @@
             <el-col v-for="(hotel, index,key) in hotel_datas.slice((page - 1) * pageSize, page * pageSize)" :key="hotel.hotel_id" :span="12" style="border: 2px solid #dadfe6;">
                 <el-row>
                     <el-col :span="18" style="margin: 10px;border-right: 2px solid #dadfe6;">
-                        <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">酒店名称</span>
+                        <span slot="label" style="margin:10px 20px 10px 0px;font-size: 20px;">酒店名称</span>
                         <el-text style="font-size: 20px;color: black;">{{ hotel.name }}</el-text>
                         <br/>
                         
-                        <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">酒店地址</span>
+                        <span slot="label" style="margin:10px 20px 10px 0px;font-size: 20px;">酒店地址</span>
                         <el-text style="font-size: 20px;color: black;">{{ hotel.location }}</el-text>
                         <br/>
 
-                        <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">联系电话</span>
+                        <span slot="label" style="margin:10px 20px 10px 0px;font-size: 20px;">联系电话</span>
                         <el-text style="font-size: 20px;color: black;">{{ hotel.phone }}</el-text>
                         <br/>
 
-                        <span slot="label" style="margin:10px 20px 10px 20px;font-size: 20px;">酒店星级</span>
+                        <span slot="label" style="margin:10px 20px 10px 0px;font-size: 20px;">酒店星级</span>
                         <el-rate v-model="hotel.star" disabled/>
                         <br/>
                     </el-col>
